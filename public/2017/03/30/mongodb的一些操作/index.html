@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    
+    <title>mongodb的一些操作 | 黑天很黑</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    
+      <link rel="icon" href="/favicon.svg">
+    
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <link rel="stylesheet" href="/js/google-code-prettify/tomorrow-night-eighties.min.css">
+
+    <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?080c8e3f6dbc0839234f1fd1a7e9c16a";
+        var s = document.getElementsByTagName("script")[0]; 
+        s.parentNode.insertBefore(hm, s);
+      })();
+	  </script>
+  </head>
+
+  <body>
+
+<header>
+	<a id="logo" href="/" title="黑天很黑">
+	<img src="/favicon.svg" alt="黑天很黑"></a>
+	
+	
+		<!--搜索栏-->
+		<i class="js-toggle-search iconfont icon-search"></i>
+
+
+<form class="js-search search-form search-form--modal" method="get" action="http://gushi.li" role="search">
+	<div class="search-form__inner">
+		<div>
+			<i class="iconfont icon-search"></i>
+			<input class="text-input" placeholder="Enter Key..." type="search">
+		</div>
+	</div>
+</form>
+	
+
+	
+		<!--侧边导航栏-->
+		<a id="nav-toggle" href="#"><span></span></a>
+
+<nav>
+	<div class="menu-top-container">
+		<ul id="menu-top" class="menu">
+			
+				
+				<li class="current-menu-item">
+					<a href="http://weibo.com/XunFengsama" target="_blank">Weibo</a>
+				</li>
+			
+				
+				<li class="current-menu-item">
+					<a href="https://github.com/xunfeng911" target="_blank">github</a>
+				</li>
+			
+		</ul>
+	</div>
+</nav>
+	
+
+</header>
+<div class="m-header ">
+	<section id="hero1" class="hero">
+		<div class="inner">
+		</div>
+	</section>
+	
+		<figure class="top-image" data-enable=true></figure>
+	
+</div>
+
+<!--文章列表-->
+<div class="wrapper">
+  
+    <!--文章-->
+<article>
+	
+  
+    <h1 class="post-title" itemprop="name">
+      mongodb的一些操作
+    </h1>
+  
+
+	<div class='post-body mb'>
+		<p>我要学习！！<br><a id="more"></a></p>
+<h3 id="Collection集合中的基本操作"><a href="#Collection集合中的基本操作" class="headerlink" title="Collection集合中的基本操作"></a>Collection集合中的基本操作</h3><p>1.查看帮助</p>
+<pre><code>db.test.help()
+</code></pre><p>2.查询当前集合的数据条数</p>
+<pre><code>db.test.count()
+</code></pre><p>3.查看数据空间大小</p>
+<pre><code>db.test.dataSize()
+</code></pre><p>4.得到当前聚合所在的db</p>
+<pre><code>db.test.getDB()
+</code></pre><p>5.得到当前聚合的状态</p>
+<pre><code>db.test.stats()
+</code></pre><p>6.聚合集合总大小</p>
+<pre><code>db.test.totalSize()
+</code></pre><p>7.聚合集合存储空间大小</p>
+<pre><code>db.test.storageSize()
+</code></pre><p>8.shard版本信息</p>
+<pre><code>db.test.getShardVersion()
+</code></pre><p>9.聚合集合重命名</p>
+<pre><code>db.test.renameCollection(&#39;newName&#39;)
+</code></pre><p>10.删除当前聚集集合</p>
+<pre><code>db.test.drop()
+</code></pre><h3 id="聚集集合查询"><a href="#聚集集合查询" class="headerlink" title="聚集集合查询"></a>聚集集合查询</h3><p>1.查询所有记录</p>
+<pre><code>db.test.find()
+// 默认每页显示20条记录，可用 it 迭代查询下一页数据
+// 可以用 DBquery.shellBatchSize = 50 更改每页数据
+</code></pre><p>2.查询过滤指定键中含有的重复数据</p>
+<pre><code>db.test.distinct(&quot;name&quot;)
+</code></pre><p>3.查询 title = 指定值的数据</p>
+<pre><code>db.test.find({title:&quot;xuncs&quot;})
+</code></pre><p>4.查询 age &gt; 18 的数据</p>
+<pre><code>db.test.find({age:{$gt:18}})
+</code></pre><p>5.查询 age &lt; 18 的数据</p>
+<pre><code>db.test.find({age:{$lt:18}})
+</code></pre><p>6.查询 age &gt;= 18 的数据</p>
+<pre><code>db.test.find({age:{$gte:18}})
+</code></pre><p>7.查询 age &lt;= 18 的数据</p>
+<pre><code>db.test.find({age:{$lte:18}})
+</code></pre><p>8.查询 age &gt; 18&amp;&amp; age &lt; 24</p>
+<pre><code>db.test.find({age:{$gt:18,$lt:24}})
+</code></pre><p>9.查询 title中包含 xun 的数据</p>
+<pre><code>db.xuncs.find({title:/xun/})
+</code></pre><p>10.查询 title 中以 xun 开头的数据</p>
+<pre><code>db.xuncs.find({title:/^xun/})
+</code></pre><p>11.查询指定列, title，date数据</p>
+<pre><code>db.xuncs.find({},{title: 1,date: 1})
+</code></pre><p>12.查询指定列 且有要求查询</p>
+<pre><code>db.xuncs.find({age:{$gt: 15}}, {age: 1})
+</code></pre><p>13.排序</p>
+<pre><code>db.xuncs.find().sort({age: 1})  // 升序
+db.xuncs.find().sort({age: -1}) // 降序
+</code></pre><p>14.查询指定数据</p>
+<pre><code>db.xuncs.find()({title: &#39;xuncs&#39;}) // 查询title = &#39;xuncs&#39; 的data
+</code></pre><p>15.查询前n条数据</p>
+<pre><code>db.xuncs.find().limit(n)
+</code></pre><p>16.查询n条之后的数据</p>
+<pre><code>db.xuncs.find().skip(n)
+</code></pre><p>17.查询n-m之间的数据</p>
+<pre><code>db.xuncs.find().limit(m).skip(n)
+</code></pre><p>18.or与查询</p>
+<pre><code>db.xuncs.find({$or:[{age: 18},{age: 28}]})  // 查询 age = 18 || age = 28
+</code></pre><p>19.查询第一条数据</p>
+<pre><code>db.xuncs.findOne()
+</code></pre><p>20.查询某个结果集的记录条数</p>
+<pre><code>db.xuncs.find({age: {$gte:18}}).count()
+</code></pre><p>21.查询某列含有该键值的数据</p>
+<pre><code>db.xuncs.find({title: {$exists: true}})
+</code></pre><h3 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h3><p>1.创建索引</p>
+<pre><code>db.xuncs.ensureIndex({title: 1})
+db.xuncs.ensureIndex({title: 1, ts: -1})
+</code></pre><p>2.查询当前聚合集合所有索引</p>
+<pre><code>db.xuncs.getIdexes()
+</code></pre><p>3.查看总索引记录大小</p>
+<pre><code>db.xuncs.totalIndexSize()
+</code></pre><p>4.读取当前集合的所有index信息</p>
+<pre><code>db.xuncs.reIndex()
+</code></pre><p>5.删除指定索引</p>
+<pre><code>db.xuncs.dropIndex(&#39;title_1&#39;)
+</code></pre><p>6.删除所有索引</p>
+<pre><code>db.xuncs.dropIndexes()
+</code></pre><h3 id="增删改"><a href="#增删改" class="headerlink" title="增删改"></a>增删改</h3><p>1.添加</p>
+<pre><code>db.xuncs.save({title: &#39;xuncs&#39;, age: 18, sex: true, date: new Date()})
+db.xuncs.insert({title: &quot;insert&quot;})
+db.xuncs.batchInsert([{&#39;title&#39;: &#39;batch1&#39;},{&#39;title&#39;: &#39;batch2&#39;}])  // 批量添加
+</code></pre><p>2.修改</p>
+<pre><code>db.xuncs.update({title: &#39;xuncs&#39;}, {$set: {age: 20}})
+// 修改数据中第一条title = &#39;xuncs&#39;的age为20
+db.xuncs.update({title: &#39;xuncs&#39;}, {$set: {age: 22}}, false, true)
+// 修改数据中所有条目title = &#39;xuncs&#39;的age为22
+db.xuncs.update({title: &#39;xuncs&#39;}, {$inc: {age: 50}})
+// $inc 增加
+</code></pre><p>3.删除</p>
+<pre><code>db.xuncs.remove // 删除xuncs集合中所有文档
+db.xuncs.remove({age: 18})
+</code></pre><p>4.查询修改删除</p>
+<pre><code>db.xuncs.findAndModify({
+  query: {age: {$gte:18}},
+  sort: {age: -1},
+  update: {$set: {name: &#39;aaa&#39;}, $inc: {age:2}}
+})
+db.runCommand({ findandmodify: &quot;xuncs&quot;,
+  query: {age: {$gte:18}},
+  sort: {age: -1},
+  /*update: {$set: {name: &#39;aaa&#39;}, $inc: {age:2}}*/
+  remove: true
+})
+// update与remove中有一个必须参数，其他参数可选
+</code></pre>
+	</div>
+	<div class="meta split">
+		
+		<time class="post-date" datetime="2017-03-30T02:50:52.000Z" itemprop="datePublished">2017-03-30</time>
+	</div>
+</article>
+
+<!--评论-->
+
+	
+<div class="ds-thread" data-thread-key="mongodb的一些操作" data-title="mongodb的一些操作" data-url="http://www.xuncs.cn/2017/03/30/mongodb的一些操作/"></div>
+<script type="text/javascript">
+
+var duoshuoQuery = {short_name:"yumemor"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0]
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+</script>
+
+
+  
+</div>
+
+
+  <svg id="bigTriangleColor" width="100%" height="40" viewBox="0 0 100 102" preserveAspectRatio="none">
+    <path d="M0 0 L50 100 L100 0 Z"></path>
+  </svg>
+
+  
+
+
+  <div class="wrapper"></div>
+
+
+
+
+
+<div class="fat-footer">
+	<div class="wrapper">
+		<div class="layout layout--center">
+			<div class="layout__item palm-mb">
+				<div class="media">
+					<img class="headimg" src='http://xuncs.cn/image.jpg' alt='陈硕'>
+					<div class="media__body">
+						<h4>黑天很黑</h4>
+						<p class='site-description'>单身狗/矮丑穷/前端渣</p>
+					</div>
+				</div>
+				<div class="author-contact">
+					<ul>
+						
+							
+							<li>
+				        		<a href="http://weibo.com/XunFengsama" target="_blank">
+				        			
+				        				<i class="iconfont icon-weibo"></i>
+				        			
+				        		</a>
+				        	</li>
+						
+							
+							<li>
+				        		<a href="https://github.com/xunfeng911" target="_blank">
+				        			
+				        				<i class="iconfont icon-github"></i>
+				        			
+				        		</a>
+				        	</li>
+						
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<footer class="footer" role="contentinfo">
+	<div class="wrapper wrapper--wide split split--responsive">
+		
+		<!--<span>Theme by <a href="http://github.com/yumemor">Yumemor</a>. Powered by <a href="http://hexo.io">Hexo</a></span>-->
+	</div>
+</footer>
+
+	<!-－这里导入了 lib.js 里面涵盖了 jQuery 等框架 所以注释掉-->
+	<!--<script src="http://lib.sinaapp.com/js/jquery/2.0/jquery.min.js"></script>-->
+	<script src="/js/lib.js"></script>
+	<script src="/js/google-code-prettify/prettify.js"></script>
+	<script src="/js/module.js"></script>
+	<script src="/js/script.js"></script>
+	
+	<script type='text/javascript'>
+		//代码高亮
+		$(document).ready(function(){
+	 		$('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto;');
+   			prettyPrint();
+		});
+	</script>
+	</body>
+</html>

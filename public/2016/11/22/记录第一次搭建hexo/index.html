@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    
+    <title>记录第一次搭建hexo | 黑天很黑</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    
+      <link rel="icon" href="/favicon.svg">
+    
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <link rel="stylesheet" href="/js/google-code-prettify/tomorrow-night-eighties.min.css">
+
+    <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?080c8e3f6dbc0839234f1fd1a7e9c16a";
+        var s = document.getElementsByTagName("script")[0]; 
+        s.parentNode.insertBefore(hm, s);
+      })();
+	  </script>
+  </head>
+
+  <body>
+
+<header>
+	<a id="logo" href="/" title="黑天很黑">
+	<img src="/favicon.svg" alt="黑天很黑"></a>
+	
+	
+		<!--搜索栏-->
+		<i class="js-toggle-search iconfont icon-search"></i>
+
+
+<form class="js-search search-form search-form--modal" method="get" action="http://gushi.li" role="search">
+	<div class="search-form__inner">
+		<div>
+			<i class="iconfont icon-search"></i>
+			<input class="text-input" placeholder="Enter Key..." type="search">
+		</div>
+	</div>
+</form>
+	
+
+	
+		<!--侧边导航栏-->
+		<a id="nav-toggle" href="#"><span></span></a>
+
+<nav>
+	<div class="menu-top-container">
+		<ul id="menu-top" class="menu">
+			
+				
+				<li class="current-menu-item">
+					<a href="http://weibo.com/XunFengsama" target="_blank">Weibo</a>
+				</li>
+			
+				
+				<li class="current-menu-item">
+					<a href="https://github.com/xunfeng911" target="_blank">github</a>
+				</li>
+			
+		</ul>
+	</div>
+</nav>
+	
+
+</header>
+<div class="m-header ">
+	<section id="hero1" class="hero">
+		<div class="inner">
+		</div>
+	</section>
+	
+		<figure class="top-image" data-enable=true></figure>
+	
+</div>
+
+<!--文章列表-->
+<div class="wrapper">
+  
+    <!--文章-->
+<article>
+	
+  
+    <h1 class="post-title" itemprop="name">
+      记录第一次搭建hexo
+    </h1>
+  
+
+	<div class='post-body mb'>
+		<p>即使扒了很多大佬的搭建教程，还是踩了很多坑，所以打算记录下来自己的搭建过程。本文主要介绍win10下hexo3.1.1搭建，并发布到GitHub上。</p>
+<a id="more"></a>
+<h2 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h2><p> &ensp;安装nodejs（必须）</p>
+<ul>
+<li>作用：用来生成静态页面的</li>
+<li><p>方法：到<a href="http://nodejs.cn/" target="_blank" rel="external">node.js</a>官网下载并安装。我是用的是win10下v6.9.1版本。</p>
+<p>&ensp;安装git（必须）</p>
+</li>
+<li>作用：把本地的hexo内容提交到github上去。</li>
+<li><p>方法：进入git官方下载即可，速度较慢。</p>
+<p>&ensp;申请GitHub账号（必须）</p>
+</li>
+<li>作用：是用来做博客的远程创库、域名、服务器之类的。</li>
+<li>方法：到<a href="https://github.com/" target="_blank" rel="external">github</a>官网自行注册，如果想深入学习请看<a href="http://iissnan.com/progit/" target="_blank" rel="external">pro git</a>教程</li>
+</ul>
+<h2 id="安装并搭建hexo"><a href="#安装并搭建hexo" class="headerlink" title="安装并搭建hexo"></a>安装并搭建hexo</h2><p> &ensp;安装hexo</p>
+<ul>
+<li>进入git或cmd执行以下命令</li>
+</ul>
+<pre><code>pm install -g hexo
+</code></pre><ul>
+<li>hexo必备插件，建议一起安装</li>
+</ul>
+<pre><code>$ npm install hexo-generator-index --save #索引生成器
+$ npm install hexo-generator-archive --save #归档生成器
+$ npm install hexo-generator-category --save #分类生成器
+$ npm install hexo-generator-tag --save #标签生成器
+$ npm install hexo-server --save #本地服务
+$ npm install hexo-deployer-git --save #hexo通过git发布（必装）
+$ npm install hexo-renderer-marked@0.2.7--save #渲染器
+$ npm install hexo-renderer-stylus@0.3.0 --save #渲染器
+</code></pre><ul>
+<li>安装过程中不知道为毛我多了两个蜜汁报错，但到最后也没太大影响</li>
+</ul>
+<pre><code>npm WARN deprecated swig@1.4.2: This package is no longer maintained
+</code></pre><pre><code>npm WARN optional SKIPPING OPTIONAL DEPENDENCY: fsevent@^1.0.0(node_modules\hexo\node_modules|chokidar\node_mdules\fsevents):
+npm WARN notsup SKIPPING OPTIONAL DEPENDENCY: Unsupported platform for fsevents@1.0.15: wanted {&quot;os&quot;:&quot;darwin&quot;,&quot;arch&quot;:&quot;any&quot;} (current: {&quot;os&quot;:&quot;win32&quot;,&quot;arch&quot;:&quot;x64&quot;})
+</code></pre><ul>
+<li>初始化<br>选择本地磁盘某个位置创建本地hexo文件夹，进入后右键 git bash</li>
+</ul>
+<pre><code>$ hexo init
+</code></pre><ul>
+<li>生成静态页面</li>
+</ul>
+<pre><code>$ hexo p
+</code></pre><ul>
+<li>本地服务<br>必须安装 hexo server，否则无用</li>
+</ul>
+<pre><code>hexo s
+</code></pre><p>至此本地hexo已建立成功，测试网址：<a href="http://localhost:4000/" target="_blank" rel="external">http://localhost:4000</a></p>
+<h2 id="配置GitHub"><a href="#配置GitHub" class="headerlink" title="配置GitHub"></a>配置GitHub</h2><ul>
+<li>建立Repository<br>建立与你用户名对应的仓库，仓库名必须为【your_user_name.github.io】</li>
+</ul>
+<p>现在我们需要编辑_config.yml文件：<br>翻到最下面，改成我这样子的</p>
+<pre><code>deploy: 
+      type: git  //有的版本是github也是个小坑，注意
+      repo: https://github.com/xunfeng911/xunfeng911.github.com.git // 换成你本人的
+      branch: master
+</code></pre><p>然后保存后执行命令：</p>
+<pre><code>hexo d
+</code></pre><p>注意yml格式文件冒号后面必须加一个空格<br>执行完毕后访问your_user_name.github.io<br>即可看到部署在github上的默认博客,第一次发布可能会有10分钟的延迟。</p>
+<p>到这里，一个全新的hexo博客就建成了。</p>
+<h2 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h2><ul>
+<li>常用命令：</li>
+</ul>
+<pre><code>hexo new &quot;postName&quot; #新建文章
+hexo new page &quot;pageName&quot; #新建页面
+hexo generate #生成静态页面至public目录
+hexo server #开启预览访问端口（默认端口4000，&#39;ctrl + c&#39;关闭server）
+hexo deploy #将.deploy目录部署到GitHub
+hexo help # 查看帮助
+hexo version #查看Hexo的版本
+</code></pre><ul>
+<li>简写</li>
+</ul>
+<pre><code>hexo n == hexo new
+hexo g == hexo generate
+hexo s == hexo server
+hexo d == hexo deploy
+</code></pre><h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="https://xdlrt.github.io/2016/02/16/2016-02-16/" target="_blank" rel="external">卢睿韬学长的自留地</a><br><a href="http://baixin.io/2015/08/HEXO搭建个人博客/" target="_blank" rel="external">潘柏信,搭建个人博客</a></p>
+
+	</div>
+	<div class="meta split">
+		
+		<time class="post-date" datetime="2016-11-22T06:57:37.000Z" itemprop="datePublished">2016-11-22</time>
+	</div>
+</article>
+
+<!--评论-->
+
+	
+<div class="ds-thread" data-thread-key="记录第一次搭建hexo" data-title="记录第一次搭建hexo" data-url="http://www.xuncs.cn/2016/11/22/记录第一次搭建hexo/"></div>
+<script type="text/javascript">
+
+var duoshuoQuery = {short_name:"yumemor"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0]
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+</script>
+
+
+  
+</div>
+
+
+  <svg id="bigTriangleColor" width="100%" height="40" viewBox="0 0 100 102" preserveAspectRatio="none">
+    <path d="M0 0 L50 100 L100 0 Z"></path>
+  </svg>
+
+  
+
+
+  <div class="wrapper"></div>
+
+
+
+
+
+<div class="fat-footer">
+	<div class="wrapper">
+		<div class="layout layout--center">
+			<div class="layout__item palm-mb">
+				<div class="media">
+					<img class="headimg" src='http://xuncs.cn/image.jpg' alt='陈硕'>
+					<div class="media__body">
+						<h4>黑天很黑</h4>
+						<p class='site-description'>单身狗/矮丑穷/前端渣</p>
+					</div>
+				</div>
+				<div class="author-contact">
+					<ul>
+						
+							
+							<li>
+				        		<a href="http://weibo.com/XunFengsama" target="_blank">
+				        			
+				        				<i class="iconfont icon-weibo"></i>
+				        			
+				        		</a>
+				        	</li>
+						
+							
+							<li>
+				        		<a href="https://github.com/xunfeng911" target="_blank">
+				        			
+				        				<i class="iconfont icon-github"></i>
+				        			
+				        		</a>
+				        	</li>
+						
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<footer class="footer" role="contentinfo">
+	<div class="wrapper wrapper--wide split split--responsive">
+		
+		<!--<span>Theme by <a href="http://github.com/yumemor">Yumemor</a>. Powered by <a href="http://hexo.io">Hexo</a></span>-->
+	</div>
+</footer>
+
+	<!-－这里导入了 lib.js 里面涵盖了 jQuery 等框架 所以注释掉-->
+	<!--<script src="http://lib.sinaapp.com/js/jquery/2.0/jquery.min.js"></script>-->
+	<script src="/js/lib.js"></script>
+	<script src="/js/google-code-prettify/prettify.js"></script>
+	<script src="/js/module.js"></script>
+	<script src="/js/script.js"></script>
+	
+	<script type='text/javascript'>
+		//代码高亮
+		$(document).ready(function(){
+	 		$('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto;');
+   			prettyPrint();
+		});
+	</script>
+	</body>
+</html>

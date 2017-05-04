@@ -1,0 +1,57 @@
+
+
+# site icon
+favicon: /favicon.svg
+
+# author headimg
+headimg: http://xuncs.cn/image.jpg
+
+# search
+search: 
+    enable: true
+    placeholder: Enter Key...
+
+# sidebar
+sidebar: 
+  enable: true
+  menus:
+    -
+      name: Weibo
+      link: http://weibo.com/XunFengsama
+      target: _blank
+    -
+      name: github
+      link: https://github.com/xunfeng911
+      target: _blank
+# count(统计)
+count:
+  enable: false
+
+# comments
+comments:
+  duoshuo_username:  xunfeng
+  #disqus_username: xunfeng
+
+# accounts support weibo/github/zhihu/twitter/douban 
+# display to former three
+social: 
+  -
+    name: weibo
+    link: http://weibo.com/XunFengsama
+  -
+    name: github
+    link: https://github.com/xunfeng911
+#  -
+#   name: zhihu
+#   link: 
+#  -
+#    name: twitter
+#    link: 
+#  -
+#    name: douban
+#    link: 
+
+
+
+
+

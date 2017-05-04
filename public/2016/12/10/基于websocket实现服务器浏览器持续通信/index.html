@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    
+    <title>基于websocket实现服务器浏览器持续通信 | 黑天很黑</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    
+      <link rel="icon" href="/favicon.svg">
+    
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <link rel="stylesheet" href="/js/google-code-prettify/tomorrow-night-eighties.min.css">
+
+    <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?080c8e3f6dbc0839234f1fd1a7e9c16a";
+        var s = document.getElementsByTagName("script")[0]; 
+        s.parentNode.insertBefore(hm, s);
+      })();
+	  </script>
+  </head>
+
+  <body>
+
+<header>
+	<a id="logo" href="/" title="黑天很黑">
+	<img src="/favicon.svg" alt="黑天很黑"></a>
+	
+	
+		<!--搜索栏-->
+		<i class="js-toggle-search iconfont icon-search"></i>
+
+
+<form class="js-search search-form search-form--modal" method="get" action="http://gushi.li" role="search">
+	<div class="search-form__inner">
+		<div>
+			<i class="iconfont icon-search"></i>
+			<input class="text-input" placeholder="Enter Key..." type="search">
+		</div>
+	</div>
+</form>
+	
+
+	
+		<!--侧边导航栏-->
+		<a id="nav-toggle" href="#"><span></span></a>
+
+<nav>
+	<div class="menu-top-container">
+		<ul id="menu-top" class="menu">
+			
+				
+				<li class="current-menu-item">
+					<a href="http://weibo.com/XunFengsama" target="_blank">Weibo</a>
+				</li>
+			
+				
+				<li class="current-menu-item">
+					<a href="https://github.com/xunfeng911" target="_blank">github</a>
+				</li>
+			
+		</ul>
+	</div>
+</nav>
+	
+
+</header>
+<div class="m-header ">
+	<section id="hero1" class="hero">
+		<div class="inner">
+		</div>
+	</section>
+	
+		<figure class="top-image" data-enable=true></figure>
+	
+</div>
+
+<!--文章列表-->
+<div class="wrapper">
+  
+    <!--文章-->
+<article>
+	
+  
+    <h1 class="post-title" itemprop="name">
+      基于websocket实现服务器浏览器持续通信
+    </h1>
+  
+
+	<div class='post-body mb'>
+		<p>为了网络程序设计大作业，了解了http,websocket,node及其框架…<br><a id="more"></a></p>
+<h3 id="http协议"><a href="#http协议" class="headerlink" title="http协议"></a>http协议</h3><ul>
+<li>HTTP是超文本传输协议，是客户端浏览器或其他程序与Web服务器之间的应用层通信协议<ul>
+<li>HTTP使用TCP/IP建立连接<br><img src="http://upload-images.jianshu.io/upload_images/3767061-36776499e489d972.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></li>
+</ul>
+</li>
+</ul>
+<p><img src="http://upload-images.jianshu.io/upload_images/3767061-25b34aab5fc17bce.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<ul>
+<li>TCP客户端和服务器通过TCP套接字接口通信</li>
+</ul>
+<p><img src="http://upload-images.jianshu.io/upload_images/3767061-ff829f1fafae57a3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<h3 id="Websocket"><a href="#Websocket" class="headerlink" title="Websocket"></a>Websocket</h3><ul>
+<li>Websocket是一个持久化的协议<br>http1.0的生命周期很短，一个request一个response完成后就结束<br>http1.1增加了一个keep-alive，在一个http连接中可以发送多个request，接收多个response</li>
+</ul>
+<p><img src="http://upload-images.jianshu.io/upload_images/3767061-b512a13ed3c4cd9b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/3767061-92194c7aa3f952d9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""><br>这是一个 websocket的request和 response</p>
+<ul>
+<li>websocket解决了http的部分难题<ul>
+<li><strong>被动性</strong> 服务端可以主动推送信息给客户端，不需要客户端不断请求</li>
+<li><strong>持久性</strong> 只需要一次握手，整个通信建立在一次连接中，避免了中介反复解析</li>
+</ul>
+</li>
+</ul>
+<h3 id="基于express和socket-io构建聊天室"><a href="#基于express和socket-io构建聊天室" class="headerlink" title="基于express和socket.io构建聊天室"></a>基于express和socket.io构建聊天室</h3><ul>
+<li>express<br>安装<pre><code>npm install express -g
+</code></pre>server.js引用模块<pre><code>var express = require(&#39;express&#39;),
+app = express(),
+server = require(&#39;http&#39;).createServer(app);  //创建服务
+app.use(&#39;/&#39;, express.static(__dirname + &#39;/www&#39;)); //调用静态文件
+</code></pre></li>
+</ul>
+<ul>
+<li><p>socket.IO<br>可以接受所有与服务器相连接的客户端发送的消息，也可向客户端主动发送消息。<br>安装</p>
+<pre><code>npm install socket.io
+</code></pre><p>引用</p>
+<pre><code>var io = require(&#39;socket.io&#39;).listen(server);
+server.listen(process.env.PORT || 3000);  //监听端口
+</code></pre></li>
+<li><p>connect</p>
+<pre><code>io.sockets.on(&#39;connection&#39;, function(socket) {   //建立连接
+  //新用户
+  socket.on(&#39;login&#39;, function(usrName,user) {
+      if (users.indexOf(usrName) &gt; -1) {
+          socket.emit(&#39;usrExisted&#39;);
+      } else {
+          socket.userIndex = users.length;
+          socket.usrName = usrName;
+          socket.users = users;
+          users.push(usrName);
+          date = new Date().toTimeString().substr(0, 8);
+          console.log(date+&quot;/&quot;+usrName+&#39;加入了聊天&#39;);
+          socket.emit(&#39;loginSuccess&#39;);
+          io.sockets.emit(&#39;system&#39;, usrName, users.length, &#39;login&#39;);
+          io.sockets.emit(&#39;cuList&#39;, users);
+      };
+  });
+  //用户离开
+  socket.on(&#39;disconnect&#39;, function(user) {
+      if (socket.usrName != null) {
+          socket.users = users;
+          users.splice(socket.userIndex, 1);
+          date = new Date().toTimeString().substr(0, 8);
+          console.log(date+&quot;/&quot;+socket.usrName+&#39;滚蛋了&#39;);
+          socket.broadcast.emit(&#39;system&#39;, socket.usrName, users.length, &#39;logout&#39;);
+          io.sockets.emit(&#39;cuList&#39;, users);
+      }
+  });
+  //用户列表
+  //新消息
+  socket.on(&#39;postMsg&#39;, function(msg, color) {
+      date = new Date().toTimeString().substr(0, 8);
+      console.log(date+&quot;/&quot;+socket.usrName+&#39;：&#39;+msg);
+      socket.broadcast.emit(&#39;newMsg&#39;, socket.usrName, msg, color);
+  });
+  //新图片
+  socket.on(&#39;img&#39;, function(imgData, color) {
+      date = new Date().toTimeString().substr(0, 8);
+      console.log(date+&quot;/&quot;+socket.usrName+&#39;：&#39;+imgData);
+      socket.broadcast.emit(&#39;newImg&#39;, socket.usrName, imgData, color);
+  });
+});
+</code></pre></li>
+<li><p>客户端js,html,css</p>
+<pre><code>window.onload = function() {
+  var webchat = new WebChat();
+  webchat.init();
+};
+var WebChat = function() {
+  this.socket = null;
+};
+WebChat.prototype = {
+  init: function() {
+      var that = this;
+      this.socket = io.connect();
+      //建立连接
+      this.socket.on(&#39;connect&#39;, function() {
+          $(&#39;#info&#39;).text(&#39;大爷儿，进来玩玩&#39;);
+          $(&#39;#inModal&#39;).css(&#39;display&#39;,&#39;block&#39;);
+          $(&#39;#usrName&#39;).focus();
+      });
+      //昵称占用
+      this.socket.on(&#39;usrExisted&#39;, function() {
+          $(&#39;#info&#39;).text(&#39;昵称已被使用，请换一个试试！&#39;);
+      });
+      //登陆成功
+      this.socket.on(&#39;loginSuccess&#39;, function() {
+          document.title =&#39;webchat | &#39; + $(&#39;#usrName&#39;).val();
+          $(&#39;#loginArea&#39;).css(&#39;display&#39;,&#39;none&#39;);
+          $(&#39;#messageInput&#39;).focus();
+      });
+      //用户列表
+      this.socket.on(&#39;cuList&#39;,function(users){
+          var cuList = $(&#39;#right&#39;);
+          var addStr = &quot;&quot;;
+          console.log(users);
+          users.forEach(function(user){
+              addStr += user + &#39;&lt;br/&gt;&#39;;
+          });
+          cuList.html(&#39;用户列表&lt;br/&gt;&#39;+addStr);
+      })
+      //连接失败
+      this.socket.on(&#39;error&#39;, function(err) {
+          if ($(&#39;#loginArea&#39;).style.display == &#39;none&#39;) {
+              $(&#39;#onlineCount&#39;).text(&#39;连接失败！&#39;);
+          } else {
+              $(&#39;#info&#39;).text(&#39;连接失败！&#39;);
+          }
+      });
+      //系统通知用户加入或离开
+      this.socket.on(&#39;system&#39;, function(usrName, userCount, type) {
+          var msg = usrName + (type == &#39;login&#39; ? &#39;来了&#39; : &#39;滚了&#39;);
+          that._displayNewMsg(&#39;system &#39;, msg, &#39;red&#39;);
+          $(&#39;#onlineCount&#39;).text(userCount + (userCount &gt; 1 ? &#39; users&#39; : &#39; user&#39;) + &#39; online&#39;);
+      });
+      //发送消息
+      this.socket.on(&#39;newMsg&#39;, function(user, msg, color) {
+          that._displayNewMsg(user, msg, color);
+      });
+      //发送图片
+      this.socket.on(&#39;newImg&#39;, function(user, img, color) {
+          that._displayImage(user, img, color);
+      });
+
+      //底层监听事件
+
+      //登陆按钮
+      $(&#39;#loginBtn&#39;).on(&#39;click tap&#39;, function() {
+          var usrName = $(&#39;#usrName&#39;).val();
+          if ($.trim(usrName).length != 0) {
+              that.socket.emit(&#39;login&#39;, usrName);
+              that.socket.emit(&#39;cuList&#39;, users);
+          } else {
+              $(&#39;#usrName&#39;).focus();
+          };
+      });
+      //登陆监听enter
+      $(&#39;#usrName&#39;).on(&#39;keyup&#39;, function(e) {
+          if (e.keyCode == 13) {
+              var usrName = $(&#39;#usrName&#39;).val();
+              if ($.trim(usrName).length != 0) {
+                  that.socket.emit(&#39;login&#39;, usrName);
+                  that.socket.emit(&#39;cuList&#39;, users);
+              };
+          };
+      });
+      //bind发送按钮
+      $(&#39;#sendBtn&#39;).on(&#39;click tap&#39;, function() {
+          var messageInput = $(&#39;#messageInput&#39;),
+              msg = messageInput.val(),
+              color = $(&#39;#colorStyle&#39;).val();
+          messageInput.val(&#39; &#39;);
+          messageInput.focus();
+          if ($.trim(msg).length != 0) {
+              that.socket.emit(&#39;postMsg&#39;, msg, color);
+              that._displayNewMsg(&#39;me&#39;, msg, color);
+              return;
+          };
+      });
+      //bind发送
+      $(&#39;#messageInput&#39;).on(&#39;keyup&#39;, function(e) {
+          var messageInput = $(&#39;#messageInput&#39;),
+              msg = messageInput.val(),
+              color = $(&#39;#colorStyle&#39;).val();
+          if (e.keyCode == 13 &amp;&amp; $.trim(msg).length != 0) {
+              messageInput.val(&#39; &#39;);
+              that.socket.emit(&#39;postMsg&#39;, msg, color);
+              that._displayNewMsg(&#39;me&#39;, msg, color);
+          };
+      });
+      //清空
+      $(&#39;#clearBtn&#39;).on(&#39;click tap&#39;, function() {
+          $(&#39;#winChat&#39;).html(&quot; &quot;);
+      });
+      //发送图片
+      $(&#39;#imgSend&#39;).on(&#39;change&#39;, function() {
+          if (this.files.length != 0) {
+              var file = this.files[0],
+                  reader = new FileReader(),
+                  color = $(&#39;#colorStyle&#39;).val();
+              if (!reader) {
+                  that._displayNewMsg(&#39;system&#39;, &#39;辣鸡浏览器不支持上传文件&#39;, &#39;red&#39;);
+                  this.val(&#39; &#39;);
+                  return;
+              };
+              //接收图片
+              reader.onload = function(e) {
+                  that.socket.emit(&#39;img&#39;, e.target.result, color);
+                  that._displayImage(&#39;me&#39;, e.target.result, color);
+              };
+              reader.readAsDataURL(file);
+          };
+      });
+      //图片包
+      this._initialLxh();
+      //按钮
+      $(&#39;#lxh&#39;).on(&#39;click tap&#39;, function(e) {
+          var lxhwrapper = $(&#39;#lxhWrapper&#39;);
+          lxhwrapper.css(&#39;display&#39;,&#39;block&#39;);
+          e.stopPropagation();
+      });
+      //二级图片栏
+      $(&#39;body&#39;).on(&#39;click&#39;, function(e) {
+          var lxhwrapper = $(&#39;#lxhWrapper&#39;);
+          if (e.target != lxhwrapper) {
+              lxhwrapper.css(&#39;display&#39;,&#39;none&#39;);
+          };
+      });
+      $(&#39;#lxhWrapper&#39;).on(&#39;click tap&#39;, function(e) {
+          var target = e.target;
+          if (target.nodeName.toLowerCase() == &#39;img&#39;) {
+              var messageInput = $(&#39;#messageInput&#39;);
+              messageInput.focus();
+              messageInput.val(messageInput.val() + &#39;[lxh:&#39; + target.title + &#39;]&#39;);
+          };
+      });
+  },
+      //发送图片
+  _initialLxh: function() {
+      var lxhContainer = $(&#39;#lxhWrapper&#39;),
+          docFragment = document.createDocumentFragment();
+      for (var i = 100; i &gt; 0; i--) {
+          var lxhItem = document.createElement(&#39;img&#39;);
+          lxhItem.src = &#39;../content/lxh/&#39; + i + &#39;.gif&#39;;
+          lxhItem.title = i;
+          docFragment.appendChild(lxhItem);
+      };
+      lxhContainer.append(docFragment);
+  },
+  _displayNewMsg: function(user, msg, color) {
+      var container = $(&#39;#winChat&#39;),
+          msgToDisplay = $(&#39;&lt;p&gt;&lt;/p&gt;&#39;),
+          date = new Date().toTimeString().substr(0, 8),
+          msg = this._showLxh(msg);
+      msgToDisplay.css(&#39;color&#39;,color || &#39;#000&#39;);
+      msgToDisplay.html(user + &#39;&lt;span class=&quot;timespan&quot;&gt;(&#39; + date + &#39;): &lt;/span&gt;&#39; + msg);
+      container.append(msgToDisplay);
+      container.scrollTop = container.scrollHeight;
+  },
+  _displayImage: function(user, imgData, color) {
+      var container = $(&#39;#winChat&#39;),
+          msgToDisplay = $(&#39;&lt;p&gt;&lt;/p&gt;&#39;),
+          date = new Date().toTimeString().substr(0, 8);
+      msgToDisplay.css(&#39;color&#39;,color || &#39;#000&#39;);
+      msgToDisplay.html(user + &#39;&lt;span class=&quot;timespan&quot;&gt;(&#39; + date + &#39;): &lt;/span&gt; &lt;br/&gt;&#39; + &#39;&lt;a href=&quot;&#39; + imgData + &#39;&quot; target=&quot;_blank&quot;&gt;&lt;img src=&quot;&#39; + imgData + &#39;&quot;/&gt;&lt;/a&gt;&#39;);
+      container.append(msgToDisplay);
+      container.scrollTop = container.scrollHeight;
+  },
+  _showLxh: function(msg) {
+      var match, 
+          result = msg,
+          reg = /\[lxh:\d+\]/g,
+          lxhIndex,
+          totalLxhNum = $(&#39;#lxhWrapper&#39;).children().length;
+      while (match = reg.exec(msg)) {
+          lxhIndex = match[0].slice(5, -1);
+          console.log(lxhIndex);
+          if (lxhIndex &gt; totalLxhNum) {
+              result = result.replace(match[0], &#39;[X]&#39;);
+          } else {
+              result = result.replace(match[0], &#39;&lt;img class=&quot;lxh&quot; src=&quot;../content/lxh/&#39; + lxhIndex + &#39;.gif&quot; /&gt;&#39;);
+          };
+      };
+      return result;
+  }
+};
+</code></pre><pre><code>&lt;!doctype html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+      &lt;meta charset=&quot;utf-8&quot;&gt;
+      &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge,chrome=1&quot;&gt;
+      &lt;meta name=&quot;description&quot; content=&quot;webchat | a simple chat application built with node.js and websocket&quot;&gt;
+      &lt;meta name=&quot;viewport&quot;content=&quot;width=device-width,initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot;/&gt;    
+     &lt;title&gt;webchat&lt;/title&gt;
+      &lt;link rel=&quot;stylesheet&quot; href=&quot;styles/main.css&quot;&gt;
+      &lt;link rel=&quot;shortcut icon&quot; href=&quot;favicon.ico&quot; type=&quot;image/x-icon&quot;&gt;
+      &lt;link rel=&quot;icon&quot; href=&quot;favicon.ico&quot; type=&quot;image/x-icon&quot;&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+      &lt;div class=&quot;wrapper&quot;&gt;
+          &lt;div class=&quot;banner&quot;&gt;
+              &lt;div&gt;WebChat&lt;/div&gt;
+              &lt;span id=&quot;onlineCount&quot;&gt;&lt;/span&gt;
+          &lt;/div&gt;
+          &lt;div id=&quot;winChat&quot;&gt;
+          &lt;/div&gt;
+          &lt;div class=&quot;controls&quot; &gt;
+              &lt;div class=&quot;items&quot;&gt;
+                  &lt;input id=&quot;colorStyle&quot; type=&quot;color&quot; placeHolder=&#39;#000&#39; title=&quot;font color&quot; /&gt;
+                  &lt;input id=&quot;lxh&quot; type=&quot;button&quot; value=&quot;lxh&quot; title=&quot;lxh&quot; /&gt;
+                  &lt;label for=&quot;imgSend&quot; class=&quot;imgLabel&quot;&gt;
+                      &lt;input type=&quot;button&quot; value=&quot;表情&quot; style=&quot;width: 60px;height: 30px;border: 0;margin: 0;padding: 0;&quot; /&gt;
+                      &lt;input id=&quot;imgSend&quot; type=&quot;file&quot; accept=&quot;image/gif&quot; value=&quot;表情&quot;  /&gt;
+                  &lt;/label&gt;
+                  &lt;input id=&quot;clearBtn&quot; type=&quot;button&quot; value=&quot;清空&quot; title=&quot;clear screen&quot; /&gt;
+              &lt;/div&gt;
+              &lt;input type=&quot;text&quot; id=&quot;messageInput&quot; placeHolder=&quot;enter to send&quot;/&gt;
+              &lt;input id=&quot;sendBtn&quot; type=&quot;button&quot; value=&quot;发送&quot;&gt;
+              &lt;div id=&quot;lxhWrapper&quot;&gt;
+              &lt;/div&gt;
+          &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;right&quot; id=&quot;right&quot;&gt;&lt;/div&gt;
+      &lt;div id=&quot;loginArea&quot;&gt;
+          &lt;p id=&quot;info&quot;&gt;正在连接服务器...&lt;/p&gt;
+          &lt;div id=&quot;inModal&quot;&gt;
+              &lt;input type=&quot;text&quot; placeHolder=&quot;请输入昵称&quot; id=&quot;usrName&quot; /&gt;
+              &lt;input type=&quot;button&quot; value=&quot;进入&quot; id=&quot;loginBtn&quot; /&gt;
+          &lt;/div&gt;
+      &lt;/div&gt;
+      &lt;script src=&quot;scripts/jquery-2.1.0.js&quot;&gt;&lt;/script&gt;
+      &lt;script src=&quot;/socket.io/socket.io.js&quot;&gt;&lt;/script&gt;
+      &lt;script src=&quot;scripts/webchat.js&quot;&gt;&lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre></li>
+</ul>
+<pre><code>&lt;!doctype html&gt;
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;meta charset=&quot;utf-8&quot;&gt;
+        &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge,chrome=1&quot;&gt;
+        &lt;meta name=&quot;description&quot; content=&quot;webchat | a simple chat application built with node.js and websocket&quot;&gt;
+        &lt;meta name=&quot;viewport&quot;content=&quot;width=device-width,initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot;/&gt;    
+       &lt;title&gt;webchat&lt;/title&gt;
+        &lt;link rel=&quot;stylesheet&quot; href=&quot;styles/main.css&quot;&gt;
+        &lt;link rel=&quot;shortcut icon&quot; href=&quot;favicon.ico&quot; type=&quot;image/x-icon&quot;&gt;
+        &lt;link rel=&quot;icon&quot; href=&quot;favicon.ico&quot; type=&quot;image/x-icon&quot;&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;div class=&quot;wrapper&quot;&gt;
+            &lt;div class=&quot;banner&quot;&gt;
+                &lt;div&gt;WebChat&lt;/div&gt;
+                &lt;span id=&quot;onlineCount&quot;&gt;&lt;/span&gt;
+            &lt;/div&gt;
+            &lt;div id=&quot;winChat&quot;&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;controls&quot; &gt;
+                &lt;div class=&quot;items&quot;&gt;
+                    &lt;input id=&quot;colorStyle&quot; type=&quot;color&quot; placeHolder=&#39;#000&#39; title=&quot;font color&quot; /&gt;
+                    &lt;input id=&quot;lxh&quot; type=&quot;button&quot; value=&quot;lxh&quot; title=&quot;lxh&quot; /&gt;
+                    &lt;label for=&quot;imgSend&quot; class=&quot;imgLabel&quot;&gt;
+                        &lt;input type=&quot;button&quot; value=&quot;表情&quot; style=&quot;width: 60px;height: 30px;border: 0;margin: 0;padding: 0;&quot; /&gt;
+                        &lt;input id=&quot;imgSend&quot; type=&quot;file&quot; accept=&quot;image/gif&quot; value=&quot;表情&quot;  /&gt;
+                    &lt;/label&gt;
+                    &lt;input id=&quot;clearBtn&quot; type=&quot;button&quot; value=&quot;清空&quot; title=&quot;clear screen&quot; /&gt;
+                &lt;/div&gt;
+                &lt;input type=&quot;text&quot; id=&quot;messageInput&quot; placeHolder=&quot;enter to send&quot;/&gt;
+                &lt;input id=&quot;sendBtn&quot; type=&quot;button&quot; value=&quot;发送&quot;&gt;
+                &lt;div id=&quot;lxhWrapper&quot;&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;right&quot; id=&quot;right&quot;&gt;&lt;/div&gt;
+        &lt;div id=&quot;loginArea&quot;&gt;
+            &lt;p id=&quot;info&quot;&gt;正在连接服务器...&lt;/p&gt;
+            &lt;div id=&quot;inModal&quot;&gt;
+                &lt;input type=&quot;text&quot; placeHolder=&quot;请输入昵称&quot; id=&quot;usrName&quot; /&gt;
+                &lt;input type=&quot;button&quot; value=&quot;进入&quot; id=&quot;loginBtn&quot; /&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;script src=&quot;scripts/jquery-2.1.0.js&quot;&gt;&lt;/script&gt;
+        &lt;script src=&quot;/socket.io/socket.io.js&quot;&gt;&lt;/script&gt;
+        &lt;script src=&quot;scripts/webchat.js&quot;&gt;&lt;/script&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+	</div>
+	<div class="meta split">
+		
+		<time class="post-date" datetime="2016-12-10T13:14:18.000Z" itemprop="datePublished">2016-12-10</time>
+	</div>
+</article>
+
+<!--评论-->
+
+	
+<div class="ds-thread" data-thread-key="基于websocket实现服务器浏览器持续通信" data-title="基于websocket实现服务器浏览器持续通信" data-url="http://www.xuncs.cn/2016/12/10/基于websocket实现服务器浏览器持续通信/"></div>
+<script type="text/javascript">
+
+var duoshuoQuery = {short_name:"yumemor"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0]
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+</script>
+
+
+  
+</div>
+
+
+  <svg id="bigTriangleColor" width="100%" height="40" viewBox="0 0 100 102" preserveAspectRatio="none">
+    <path d="M0 0 L50 100 L100 0 Z"></path>
+  </svg>
+
+  
+
+
+  <div class="wrapper"></div>
+
+
+
+
+
+<div class="fat-footer">
+	<div class="wrapper">
+		<div class="layout layout--center">
+			<div class="layout__item palm-mb">
+				<div class="media">
+					<img class="headimg" src='http://xuncs.cn/image.jpg' alt='陈硕'>
+					<div class="media__body">
+						<h4>黑天很黑</h4>
+						<p class='site-description'>单身狗/矮丑穷/前端渣</p>
+					</div>
+				</div>
+				<div class="author-contact">
+					<ul>
+						
+							
+							<li>
+				        		<a href="http://weibo.com/XunFengsama" target="_blank">
+				        			
+				        				<i class="iconfont icon-weibo"></i>
+				        			
+				        		</a>
+				        	</li>
+						
+							
+							<li>
+				        		<a href="https://github.com/xunfeng911" target="_blank">
+				        			
+				        				<i class="iconfont icon-github"></i>
+				        			
+				        		</a>
+				        	</li>
+						
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<footer class="footer" role="contentinfo">
+	<div class="wrapper wrapper--wide split split--responsive">
+		
+		<!--<span>Theme by <a href="http://github.com/yumemor">Yumemor</a>. Powered by <a href="http://hexo.io">Hexo</a></span>-->
+	</div>
+</footer>
+
+	<!-－这里导入了 lib.js 里面涵盖了 jQuery 等框架 所以注释掉-->
+	<!--<script src="http://lib.sinaapp.com/js/jquery/2.0/jquery.min.js"></script>-->
+	<script src="/js/lib.js"></script>
+	<script src="/js/google-code-prettify/prettify.js"></script>
+	<script src="/js/module.js"></script>
+	<script src="/js/script.js"></script>
+	
+	<script type='text/javascript'>
+		//代码高亮
+		$(document).ready(function(){
+	 		$('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto;');
+   			prettyPrint();
+		});
+	</script>
+	</body>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    
+    <title>three.js入门 | 黑天很黑</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    
+      <link rel="icon" href="/favicon.svg">
+    
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <link rel="stylesheet" href="/js/google-code-prettify/tomorrow-night-eighties.min.css">
+
+    <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?080c8e3f6dbc0839234f1fd1a7e9c16a";
+        var s = document.getElementsByTagName("script")[0]; 
+        s.parentNode.insertBefore(hm, s);
+      })();
+	  </script>
+  </head>
+
+  <body>
+
+<header>
+	<a id="logo" href="/" title="黑天很黑">
+	<img src="/favicon.svg" alt="黑天很黑"></a>
+	
+	
+		<!--搜索栏-->
+		<i class="js-toggle-search iconfont icon-search"></i>
+
+
+<form class="js-search search-form search-form--modal" method="get" action="http://gushi.li" role="search">
+	<div class="search-form__inner">
+		<div>
+			<i class="iconfont icon-search"></i>
+			<input class="text-input" placeholder="Enter Key..." type="search">
+		</div>
+	</div>
+</form>
+	
+
+	
+		<!--侧边导航栏-->
+		<a id="nav-toggle" href="#"><span></span></a>
+
+<nav>
+	<div class="menu-top-container">
+		<ul id="menu-top" class="menu">
+			
+				
+				<li class="current-menu-item">
+					<a href="http://weibo.com/XunFengsama" target="_blank">Weibo</a>
+				</li>
+			
+				
+				<li class="current-menu-item">
+					<a href="https://github.com/xunfeng911" target="_blank">github</a>
+				</li>
+			
+		</ul>
+	</div>
+</nav>
+	
+
+</header>
+<div class="m-header ">
+	<section id="hero1" class="hero">
+		<div class="inner">
+		</div>
+	</section>
+	
+		<figure class="top-image" data-enable=true></figure>
+	
+</div>
+
+<!--文章列表-->
+<div class="wrapper">
+  
+    <!--文章-->
+<article>
+	
+  
+    <h1 class="post-title" itemprop="name">
+      three.js入门
+    </h1>
+  
+
+	<div class='post-body mb'>
+		<p>非常想学习webGL和three.js，这次借着百度前端学院来学一波！</p>
+<a id="more"></a>
+<h2 id="起步"><a href="#起步" class="headerlink" title="起步"></a>起步</h2><p>直接引用 three.js</p>
+<h3 id="三大组件"><a href="#三大组件" class="headerlink" title="三大组件"></a>三大组件</h3><p>场景 (scene)，相机 (camera)，渲染器 (renderer)</p>
+<h4 id="scene"><a href="#scene" class="headerlink" title="scene"></a>scene</h4><p>场景是所有物体的容器</p>
+<pre><code>var scene = new THREE.Scene();
+</code></pre><h4 id="camera"><a href="#camera" class="headerlink" title="camera"></a>camera</h4><p>相机决定了场景中那个角度的景色会显示出来,角度不同看到的景色也不同</p>
+<pre><code>var camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);// 透视相机
+</code></pre><h4 id="renderer"><a href="#renderer" class="headerlink" title="renderer"></a>renderer</h4><p>渲染器决定了渲染的结果应该画在页面的什么元素上面，并且以怎样的方式来绘制</p>
+<pre><code>var renderer = new THREE.WebGLRenderer();
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
+</code></pre><p>渲染器renderer的domElement元素，表示渲染器中的画布，所有的渲染都是画在domElement上的</p>
+<ul>
+<li>添加物体到场景中</li>
+</ul>
+<pre><code>var geometry = new THREE.CubeGeometry(1,1,1);
+var material = new THREE.MeshBasicMaterial({color: 0x00ff00});
+var cube = new THREE.Mesh(geometry, material);
+scene.add(cube);
+</code></pre><ul>
+<li>渲染</li>
+</ul>
+<pre><code>renderer.render(scene, camera);
+</code></pre><h3 id="画一条线"><a href="#画一条线" class="headerlink" title="画一条线"></a>画一条线</h3><h4 id="定义几何体"><a href="#定义几何体" class="headerlink" title="定义几何体"></a>定义几何体</h4><pre><code>var geometry = new THREE.Geometry();
+</code></pre><p>几何体中的变量<code>vertices</code>可以存放点</p>
+<h5 id="定义线条的材质"><a href="#定义线条的材质" class="headerlink" title="定义线条的材质"></a>定义线条的材质</h5><pre><code>THREE.LineBasicMaterial(parameters)
+parameters: {
+  Color: &#39;线条的颜色，用16进制来表示，默认的颜色是白色&#39;,
+  Linewidth: &#39;线条的宽度，默认为1&#39;，
+  Linecap: &#39;线条两端的外观，默认是圆角端点&#39;,
+  Linejoin: &#39;两个线条的连接点处的外观，默认是“round”，表示圆角&#39;,
+  VertexColors: &#39;定义线条材质是否使用顶点颜色，这是一个boolean值。意思是，线条各部分的颜色会根据顶点的颜色来进行插值&#39;,
+  Fog: &#39;定义材质的颜色是否受全局雾效的影响&#39;
+}
+</code></pre><pre><code>var material = new THREE.LineBasicMaterial( { vertexColors: true } )
+</code></pre><h4 id="定义顶点颜色"><a href="#定义顶点颜色" class="headerlink" title="定义顶点颜色"></a>定义顶点颜色</h4><pre><code>var color1 = new THREE.Color( 0x444444 );
+var color2 = new THREE.Color( 0xFF0000 );
+</code></pre><h4 id="定义顶点位置-存放到几何体geometry中"><a href="#定义顶点位置-存放到几何体geometry中" class="headerlink" title="定义顶点位置,存放到几何体geometry中"></a>定义顶点位置,存放到几何体geometry中</h4><pre><code>var p1 = new THREE.Vector3( -100, 0, 100 );
+var p2 = new THREE.Vector3( 100, 0, -100 );
+geometry.vertices.push(p1);
+geometry.vertices.push(p2);
+</code></pre><h4 id="给顶点设置颜色"><a href="#给顶点设置颜色" class="headerlink" title="给顶点设置颜色"></a>给顶点设置颜色</h4><pre><code>geometry.colors.push( color1, color2 );
+</code></pre><h4 id="定义一条线"><a href="#定义一条线" class="headerlink" title="定义一条线"></a>定义一条线</h4><pre><code>var line = new THREE.Line( geometry, material, THREE.LinePieces );
+scene.add(line);
+</code></pre><h4 id="右手坐标系"><a href="#右手坐标系" class="headerlink" title="右手坐标系"></a>右手坐标系</h4><p>x轴正方向向右，y轴正方向向上，z轴由屏幕从里向外。</p>
+<h4 id="线条的深入理解"><a href="#线条的深入理解" class="headerlink" title="线条的深入理解"></a>线条的深入理解</h4>
+	</div>
+	<div class="meta split">
+		
+		<time class="post-date" datetime="2017-03-06T15:03:49.000Z" itemprop="datePublished">2017-03-06</time>
+	</div>
+</article>
+
+<!--评论-->
+
+	
+<div class="ds-thread" data-thread-key="three-js入门" data-title="three.js入门" data-url="http://www.xuncs.cn/2017/03/06/three-js入门/"></div>
+<script type="text/javascript">
+
+var duoshuoQuery = {short_name:"yumemor"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0]
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+</script>
+
+
+  
+</div>
+
+
+  <svg id="bigTriangleColor" width="100%" height="40" viewBox="0 0 100 102" preserveAspectRatio="none">
+    <path d="M0 0 L50 100 L100 0 Z"></path>
+  </svg>
+
+  
+
+
+  <div class="wrapper"></div>
+
+
+
+
+
+<div class="fat-footer">
+	<div class="wrapper">
+		<div class="layout layout--center">
+			<div class="layout__item palm-mb">
+				<div class="media">
+					<img class="headimg" src='http://xuncs.cn/image.jpg' alt='陈硕'>
+					<div class="media__body">
+						<h4>黑天很黑</h4>
+						<p class='site-description'>单身狗/矮丑穷/前端渣</p>
+					</div>
+				</div>
+				<div class="author-contact">
+					<ul>
+						
+							
+							<li>
+				        		<a href="http://weibo.com/XunFengsama" target="_blank">
+				        			
+				        				<i class="iconfont icon-weibo"></i>
+				        			
+				        		</a>
+				        	</li>
+						
+							
+							<li>
+				        		<a href="https://github.com/xunfeng911" target="_blank">
+				        			
+				        				<i class="iconfont icon-github"></i>
+				        			
+				        		</a>
+				        	</li>
+						
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<footer class="footer" role="contentinfo">
+	<div class="wrapper wrapper--wide split split--responsive">
+		
+		<!--<span>Theme by <a href="http://github.com/yumemor">Yumemor</a>. Powered by <a href="http://hexo.io">Hexo</a></span>-->
+	</div>
+</footer>
+
+	<!-－这里导入了 lib.js 里面涵盖了 jQuery 等框架 所以注释掉-->
+	<!--<script src="http://lib.sinaapp.com/js/jquery/2.0/jquery.min.js"></script>-->
+	<script src="/js/lib.js"></script>
+	<script src="/js/google-code-prettify/prettify.js"></script>
+	<script src="/js/module.js"></script>
+	<script src="/js/script.js"></script>
+	
+	<script type='text/javascript'>
+		//代码高亮
+		$(document).ready(function(){
+	 		$('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto;');
+   			prettyPrint();
+		});
+	</script>
+	</body>
+</html>

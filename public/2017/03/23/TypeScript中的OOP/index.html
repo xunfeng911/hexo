@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    
+    <title>TypeScript中的OOP | 黑天很黑</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    
+      <link rel="icon" href="/favicon.svg">
+    
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <link rel="stylesheet" href="/js/google-code-prettify/tomorrow-night-eighties.min.css">
+
+    <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?080c8e3f6dbc0839234f1fd1a7e9c16a";
+        var s = document.getElementsByTagName("script")[0]; 
+        s.parentNode.insertBefore(hm, s);
+      })();
+	  </script>
+  </head>
+
+  <body>
+
+<header>
+	<a id="logo" href="/" title="黑天很黑">
+	<img src="/favicon.svg" alt="黑天很黑"></a>
+	
+	
+		<!--搜索栏-->
+		<i class="js-toggle-search iconfont icon-search"></i>
+
+
+<form class="js-search search-form search-form--modal" method="get" action="http://gushi.li" role="search">
+	<div class="search-form__inner">
+		<div>
+			<i class="iconfont icon-search"></i>
+			<input class="text-input" placeholder="Enter Key..." type="search">
+		</div>
+	</div>
+</form>
+	
+
+	
+		<!--侧边导航栏-->
+		<a id="nav-toggle" href="#"><span></span></a>
+
+<nav>
+	<div class="menu-top-container">
+		<ul id="menu-top" class="menu">
+			
+				
+				<li class="current-menu-item">
+					<a href="http://weibo.com/XunFengsama" target="_blank">Weibo</a>
+				</li>
+			
+				
+				<li class="current-menu-item">
+					<a href="https://github.com/xunfeng911" target="_blank">github</a>
+				</li>
+			
+		</ul>
+	</div>
+</nav>
+	
+
+</header>
+<div class="m-header ">
+	<section id="hero1" class="hero">
+		<div class="inner">
+		</div>
+	</section>
+	
+		<figure class="top-image" data-enable=true></figure>
+	
+</div>
+
+<!--文章列表-->
+<div class="wrapper">
+  
+    <!--文章-->
+<article>
+	
+  
+    <h1 class="post-title" itemprop="name">
+      TypeScript中的OOP
+    </h1>
+  
+
+	<div class='post-body mb'>
+		<p>学习TypeScript，向一个后端迈进！</p>
+<a id="more"></a>
+<h4 id="SOLID原则"><a href="#SOLID原则" class="headerlink" title="SOLID原则"></a>SOLID原则</h4><table>
+<thead>
+<tr>
+<th>en</th>
+<th style="text-align:center">en</th>
+<th style="text-align:right">ch</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SRP</td>
+<td style="text-align:center">The Single Responsibility Principle</td>
+<td style="text-align:right">单一责任原则</td>
+</tr>
+<tr>
+<td>OCP</td>
+<td style="text-align:center">The Open Closed Principle</td>
+<td style="text-align:right">开放封闭原则</td>
+</tr>
+<tr>
+<td>LSP</td>
+<td style="text-align:center">The Liskov Substitution Principle</td>
+<td style="text-align:right">里氏替换原则</td>
+</tr>
+<tr>
+<td>DIP</td>
+<td style="text-align:center">The Dependency Inversion Principle</td>
+<td style="text-align:right">依赖倒置原则</td>
+</tr>
+<tr>
+<td>ISP</td>
+<td style="text-align:center">The Interface Segregation Principle</td>
+<td style="text-align:right">接口分离原则</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>单一职责原则<br>表明软件组件（函数，类，模块）必须专注于单一的任务，当这个类需要承当其他类型的责任的时候，就需要分解这个类。</li>
+<li>开放封闭原则<br>表明软件设计时必须时刻考虑到（代码）可能的发展（扩展性），但是程序的发展必须最少地修改已有的代码。也就是扩展开放，修改封闭。</li>
+<li>里氏替换原则<br>表明只要继承的是同一个接口，程序里任意一个类都可以被其他的类替换。替换后不需要其他额外的工作程序就能像原来一样运行。</li>
+<li>依赖倒置原则<br>表明一个方法应该遵从依赖于抽象（接口）而不是一个实例（类）的概念。<br>高层模块不应该依赖于低层模块，二者都应该依赖于抽象<br>抽象不应该依赖于细节，细节应该依赖于抽象</li>
+<li>接口隔离原则<br>不能强迫用户去依赖那些他们不使用的接口。换句话说，使用多个专门的接口比使用单一的总接口总要好。</li>
+</ul>
+<h4 id="类"><a href="#类" class="headerlink" title="类"></a>类</h4>
+	</div>
+	<div class="meta split">
+		
+		<time class="post-date" datetime="2017-03-23T14:27:15.000Z" itemprop="datePublished">2017-03-23</time>
+	</div>
+</article>
+
+<!--评论-->
+
+	
+<div class="ds-thread" data-thread-key="TypeScript中的OOP" data-title="TypeScript中的OOP" data-url="http://www.xuncs.cn/2017/03/23/TypeScript中的OOP/"></div>
+<script type="text/javascript">
+
+var duoshuoQuery = {short_name:"yumemor"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0]
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+</script>
+
+
+  
+</div>
+
+
+  <svg id="bigTriangleColor" width="100%" height="40" viewBox="0 0 100 102" preserveAspectRatio="none">
+    <path d="M0 0 L50 100 L100 0 Z"></path>
+  </svg>
+
+  
+
+
+  <div class="wrapper"></div>
+
+
+
+
+
+<div class="fat-footer">
+	<div class="wrapper">
+		<div class="layout layout--center">
+			<div class="layout__item palm-mb">
+				<div class="media">
+					<img class="headimg" src='http://xuncs.cn/image.jpg' alt='陈硕'>
+					<div class="media__body">
+						<h4>黑天很黑</h4>
+						<p class='site-description'>单身狗/矮丑穷/前端渣</p>
+					</div>
+				</div>
+				<div class="author-contact">
+					<ul>
+						
+							
+							<li>
+				        		<a href="http://weibo.com/XunFengsama" target="_blank">
+				        			
+				        				<i class="iconfont icon-weibo"></i>
+				        			
+				        		</a>
+				        	</li>
+						
+							
+							<li>
+				        		<a href="https://github.com/xunfeng911" target="_blank">
+				        			
+				        				<i class="iconfont icon-github"></i>
+				        			
+				        		</a>
+				        	</li>
+						
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<footer class="footer" role="contentinfo">
+	<div class="wrapper wrapper--wide split split--responsive">
+		
+		<!--<span>Theme by <a href="http://github.com/yumemor">Yumemor</a>. Powered by <a href="http://hexo.io">Hexo</a></span>-->
+	</div>
+</footer>
+
+	<!-－这里导入了 lib.js 里面涵盖了 jQuery 等框架 所以注释掉-->
+	<!--<script src="http://lib.sinaapp.com/js/jquery/2.0/jquery.min.js"></script>-->
+	<script src="/js/lib.js"></script>
+	<script src="/js/google-code-prettify/prettify.js"></script>
+	<script src="/js/module.js"></script>
+	<script src="/js/script.js"></script>
+	
+	<script type='text/javascript'>
+		//代码高亮
+		$(document).ready(function(){
+	 		$('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto;');
+   			prettyPrint();
+		});
+	</script>
+	</body>
+</html>
