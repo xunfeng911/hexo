@@ -1,6 +1,6 @@
 ---
-title: react学习
-date: 2017-04-23 09:38:19
+title: redux学习笔记
+date: 2017-05-04 09:38:19
 tags: 
   - react
   - javascript
@@ -9,7 +9,7 @@ tags:
 
 <!--more-->
 
-# <strong class="title">React</strong>
+<!--# <strong class="title">React</strong>
 
 ## <strong class="title">创建项目</strong>
 
@@ -18,7 +18,7 @@ $ git clone -o react-starter-kit -b master --single-branch       https://github.
 $ cd myapp
 $ yarn install
 $ yarn start
-```
+```-->
 
 <!--## jsx-->
 
@@ -228,9 +228,43 @@ store.dispatch(params);
 
 rednerApp(store.getState()); // 渲染新数据
 ```
+### <strong class="title">reducer</strong>
+让`createStore`接受一个纯函数`reducer`为参数
+`reducer`接受`action`&`state`两个参数
+如果没有传入state，返回初始化的数据，否则根据action复制/覆盖产生新state
+
+``` js
+const createStore = (reducer) => {
+ let state = null
+  const listeners = []
+  const subscribe = (listener) => listeners.push(listener)
+  const getState = () => state
+  const dispatch = (action) => {
+    state = reducer(state, action)
+    listeners.forEach((listener) => listener())
+  }
+  dispatch({}) // 初始化 state
+  return { getState, dispatch, subscribe }
+}
+const themeReducer (state, action) => {
+  if (!state) return {
+    themeName: 'Red Theme',
+    themeColor: 'red'
+  }
+  switch (action.type) {
+    case 'UPATE_THEME_NAME':
+      return { ...state, themeName: action.themeName }
+    case 'UPATE_THEME_COLOR':
+      return { ...state, themeColor: action.themeColor }
+    default:
+      return state
+  }
+}
+
+const store = createStore(themeReducer)
+```
 
 ### <strong class="title">REDUX的套路</strong>
-
 ``` js
 / 定一个 reducer
 function reducer (state, action) {
