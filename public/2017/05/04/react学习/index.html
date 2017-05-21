@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    
+    <title>redux学习笔记 | 黑天很黑</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    
+      <link rel="icon" href="/favicon.svg">
+    
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <link rel="stylesheet" href="/js/google-code-prettify/tomorrow-night-eighties.min.css">
+
+    <script>
+      var _hmt = _hmt || [];
+      (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?080c8e3f6dbc0839234f1fd1a7e9c16a";
+        var s = document.getElementsByTagName("script")[0]; 
+        s.parentNode.insertBefore(hm, s);
+      })();
+	  </script>
+  </head>
+
+  <body>
+
+<header>
+	<a id="logo" href="/" title="黑天很黑">
+	<img src="/favicon.svg" alt="黑天很黑"></a>
+	
+	
+		<!--搜索栏-->
+		<i class="js-toggle-search iconfont icon-search"></i>
+
+
+<form class="js-search search-form search-form--modal" method="get" action="http://gushi.li" role="search">
+	<div class="search-form__inner">
+		<div>
+			<i class="iconfont icon-search"></i>
+			<input class="text-input" placeholder="Enter Key..." type="search">
+		</div>
+	</div>
+</form>
+	
+
+	
+		<!--侧边导航栏-->
+		<a id="nav-toggle" href="#"><span></span></a>
+
+<nav>
+	<div class="menu-top-container">
+		<ul id="menu-top" class="menu">
+			
+				
+				<li class="current-menu-item">
+					<a href="http://weibo.com/XunFengsama" target="_blank">Weibo</a>
+				</li>
+			
+				
+				<li class="current-menu-item">
+					<a href="https://github.com/xunfeng911" target="_blank">github</a>
+				</li>
+			
+		</ul>
+	</div>
+</nav>
+	
+
+</header>
+<div class="m-header ">
+	<section id="hero1" class="hero">
+		<div class="inner">
+		</div>
+	</section>
+	
+		<figure class="top-image" data-enable=true></figure>
+	
+</div>
+
+<!--文章列表-->
+<div class="wrapper">
+  
+    <!--文章-->
+<article>
+	
+  
+    <h1 class="post-title" itemprop="name">
+      redux学习笔记
+    </h1>
+  
+
+	<div class='post-body mb'>
+		<p>愿这次笔记能记好。</p>
+<a id="more"></a>
+<!--# <strong class="title">React</strong>
+
+## <strong class="title">创建项目</strong>
+
+``` shell
+$ git clone -o react-starter-kit -b master --single-branch       https://github.com/kriasoft/react-starter-kit.git myapp
+$ cd myapp
+$ yarn install
+$ yarn start
+```-->
+<!--## jsx-->
+<h3 id="redux-一种架构模式"><a href="#redux-一种架构模式" class="headerlink" title="redux(一种架构模式)"></a><strong class="title">redux(一种架构模式)</strong></h3><p>不同的组件之间需要共享读写一些数据。</p>
+<h3 id="dispatch"><a href="#dispatch" class="headerlink" title="dispatch"></a><strong class="title">dispatch</strong></h3><p>定义 dispatch 专门负责数据的修改:</p>
+<pre><code class="js">function dispatch (action) {
+  switch (action.type) {
+    case &#39;UPDATE_USER_NAME&#39;:
+      usrState.name = action.name;
+      break;
+    case &#39;UPDATE_USER_AGE&#39;:
+      userState.age = action.age;
+      break;
+    default:
+      break;
+  };
+};
+</code></pre>
+<p>对数据的操作必须通过dispatch函数，<br><code>action</code>是一个对象，包含<code>type</code>,<code>data</code>等内容。</p>
+<pre><code class="js">const params = {type: &#39;UPDATE_USER_NAME&#39;, name: &#39;name&#39;};
+dispacth(params);
+// 修改了name
+</code></pre>
+<p>所有的全局变量数据必须先通过 dispatch, 并且必须用 action 通过 switch 确定修改什么。<br>因此，无需再担心共享数据状态修改的问题。</p>
+<h3 id="store-构建state-dispatch-的集合"><a href="#store-构建state-dispatch-的集合" class="headerlink" title="store 构建state/dispatch 的集合"></a><strong class="title">store 构建state/dispatch 的集合</strong></h3><p><code>createStore</code></p>
+<pre><code class="js">function createStore (state, stateChanger) {
+  const getState = () =&gt; state
+  const dispatch = (action) =&gt; stateChanger(state, action)
+  return {getState, dispatch}
+}
+</code></pre>
+<p><code>state</code>：应用程序状态。<br><code>stateChanger</code>:变化方法。<br><code>getState</code>:获取state的数据。<br><code>dispatch</code>:修改数据，接收action。</p>
+<p>如下修改数据生成的方式</p>
+<pre><code class="js">let usrState = {
+  name: &#39;xun&#39;,
+  age: 18
+};
+
+const renderApp = (user) =&gt; {
+  const userDOM = document.getElementById(&#39;user&#39;);
+  userDOM.innerHTML = `${user.name},age:${user.age}`;
+};
+
+const createStore = (state, stateChanger) =&gt; {
+  const getState = () =&gt; state;
+  const dispatch = (action) =&gt; stateChanger(state, action);
+  return {getState, dispatch};
+};
+
+const stateChanger = (state, action) =&gt; {
+  switch (action.type) {
+    case &#39;UPDATE_USER_NAME&#39;:
+      usrState.name = action.name;
+      break;
+    case &#39;UPDATE_USER_AGE&#39;:
+      userState.age = action.age;
+      break;
+    default:
+      break;
+  };
+};
+
+const store = createStore(usrState, stateChanger);
+
+renderApp(store.getState()); // 首次渲染页面
+
+const params = {type: &#39;UPDATE_USER_NAME&#39;, name: &#39;name&#39;};
+store.dispatch(params);
+
+rednerApp(store.getState()); // 渲染新数据
+</code></pre>
+<p>通过<code>store.dispatch</code>修改数据<br>通过<code>store.getState</code>获取数据</p>
+<h3 id="监控数据变化"><a href="#监控数据变化" class="headerlink" title="监控数据变化"></a><strong class="title">监控数据变化</strong></h3><p>上面的代码如果不手动renderApp的话，页面数据不会更新，因此需要自动渲染数据。<br>修改<code>createStore</code></p>
+<pre><code class="js">const createStore = (state, stateChanger) =&gt; {
+  const listeners = [];
+  const subscribe = (listener) =&gt; listeners.push(listener);
+  const getState = () =&gt; state;
+  const dispatch = (action) =&gt; {
+    stateChanger(state, action);
+    listeners.forEach((listener) =&gt; listener());
+  };
+  return {getState, dispatch, subscribe};
+};
+</code></pre>
+<p>通过<code>store.subscribe(listener)</code>传入监听函数，并存入数组中<br>初始化时把<code>renderApp</code>传入数组中</p>
+<pre><code class="js">const store = createStore(appState, stateChanger)
+store.subscribe(() =&gt; renderApp(store.getState()))
+
+renderApp(store.getState()) // 首次渲染页面
+
+const params = {type: &#39;UPDATE_USER_NAME&#39;, name: &#39;name&#39;};
+store.dispatch(params);
+// 自动更新数据...
+</code></pre>
+<h3 id="纯函数"><a href="#纯函数" class="headerlink" title="纯函数"></a><strong class="title">纯函数</strong></h3><ul>
+<li>函数的返回结果只依赖于它的参数</li>
+<li>执行过程中不产生任何副作用</li>
+</ul>
+<h3 id="共享结构的对象-优化性能"><a href="#共享结构的对象-优化性能" class="headerlink" title="共享结构的对象,优化性能"></a><strong class="title">共享结构的对象,优化性能</strong></h3><p>更新时，部分属性无改变，但仍旧重新渲染，耗费性能。<br><code>解决方案</code>:在渲染函数执行之前判断传入的新数据和已有的数据是否相同。</p>
+<pre><code class="js">const obj = { a: 1, b: 2}
+const obj2 = { ...obj, b: 3, c: 4 } // =&gt; { a: 1, b: 3, c: 4 }
+</code></pre>
+<p><code>obj2</code>潜复制<code>obj</code>,并能覆盖，拓展。为新旧数据对比提供支持。</p>
+<pre><code class="js">let usrState = {
+  name: &#39;xun&#39;,
+  age: 18
+};
+
+const createStore = (state, stateChanger) =&gt; {
+  const listeners = [];
+  const subscribe = (listener) =&gt; listeners.push(listener);
+  const getState = () =&gt; state;
+  const dispatch = (action) =&gt; {
+    state = stateChanger(state, action);  // 覆盖原对象
+    listeners.forEach((listener) =&gt; listener());
+  };
+  return {getState, dispatch, subscribe};
+};
+
+const renderApp = (newAppState, oldAppState = {}) =&gt; { // 防止 oldAppState 没有传入，所以加了默认参数 oldAppState = {}
+  if (newAppState === oldAppState) return; // 数据没有变化就不渲染了
+  console.log(&#39;render app...&#39;);
+  renderName(newAppState.name, oldAppState.name);
+  renderAge(newAppState.age, oldAppState.age);
+};
+
+const renderName = (newName, oldName = {}) =&gt; {
+  if (newName === oldName) return; // 数据没有变化就不渲染了
+  console.log(&#39;render name...&#39;);
+  const nameDom = document.getElementById(&#39;name&#39;);
+  nameDom.innerHTML = newName.name;
+};
+const renderAge = (newAge, oldAge = {}) =&gt; {
+  if (newAge === oldAge) return; // 数据没有变化就不渲染了
+  console.log(&#39;render age...&#39;);
+  const ageDom = document.getElementById(&#39;age&#39;);
+  ageDom.innerHTML = newAge.age;
+};
+
+const stateChanger = (state, action) =&gt; {
+  switch (action.type) {
+    case &#39;UPDATE_USER_NAME&#39;:
+      return {
+        ...state,
+        name: action.name
+      }
+      break;
+    case &#39;UPDATE_USER_AGE&#39;:
+      return {
+        ...state,
+        age: action.age
+      }
+      break;
+    default:
+      return state;
+  };
+};
+
+const store = createStore(usrState, stateChanger);
+let oldState = store.getState(); // 缓存oldState
+
+store.subscribe(() =&gt; {
+  const newState = store.getState(); // 数据可能变化，获取新的 state
+  renderApp(newState, oldState); // 把新旧的 state 传进去渲染
+  oldState = newState; // 渲染完以后，新的 newState 变成了旧的 oldState，等待下一次数据变化重新渲染
+});
+
+renderApp(store.getState()); // 首次渲染页面
+
+const params = {type: &#39;UPDATE_USER_NAME&#39;, name: &#39;name&#39;};
+store.dispatch(params);
+
+rednerApp(store.getState()); // 渲染新数据
+</code></pre>
+<h3 id="reducer"><a href="#reducer" class="headerlink" title="reducer"></a><strong class="title">reducer</strong></h3><p>让<code>createStore</code>接受一个纯函数<code>reducer</code>为参数<br><code>reducer</code>接受<code>action</code>&amp;<code>state</code>两个参数<br>如果没有传入state，返回初始化的数据，否则根据action复制/覆盖产生新state</p>
+<pre><code class="js">const createStore = (reducer) =&gt; {
+ let state = null
+  const listeners = []
+  const subscribe = (listener) =&gt; listeners.push(listener)
+  const getState = () =&gt; state
+  const dispatch = (action) =&gt; {
+    state = reducer(state, action)
+    listeners.forEach((listener) =&gt; listener())
+  }
+  dispatch({}) // 初始化 state
+  return { getState, dispatch, subscribe }
+}
+const themeReducer (state, action) =&gt; {
+  if (!state) return {
+    themeName: &#39;Red Theme&#39;,
+    themeColor: &#39;red&#39;
+  }
+  switch (action.type) {
+    case &#39;UPATE_THEME_NAME&#39;:
+      return { ...state, themeName: action.themeName }
+    case &#39;UPATE_THEME_COLOR&#39;:
+      return { ...state, themeColor: action.themeColor }
+    default:
+      return state
+  }
+}
+
+const store = createStore(themeReducer)
+</code></pre>
+<h3 id="REDUX的套路"><a href="#REDUX的套路" class="headerlink" title="REDUX的套路"></a><strong class="title">REDUX的套路</strong></h3><pre><code class="js">/ 定一个 reducer
+function reducer (state, action) {
+  /* 初始化 state 和 switch case */
+}
+
+// 生成 store
+const store = createStore(reducer)
+
+// 监听数据变化重新渲染页面
+store.subscribe(() =&gt; renderApp(store.getState()))
+
+// 首次渲染页面
+renderApp(store.getState()) 
+
+// 后面可以随意 dispatch 了，页面自动更新
+store.dispatch(...)
+</code></pre>
+<style>
+.title {
+  color: RGBA(92, 201, 245, 1.00);
+}
+</style>
+	</div>
+	<div class="meta split">
+		
+		<time class="post-date" datetime="2017-05-04T01:38:19.000Z" itemprop="datePublished">2017-05-04</time>
+	</div>
+</article>
+
+<!--评论-->
+
+	
+<div class="ds-thread" data-thread-key="react学习" data-title="redux学习笔记" data-url="http://www.xuncs.cn/2017/05/04/react学习/"></div>
+<script type="text/javascript">
+
+var duoshuoQuery = {short_name:"yumemor"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0]
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+</script>
+
+
+  
+</div>
+
+
+  <svg id="bigTriangleColor" width="100%" height="40" viewBox="0 0 100 102" preserveAspectRatio="none">
+    <path d="M0 0 L50 100 L100 0 Z"></path>
+  </svg>
+
+  
+
+
+  <div class="wrapper"></div>
+
+
+
+
+
+<div class="fat-footer">
+	<div class="wrapper">
+		<div class="layout layout--center">
+			<div class="layout__item palm-mb">
+				<div class="media">
+					<img class="headimg" src='http://xuncs.cn/image.jpg' alt='陈硕'>
+					<div class="media__body">
+						<h4>黑天很黑</h4>
+						<p class='site-description'>单身狗/矮丑穷/前端渣</p>
+					</div>
+				</div>
+				<div class="author-contact">
+					<ul>
+						
+							
+							<li>
+				        		<a href="http://weibo.com/XunFengsama" target="_blank">
+				        			
+				        				<i class="iconfont icon-weibo"></i>
+				        			
+				        		</a>
+				        	</li>
+						
+							
+							<li>
+				        		<a href="https://github.com/xunfeng911" target="_blank">
+				        			
+				        				<i class="iconfont icon-github"></i>
+				        			
+				        		</a>
+				        	</li>
+						
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<footer class="footer" role="contentinfo">
+	<div class="wrapper wrapper--wide split split--responsive">
+		
+		<!--<span>Theme by <a href="http://github.com/yumemor">Yumemor</a>. Powered by <a href="http://hexo.io">Hexo</a></span>-->
+	</div>
+</footer>
+
+	<!-－这里导入了 lib.js 里面涵盖了 jQuery 等框架 所以注释掉-->
+	<!--<script src="http://lib.sinaapp.com/js/jquery/2.0/jquery.min.js"></script>-->
+	<script src="/js/lib.js"></script>
+	<script src="/js/google-code-prettify/prettify.js"></script>
+	<script src="/js/module.js"></script>
+	<script src="/js/script.js"></script>
+	
+	<script type='text/javascript'>
+		//代码高亮
+		$(document).ready(function(){
+	 		$('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto;');
+   			prettyPrint();
+		});
+	</script>
+	</body>
+</html>
