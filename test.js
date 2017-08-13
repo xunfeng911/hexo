@@ -127,11 +127,80 @@
 // let myAdd = (x: number, y: number): number => {
 //     return x + y;
 // }
-function buildUser(firstName, lastName) {
-    if (lastName) {
-        return firstName + " " + lastName;
-    }
-    else {
-        return firstName;
-    }
-}
+// function buildUser(firstName: string, lastName?: string) {
+//   if(lastName) {
+//     return firstName + " " +lastName;
+//   } else {
+//     return firstName;
+//   }
+// }
+var arr = ['a', 'b', 'c', '1', 0, 'c', 1, '', 1, 0];
+// function unique(arr){
+//   let isUnique = [];
+//   arr.map(val => {
+//     if (isUnique.indexOf(val) === -1) {
+//       isUnique.push(val);
+//     }
+//   })
+//   return isUnique;
+// }; 
+// console.log(unique(arr));
+// console.log('====================================');
+// console.log(Array.prototype);
+// console.log('====================================');
+// var indexOf = [].indexOf ?
+//   function(arr, item) {
+//     return arr.indexOf(item)
+//   } :  
+//   function (arr: any, item: any): any {
+//     for (var i = 0; i < arr.length; i++) {
+//       if (arr[i] === item) {
+//         return i;
+//       } else {
+//         return -1;
+//       }
+//     };
+//   };
+// function unique(arr: any): any {
+//   var isUnique = [];
+//   arr.map(val => {
+//     if (indexOf(isUnique, val) === -1) {
+//       isUnique.push(val);
+//     }
+//   });
+//   return isUnique;
+// }
+// function unique(a) {
+//   var res = a.filter(function(item, index, array) {
+//     console.log('====================================');
+//     console.log(array);
+//     console.log('====================================');
+//     return array.indexOf(item) === index;
+//   });
+//   return res;
+// }
+
+
+
+// function unique(arr) {
+//   var res = [];
+
+//   for (var i = 0; i < arr.length; i++) {
+//     for (var j = i + 1; j < arr.length; j++) {
+//       // 如果发现相同元素 则i自身进入下一个循环比较
+//       if (arr[i] === arr[j]) {
+//         j = ++i;
+//       }
+//     }
+//     res.push(arr[i]);
+//   }
+//   return res;
+// }
+// var unique = arr => [...new Set(arr)]
+
+// function unique(a) {
+//   return
+// }
+// var a = ['a', 'b', 'c', '1', 0, 'c', 1, '', 1, 0];
+// console.log(unique(a))
+
