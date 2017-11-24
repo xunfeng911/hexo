@@ -3,7 +3,7 @@ title: TypeScript的学习
 date: 2017-03-23 22:27:15
 tags:
 ---
-学习TypeScript，向一个后端迈进！
+学习TypeScript...
 
 <!--more-->
 

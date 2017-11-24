@@ -30,7 +30,7 @@ tags:
 
 
 ```
-pm install -g hexo
+npm install -g hexo
 ```
 
 - hexo必备插件，建议一起安装

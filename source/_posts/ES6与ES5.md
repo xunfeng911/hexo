@@ -15,12 +15,12 @@ tags:
 ##### 箭头函数
 - 与函数表达式相比，箭头函数有更短的语法。
 
-```
+```js
 	function (i) { return i * 2} //ES5
 	(i) => i * 2	//ES6
 ```
 复杂时需要`{}`包裹
-```
+```js
 	function (i, j) {
 		i++
 		j++
@@ -37,7 +37,7 @@ tags:
  - let 提供块级作用域,let命名的变量只在当前块内起作用
  - const 声明的是常量，不可更改
 
-```
+```js
   var a = 1
   var b = 2
   var c = 3
@@ -54,7 +54,7 @@ tags:
   console.log('c:' + c)
 ```
 var声明的变量在循环时新值会覆盖旧值，导致输出的变量都为最终值
-```
+```js
 var a = []
 for (var i = 0; i < 9; i++) {
   a[i] = function () {
@@ -64,7 +64,7 @@ for (var i = 0; i < 9; i++) {
 a[2](); // 9
 ```
 ES5中利用闭包解决这一问题
-```
+```js
 function test (index) {
 		var testback = function () {
 			console.log(index)
@@ -78,7 +78,7 @@ for (var i = 0; i < 9; i++) {
 a[2]()
 ```
 ES6中仅仅使用let即可解决
-```
+```js
 var a = []
 for (let i = 0; i < 9; i++) {
   a[i] = function () {
@@ -88,7 +88,7 @@ for (let i = 0; i < 9; i++) {
 a[2](); // 2
 ```
 const声明常量
-```
+```js
 const a = 1
 a = 10
 console.log(a)
@@ -99,7 +99,7 @@ console.log(a)
 - 模版字符串可直接用'``'标识起始
 - 模板字符串可以包含嵌入式表达式,对象字面量,甚至是函数
 
-```
+```js
 var myName = 'xunfeng'
 console.log(`your name is ${myName}`) // your name is xunfeng
 
@@ -117,14 +117,14 @@ console.log(`可以嵌套函数：${fn()}`)
 ```
 - 模板字符串可以在表达式内进行数学运算
 
-```
+```js
 var a = 10
 var b = 20
 console.log(`a+b=${a+b}`) //a+b=30
 ```
 - 模板字符串内保留空格，不需要换行符即可换行
 
-```
+```js
 console.log(`第一行
 第二行`)
 // 第一行
@@ -134,7 +134,7 @@ console.log(`第一行
 #####  数值扩展 Numeric Literals
 - 支持二进制(0b)和八进制(0o)新写法
 
-```
+```js
 0b111110111 === 503 // true
 0o767 === 503 // true
 
@@ -144,7 +144,7 @@ Number('0o10')  // 8
 ```
 - 新的方法
 
-```
+```js
 Number.isFinite() // 检查一个数值是否为有限
 Number.isNaN()  // 检查一个数值是否为NaN
 Number.isInteger()  // 检查一个数值是否为整数
@@ -152,7 +152,7 @@ Number.EPSILON  // 极小的常量，设定的误差范围
 ```
 - Math对象的扩展
 
-```
+```js
 Math.trunc()  // 去除一个数的小数部分，返回整数部分
 Math.sign() // 判断一个数到底是正数、负数、还是零
 Math.cbrt() // 用于计算一个数的立方根
@@ -170,14 +170,14 @@ Math.atanh(x) // 返回x的反双曲正切（inverse hyperbolic tangent）
 ```
 - 指数运算符 **
 
-```
+```js
 console.log(2 ** 3) // 8
 ```
 
 ##### 对象部分扩展
 - 变量和函数可直接作为对象的属性和方法
 
-```
+```js
 <!-- ES6 -->
 var object = {
   value: 42,
@@ -199,7 +199,7 @@ console.log(object.toString() === 42) // true
 ```
 - 计算属性名可以用变量当做对象的属性名
 
-```
+```js
 var computed = 'calc'
 var comFn = {
   [computed + 'xun']: 'hi',
@@ -212,7 +212,7 @@ console.log(comFn['calcfeng']) // hello
 ##### 解构
 - 允许从数组或对象中提取数据并对变量赋值
 
-```
+```js
 var a = 1
 var b = 2
 var c = {a, b}
@@ -226,7 +226,7 @@ console.log(a, b) // 1 2
 ##### 默认参数 default
 - ES6可以指定默认参数在arguments中
 
-```
+```js
 function myFn(mes = 'hello') {
   console.log(mes)
 }
@@ -237,7 +237,7 @@ myFn('hi'); // hi
 ##### 其他参数 rest
 - 允许将部分参数作为一个单独的数组
 
-```
+```js
 function myFn(a, ...b) {
   var result = a
    for(let i = 0; i<b.length; i++) {
@@ -251,7 +251,7 @@ console.log(myFn(1,2,3,4)) // 10
 ##### 迭代器 iterators && for of
 - 可以直接遍历容器的内容
 
-```
+```js
 var a=['x', 'y', 'z']
 for (let i of a){
   console.log(i)  // x y z
@@ -270,7 +270,7 @@ class之间可以通过extends相互继承，相比于原形链更简洁易懂
 - static 静态方法
 不会被实例对象继承，只能通过类或类继承来调用
 
-```
+```js
 class student {
   constructor(name, age) {
     this.name = name
@@ -312,7 +312,7 @@ console.log(tom.myAge) // 20
 - export 暴露对外接口
 - import 导入其他模块接口
 
-```
+```js
 <!-- export.js -->
 //命名导出
 export var foo = ...

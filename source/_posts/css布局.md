@@ -66,7 +66,7 @@ Content(内容) - 盒子的内容，显示文本和图像。
 - main div设置100%宽度
 
 
-```
+```html
 <div class="container">
 	<div class="main"></div>
 	<div class="left"></div>
@@ -74,7 +74,7 @@ Content(内容) - 盒子的内容，显示文本和图像。
 </div>
 ```
 
-```
+```css
 body {
 	padding: 0;
 	margin: 0;
@@ -116,7 +116,7 @@ body {
 - 为了不让main内容被遮挡，给其设置padding
 - 用负边距给左右两列定位，消除占位
 
-```
+```html
 <div class="main-con">
 	<div class="main"></div>
 </div>
@@ -124,7 +124,7 @@ body {
 <div class="right"></div>
 ```
 
-```
+```css
 .main-con {
 	float: left;
 	width: 100%;

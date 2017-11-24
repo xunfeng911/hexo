@@ -15,19 +15,19 @@ tags:
 
 #### scene
 场景是所有物体的容器
-```
+```js
 var scene = new THREE.Scene();
 ```
 
 #### camera
 相机决定了场景中那个角度的景色会显示出来,角度不同看到的景色也不同
-```
+```js
 var camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);// 透视相机
 ```
 
 #### renderer
 渲染器决定了渲染的结果应该画在页面的什么元素上面，并且以怎样的方式来绘制
-```
+```js
 var renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
@@ -36,7 +36,7 @@ document.body.appendChild(renderer.domElement);
 
 - 添加物体到场景中
 
-```
+```js
 var geometry = new THREE.CubeGeometry(1,1,1);
 var material = new THREE.MeshBasicMaterial({color: 0x00ff00});
 var cube = new THREE.Mesh(geometry, material);
@@ -45,7 +45,7 @@ scene.add(cube);
 
 - 渲染
 
-```
+```js
 renderer.render(scene, camera);
 ```
 
@@ -53,14 +53,14 @@ renderer.render(scene, camera);
 
 #### 定义几何体
 
-```
+```js
 var geometry = new THREE.Geometry();
 ```
 几何体中的变量`vertices`可以存放点
 
 ##### 定义线条的材质
 
-```
+```js
 THREE.LineBasicMaterial(parameters)
 parameters: {
   Color: '线条的颜色，用16进制来表示，默认的颜色是白色',
@@ -71,20 +71,21 @@ parameters: {
   Fog: '定义材质的颜色是否受全局雾效的影响'
 }
 ```
-```
+
+```js
 var material = new THREE.LineBasicMaterial( { vertexColors: true } )
 ```
 
 #### 定义顶点颜色
 
-```
+```js
 var color1 = new THREE.Color( 0x444444 );
 var color2 = new THREE.Color( 0xFF0000 );
 ```
 
 #### 定义顶点位置,存放到几何体geometry中
 
-```
+```js
 var p1 = new THREE.Vector3( -100, 0, 100 );
 var p2 = new THREE.Vector3( 100, 0, -100 );
 geometry.vertices.push(p1);
@@ -93,13 +94,13 @@ geometry.vertices.push(p2);
 
 #### 给顶点设置颜色
 
-```
+```js
 geometry.colors.push( color1, color2 );
 ```
 
 #### 定义一条线
 
-```
+```js
 var line = new THREE.Line( geometry, material, THREE.LinePieces );
 scene.add(line);
 ```
