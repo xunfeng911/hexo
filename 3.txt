@@ -1,0 +1,390 @@
+:DATA, SS:STACK
+
+REG_SAVE        MACRO
+                        PUSH AX
+                        PUSH BX
+                        PUSH CX
+                        PUSH DX
+                        PUSH SI 
+                        PUSH DI
+                        PUSH BP
+ENDM
+
+REG_REC         MACRO
+                        POP BP
+                        POP DI
+                        POP SI
+                        POP DX
+                        POP CX
+                        POP BX
+                        POP AX
+ENDM
+
+PRINT           MACRO       ADDR
+                        PUSH AX
+                        PUSH DX
+                        LEA DX, ADDR
+                        MOV AH, 09H
+                        INT 21H
+                        POP DX
+                        POP AX
+ENDM
+
+DATA SEGMENT 
+            CRLF            DB      0AH, 0DH, '$'
+            NUMBER_INFO     DB      'PLEASE ENTER SCORES, USE SPEACE SPLIT(EG:1 2 3): $'
+            SPEACE          DB      20H, '$'
+            CHAR            DB      ?
+
+            ; 结果提示符
+            MIN_SCORE_INFO    DB          'MIN_SCORE: $'
+            MAX_SCORE_INFO    DB          'MAX_SCORE: $'
+            AVERAGE_INFO      DB          'AVERAGE: $'
+            COUNT_A_INFO      DB          '90 - 100: $'
+            COUNT_B_INFO      DB          '80 - 89: $'
+            COUNT_C_INFO      DB          '70 - 79: $'
+            COUNT_D_INFO      DB          '60 - 69: $'
+            COUNT_E_INFO      DB          '< 60: $'
+            COUNT_INVALID_INFO DB         'INVALID SCORE: $'
+DATA ENDS
+
+STACK SEGMENT STACK
+                        DB          256       DUP(0)
+SP_POINTER      LABEL   WORD
+STACK ENDS
+
+; 结果表
+RESULT SEGMENT
+            ; 最低成绩
+            MIN_SCORE         DB          0
+            ; 最高成绩
+            MAX_SCORE         DB          0
+            ; 平均成绩
+            AVERAGE           DB          0
+            ; 90-100
+            COUNT_A           DB          0
+            ; 80-89
+            COUNT_B           DB          0
+            ; 70-70
+            COUNT_C           DB          0
+            ; 60-69
+            COUNT_D           DB          0
+            ; < 60
+            COUNT_E           DB          0
+            ; 无效的成绩
+            COUNT_INVALID     DB          0
+            SUM_SCORE         DW          0
+            COUNT_NUM         DB          0
+RESULT ENDS
+
+
+CODE SEGMENT
+
+START:
+                        MOV AX, STACK
+                        MOV SS, AX
+                        LEA SP, SP_POINTER
+                        CALL INIT_REG
+                        CALL FUNCTION
+                        CALL EXIT
+                INIT_REG:
+                        MOV AX, DATA
+                        MOV DS, AX
+                        MOV AX, RESULT
+                        MOV ES, AX
+                        RET
+
+; 过程调度
+FUNCTION PROC NEAR
+                        REG_SAVE
+                        CALL CLEAR
+                BEGIN_FUN:
+                        PRINT NUMBER_INFO
+                        CALL MAIN_PROCESS
+                        CALL PRINT_RESULT
+                FUNCTION_FINSH:
+                        REG_REC
+                        RET
+FUNCTION ENDP
+
+; 打印结果
+PRINT_RESULT PROC NEAR
+                        REG_SAVE
+                  BEGIN_PRINT:
+                        XOR BH, BH
+                        ; 计算平均值
+                        MOV AX, ES:[SUM_SCORE]
+                        DIV BYTE PTR ES:[COUNT_NUM]
+                        MOV ES:[AVERAGE], AL
+
+                        ; 打印平均值
+                        PRINT AVERAGE_INFO
+                        PRINT SPEACE
+                        MOV BL, ES:[AVERAGE]
+                        CALL BX_BIN_TO_DEC_PRINT
+
+                        ; 最高分数
+                        PRINT CRLF
+                        PRINT MAX_SCORE_INFO
+                        PRINT SPEACE
+                        MOV BL, ES:[MAX_SCORE]
+                        CALL BX_BIN_TO_DEC_PRINT
+
+                        ; 最低分数
+                        PRINT CRLF
+                        PRINT MIN_SCORE_INFO
+                        PRINT SPEACE
+                        MOV BL, ES:[MIN_SCORE]
+                        CALL BX_BIN_TO_DEC_PRINT
+
+                        ; 无效的成绩输入
+                        PRINT CRLF
+                        PRINT COUNT_INVALID_INFO
+                        PRINT SPEACE
+                        MOV BL, ES:[COUNT_INVALID]
+                        CALL BX_BIN_TO_DEC_PRINT
+
+                        ; 90-100
+                        PRINT CRLF
+                        PRINT COUNT_A_INFO
+                        PRINT SPEACE
+                        MOV BL, ES:[COUNT_A]
+                        CALL BX_BIN_TO_DEC_PRINT
+
+                        ; 80-89
+                        PRINT CRLF
+                        PRINT COUNT_B_INFO
+                        PRINT SPEACE
+                        MOV BL, ES:[COUNT_B]
+                        CALL BX_BIN_TO_DEC_PRINT
+
+                        ; 70-79
+                        PRINT CRLF
+                        PRINT COUNT_C_INFO
+                        PRINT SPEACE
+                        MOV BL, ES:[COUNT_C]
+                        CALL BX_BIN_TO_DEC_PRINT
+
+                        ; 60-69
+                        PRINT CRLF
+                        PRINT COUNT_D_INFO
+                        PRINT SPEACE
+                        MOV BL, ES:[COUNT_D]
+                        CALL BX_BIN_TO_DEC_PRINT
+
+                        ; < 60
+                        PRINT CRLF
+                        PRINT COUNT_E_INFO
+                        PRINT SPEACE
+                        MOV BL, ES:[COUNT_E]
+                        CALL BX_BIN_TO_DEC_PRINT
+                  PRINT_FINSH:
+                        REG_REC
+                        RET
+
+PRINT_RESULT ENDP
+
+; 主程序
+MAIN_PROCESS PROC NEAR
+                        REG_SAVE
+                        MOV BYTE PTR DS:[CHAR], 0
+            MAIN_BEGIN:
+                        ; 判读是不是空格，如果是空格进行下一次读取
+                        CALL READ_NUMBER
+                        ; 判断BX寄存器的内容
+                        CMP BX, 0FFFFH
+                        JZ HANDLE_INVALID
+                        JMP HANDLE_VALID
+            HANDLE_INVALID:
+                        ; 判断是不是回车
+                        CMP BYTE PTR DS:[CHAR], 0DH
+                        JZ MAIN_END
+                        JMP MAIN_BEGIN
+            HANDLE_VALID:
+                        ; 统计分数
+                        CALL COUNT_SCORE
+                        ; 判断读取有没有结束
+                        CMP BYTE PTR DS:[CHAR], 0DH
+                        JNZ MAIN_BEGIN
+            MAIN_END:
+                        REG_REC
+                        RET
+MAIN_PROCESS ENDP
+
+; 统计分数
+COUNT_SCORE PROC NEAR
+                        REG_SAVE
+                        CMP BX, 100
+                        JG INVALID_SCORE_COUNT
+                        JMP COUNT_LP
+                  INVALID_SCORE_COUNT:
+                        INC BYTE PTR ES:[COUNT_INVALID]
+                        JMP COUNT_FINSH
+                  COUNT_LP:
+                        ; 人数加1
+                        INC BYTE PTR ES:[COUNT_NUM]
+                        ADD ES:[SUM_SCORE], BX
+                        CMP DS:[MAX_SCORE], BL
+                        JB SWAP_MAX_SCORE
+                        CMP DS:[MIN_SCORE], BL
+                        JG SWAP_MIN_SCORE
+                        JMP COUNT_LP2
+                  SWAP_MAX_SCORE:
+                        MOV ES:[MAX_SCORE], BL
+                  SWAP_MIN_SCORE:
+                        MOV ES:[MIN_SCORE], BL
+                  COUNT_LP2:
+                        CMP BX, 90
+                        JB LESS_THAN_A
+                        ; 90-100
+                        INC BYTE PTR ES:[COUNT_A]
+                        JMP COUNT_FINSH
+                  LESS_THAN_A:
+                        CMP BX, 80
+                        JB LESS_THAN_B
+                        ; 80-89
+                        INC BYTE PTR ES:[COUNT_B]
+                        JMP COUNT_FINSH
+                  LESS_THAN_B:
+                        CMP BX, 70
+                        JB LESS_THAN_C
+                        ; 70-79
+                        INC BYTE PTR ES:[COUNT_C]
+                        JMP COUNT_FINSH
+                  LESS_THAN_C:
+                        CMP BX, 60
+                        JB LESS_THAN_D
+                        ; 60-69
+                        INC BYTE PTR ES:[COUNT_D]
+                        JMP COUNT_FINSH
+                  LESS_THAN_D:
+                        INC BYTE PTR ES:[COUNT_E]
+                  COUNT_FINSH:
+                        REG_REC
+                        RET
+COUNT_SCORE ENDP
+
+; 读取一个数字，特殊字符结束，到BX寄存器
+READ_NUMBER PROC NEAR
+                        PUSH AX
+                        PUSH CX
+                        PUSH DX
+                        XOR BX, BX
+                        ; 设置此次读取的标志位
+                        MOV DX, 0
+            NEWCHAR:
+                        MOV AH, 01H
+                        INT 21H
+                        XOR AH, AH
+                        CMP AL, '0'
+                        JL READ_FINSH
+                        CMP AL, '9'
+                        JG READ_FINSH
+                        SUB AL, 30H
+                        XCHG AX, BX
+                        MOV CX, 10
+                        PUSH DX
+                        MUL CX
+                        XCHG AX, BX
+                        ADD BX, AX
+                        POP DX
+                        JMP NEWCHAR
+            READ_FINSH:
+                        ; MOV DS:[CHAR], AL
+                        ; 判断是否是空格
+                        CMP AL, 20H
+                        JZ NEXT
+                        ; 判断是否是回车
+                        CMP AL, 0DH
+                        JZ NEXT
+                        ; 无效的数字
+                        MOV DX, 1
+                        XOR BX, BX
+                        JMP NEWCHAR
+            NEXT:
+                        MOV DS:[CHAR], AL
+                        ; 判断标志位
+                        CMP DX, 1
+                        JZ INVALID_NUMBER
+                        JMP READ_END
+            INVALID_NUMBER:
+                        ; 统计输入的非法的成绩
+                        INC ES:[COUNT_INVALID]
+                        MOV BX, 0FFFFH
+            READ_END:
+                        POP DX
+                        POP CX
+                        POP AX
+                        RET
+READ_NUMBER ENDP
+
+; 二进制转换成十进制输出
+BX_BIN_TO_DEC_PRINT PROC NEAR
+                        REG_SAVE
+                        MOV AX, BX
+
+                        CMP AX, 0
+                        JZ CONVERT_ZERO
+
+                        MOV BX, 10
+                        MOV DI, 1
+            CONVERT_LP:
+                        CMP AX, 0
+                        JZ CONVERT_PRINT
+                        INC DI
+                        XOR DX, DX
+                        DIV BX 
+                        ;DL ==>
+                        CALL DL_CONVERT_ASCII
+                        PUSH DX
+                        JMP CONVERT_LP
+            CONVERT_PRINT:
+                        DEC DI
+                        CMP DI, 0
+                        JZ CONVERT_PRINT_FINSH
+                        POP DX
+                        MOV AH, 02H
+                        INT 21H
+                        JMP CONVERT_PRINT
+            CONVERT_ZERO:
+                        MOV DX, AX
+                        CALL DL_CONVERT_ASCII
+                        MOV AH, 02H
+                        INT 21H
+            CONVERT_PRINT_FINSH:
+                        REG_REC
+                        RET
+BX_BIN_TO_DEC_PRINT ENDP
+
+; ASCII编码DL寄存器的内容
+DL_CONVERT_ASCII PROC NEAR
+                        CMP DL, 10
+                        JL LESS_THAN_TEN
+                        ADD DL, 37H
+                        JMP CONVERT_FINSH
+            LESS_THAN_TEN:
+                        ADD DL, 30H
+            CONVERT_FINSH:
+                        RET
+DL_CONVERT_ASCII ENDP
+
+; 清屏
+CLEAR       PROC NEAR
+
+                        REG_SAVE
+                        MOV AX, 0003H
+                        INT 10H
+                        REG_REC
+                        RET
+
+CLEAR  ENDP
+
+; 退出程序
+EXIT PROC NEAR
+                        MOV AH, 4CH
+                        INT 21H
+                        RET
+EXIT ENDP
+
+CODE ENDS
+END START

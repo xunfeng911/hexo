@@ -39,11 +39,11 @@ tags:
 
  - express
   安装
-  ```
+  ``` sh
  npm install express -g
 ```
 server.js引用模块
-```
+``` js
 var express = require('express'),
 app = express(),
 server = require('http').createServer(app);  //创建服务
@@ -53,17 +53,17 @@ app.use('/', express.static(__dirname + '/www')); //调用静态文件
 - socket.IO
   可以接受所有与服务器相连接的客户端发送的消息，也可向客户端主动发送消息。
   安装
-```
+``` sh
  npm install socket.io
 ```
 引用
-```
+``` js
 var io = require('socket.io').listen(server);
 server.listen(process.env.PORT || 3000);  //监听端口
 ```
 
 - connect
-```
+```js
 io.sockets.on('connection', function(socket) {   //建立连接
     //新用户
     socket.on('login', function(usrName,user) {
@@ -108,7 +108,8 @@ io.sockets.on('connection', function(socket) {   //建立连接
 });
 ```
 - 客户端js,html,css
-```
+
+```js
 window.onload = function() {
     var webchat = new WebChat();
     webchat.init();
@@ -312,7 +313,8 @@ WebChat.prototype = {
     }
 };
 ```
-```
+
+```html
 <!doctype html>
 <html>
     <head>
@@ -364,7 +366,7 @@ WebChat.prototype = {
 </html>
 ```
 
-```
+```html
 <!doctype html>
 <html>
     <head>

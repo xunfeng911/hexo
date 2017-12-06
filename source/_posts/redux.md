@@ -235,7 +235,7 @@ rednerApp(store.getState()); // 渲染新数据
 
 ``` js
 const createStore = (reducer) => {
- let state = null
+  let state = null
   const listeners = []
   const subscribe = (listener) => listeners.push(listener)
   const getState = () => state
@@ -283,6 +283,13 @@ renderApp(store.getState())
 // 后面可以随意 dispatch 了，页面自动更新
 store.dispatch(...)
 ```
+
+
+### redux-saga
+- 集中处理 redux 副作用问题 (异步流)
+- 被实现为 generator 
+- watch/worker（监听->执行）的工作形式
+
 <style>
 .title {
   color: RGBA(92, 201, 245, 1.00);
