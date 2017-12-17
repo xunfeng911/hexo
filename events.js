@@ -418,10 +418,16 @@ function unwrapListeners(arr) {
   return ret;
 }
 
-// let event = new EventEmitter();
-// console.log(event)
-// const myEE = new EventEmitter();
-// myEE.prependOnceListener('foo', () => console.log('b'));
-// event.once('foo', () => console.log('a'));
-// event.emit('foo');
-// myEE.emit('foo');
+function t(a) {
+  console.log('once');
+  console.log(a);
+}
+function b(a) {
+  console.log('on');
+  console.log(a);
+}
+const test = new EventEmitter();
+test.on('test', b);
+test.once('test', t);
+test.emit('test', 'b');
+console.log(test);
