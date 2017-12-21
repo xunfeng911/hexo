@@ -1,99 +1,371 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
     
-    <title>基于websocket实现服务器浏览器持续通信 | 黑天很黑</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
     
     
-      <link rel="icon" href="/favicon.svg">
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="javascript,node," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="为了网络程序设计大作业，了解了http,websocket,node及其框架…">
+<meta name="keywords" content="javascript,node">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于websocket实现服务器浏览器持续通信">
+<meta property="og:url" content="http://test.xuncs.cn/2016/12/10/基于websocket实现服务器浏览器持续通信/index.html">
+<meta property="og:site_name" content="黑天很黑">
+<meta property="og:description" content="为了网络程序设计大作业，了解了http,websocket,node及其框架…">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3767061-36776499e489d972.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3767061-25b34aab5fc17bce.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3767061-ff829f1fafae57a3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3767061-b512a13ed3c4cd9b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/3767061-92194c7aa3f952d9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2017-12-03T13:30:23.841Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="基于websocket实现服务器浏览器持续通信">
+<meta name="twitter:description" content="为了网络程序设计大作业，了解了http,websocket,node及其框架…">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/3767061-36776499e489d972.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"right","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://test.xuncs.cn/2016/12/10/基于websocket实现服务器浏览器持续通信/"/>
+
+
+
+
+
+  <title> 基于websocket实现服务器浏览器持续通信 | 黑天很黑 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?525290a94250faeb92d3e6dea0ccb957";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
     
+  
 
-    <link rel="stylesheet" href="/css/style.css">
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
 
-    <link rel="stylesheet" href="/js/google-code-prettify/tomorrow-night-eighties.min.css">
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
 
-    <script>
-      var _hmt = _hmt || [];
-      (function() {
-        var hm = document.createElement("script");
-        hm.src = "https://hm.baidu.com/hm.js?080c8e3f6dbc0839234f1fd1a7e9c16a";
-        var s = document.getElementsByTagName("script")[0]; 
-        s.parentNode.insertBefore(hm, s);
-      })();
-	  </script>
-  </head>
-
-  <body>
-
-<header>
-	<a id="logo" href="/" title="黑天很黑">
-	<img src="/favicon.svg" alt="黑天很黑"></a>
-	
-	
-		<!--搜索栏-->
-		<i class="js-toggle-search iconfont icon-search"></i>
-
-
-<form class="js-search search-form search-form--modal" method="get" action="http://gushi.li" role="search">
-	<div class="search-form__inner">
-		<div>
-			<i class="iconfont icon-search"></i>
-			<input class="text-input" placeholder="Enter Key..." type="search">
-		</div>
-	</div>
-</form>
-	
-
-	
-		<!--侧边导航栏-->
-		<a id="nav-toggle" href="#"><span></span></a>
-
-<nav>
-	<div class="menu-top-container">
-		<ul id="menu-top" class="menu">
-			
-				
-				<li class="current-menu-item">
-					<a href="http://weibo.com/XunFengsama" target="_blank">Weibo</a>
-				</li>
-			
-				
-				<li class="current-menu-item">
-					<a href="https://github.com/xunfeng911" target="_blank">github</a>
-				</li>
-			
-		</ul>
-	</div>
-</nav>
-	
-
-</header>
-<div class="m-header ">
-	<section id="hero1" class="hero">
-		<div class="inner">
-		</div>
-	</section>
-	
-		<figure class="top-image" data-enable=true></figure>
-	
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">黑天很黑</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
 </div>
 
-<!--文章列表-->
-<div class="wrapper">
-  
-    <!--文章-->
-<article>
-	
-  
-    <h1 class="post-title" itemprop="name">
-      基于websocket实现服务器浏览器持续通信
-    </h1>
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
   
 
-	<div class='post-body mb'>
-		<p>为了网络程序设计大作业，了解了http,websocket,node及其框架…<br><a id="more"></a></p>
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/about.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://test.xuncs.cn/2016/12/10/基于websocket实现服务器浏览器持续通信/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="陈硕">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/avatar.jpg">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="黑天很黑">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="黑天很黑" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                基于websocket实现服务器浏览器持续通信
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-12-10T21:14:18+08:00">
+                2016-12-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <a href="/2016/12/10/基于websocket实现服务器浏览器持续通信/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/12/10/基于websocket实现服务器浏览器持续通信/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2016/12/10/基于websocket实现服务器浏览器持续通信/" class="leancloud_visitors" data-flag-title="基于websocket实现服务器浏览器持续通信">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>为了网络程序设计大作业，了解了http,websocket,node及其框架…<br><a id="more"></a></p>
 <h3 id="http协议"><a href="#http协议" class="headerlink" title="http协议"></a>http协议</h3><ul>
 <li>HTTP是超文本传输协议，是客户端浏览器或其他程序与Web服务器之间的应用层通信协议<ul>
 <li>HTTP使用TCP/IP建立连接<br><img src="http://upload-images.jianshu.io/upload_images/3767061-36776499e489d972.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></li>
@@ -118,469 +390,502 @@
 </li>
 </ul>
 <h3 id="基于express和socket-io构建聊天室"><a href="#基于express和socket-io构建聊天室" class="headerlink" title="基于express和socket.io构建聊天室"></a>基于express和socket.io构建聊天室</h3><ul>
-<li>express<br>安装<pre><code>npm install express -g
-</code></pre>server.js引用模块<pre><code>var express = require(&#39;express&#39;),
-app = express(),
-server = require(&#39;http&#39;).createServer(app);  //创建服务
-app.use(&#39;/&#39;, express.static(__dirname + &#39;/www&#39;)); //调用静态文件
-</code></pre></li>
+<li>express<br>安装<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install express -g</div></pre></td></tr></table></figure>
+</li>
 </ul>
+<p>server.js引用模块<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>),</div><div class="line">app = express(),</div><div class="line">server = <span class="built_in">require</span>(<span class="string">'http'</span>).createServer(app);  <span class="comment">//创建服务</span></div><div class="line">app.use(<span class="string">'/'</span>, express.static(__dirname + <span class="string">'/www'</span>)); <span class="comment">//调用静态文件</span></div></pre></td></tr></table></figure></p>
 <ul>
-<li><p>socket.IO<br>可以接受所有与服务器相连接的客户端发送的消息，也可向客户端主动发送消息。<br>安装</p>
-<pre><code>npm install socket.io
-</code></pre><p>引用</p>
-<pre><code>var io = require(&#39;socket.io&#39;).listen(server);
-server.listen(process.env.PORT || 3000);  //监听端口
-</code></pre></li>
-<li><p>connect</p>
-<pre><code>io.sockets.on(&#39;connection&#39;, function(socket) {   //建立连接
-  //新用户
-  socket.on(&#39;login&#39;, function(usrName,user) {
-      if (users.indexOf(usrName) &gt; -1) {
-          socket.emit(&#39;usrExisted&#39;);
-      } else {
-          socket.userIndex = users.length;
-          socket.usrName = usrName;
-          socket.users = users;
-          users.push(usrName);
-          date = new Date().toTimeString().substr(0, 8);
-          console.log(date+&quot;/&quot;+usrName+&#39;加入了聊天&#39;);
-          socket.emit(&#39;loginSuccess&#39;);
-          io.sockets.emit(&#39;system&#39;, usrName, users.length, &#39;login&#39;);
-          io.sockets.emit(&#39;cuList&#39;, users);
-      };
-  });
-  //用户离开
-  socket.on(&#39;disconnect&#39;, function(user) {
-      if (socket.usrName != null) {
-          socket.users = users;
-          users.splice(socket.userIndex, 1);
-          date = new Date().toTimeString().substr(0, 8);
-          console.log(date+&quot;/&quot;+socket.usrName+&#39;滚蛋了&#39;);
-          socket.broadcast.emit(&#39;system&#39;, socket.usrName, users.length, &#39;logout&#39;);
-          io.sockets.emit(&#39;cuList&#39;, users);
-      }
-  });
-  //用户列表
-  //新消息
-  socket.on(&#39;postMsg&#39;, function(msg, color) {
-      date = new Date().toTimeString().substr(0, 8);
-      console.log(date+&quot;/&quot;+socket.usrName+&#39;：&#39;+msg);
-      socket.broadcast.emit(&#39;newMsg&#39;, socket.usrName, msg, color);
-  });
-  //新图片
-  socket.on(&#39;img&#39;, function(imgData, color) {
-      date = new Date().toTimeString().substr(0, 8);
-      console.log(date+&quot;/&quot;+socket.usrName+&#39;：&#39;+imgData);
-      socket.broadcast.emit(&#39;newImg&#39;, socket.usrName, imgData, color);
-  });
-});
-</code></pre></li>
-<li><p>客户端js,html,css</p>
-<pre><code>window.onload = function() {
-  var webchat = new WebChat();
-  webchat.init();
-};
-var WebChat = function() {
-  this.socket = null;
-};
-WebChat.prototype = {
-  init: function() {
-      var that = this;
-      this.socket = io.connect();
-      //建立连接
-      this.socket.on(&#39;connect&#39;, function() {
-          $(&#39;#info&#39;).text(&#39;大爷儿，进来玩玩&#39;);
-          $(&#39;#inModal&#39;).css(&#39;display&#39;,&#39;block&#39;);
-          $(&#39;#usrName&#39;).focus();
-      });
-      //昵称占用
-      this.socket.on(&#39;usrExisted&#39;, function() {
-          $(&#39;#info&#39;).text(&#39;昵称已被使用，请换一个试试！&#39;);
-      });
-      //登陆成功
-      this.socket.on(&#39;loginSuccess&#39;, function() {
-          document.title =&#39;webchat | &#39; + $(&#39;#usrName&#39;).val();
-          $(&#39;#loginArea&#39;).css(&#39;display&#39;,&#39;none&#39;);
-          $(&#39;#messageInput&#39;).focus();
-      });
-      //用户列表
-      this.socket.on(&#39;cuList&#39;,function(users){
-          var cuList = $(&#39;#right&#39;);
-          var addStr = &quot;&quot;;
-          console.log(users);
-          users.forEach(function(user){
-              addStr += user + &#39;&lt;br/&gt;&#39;;
-          });
-          cuList.html(&#39;用户列表&lt;br/&gt;&#39;+addStr);
-      })
-      //连接失败
-      this.socket.on(&#39;error&#39;, function(err) {
-          if ($(&#39;#loginArea&#39;).style.display == &#39;none&#39;) {
-              $(&#39;#onlineCount&#39;).text(&#39;连接失败！&#39;);
-          } else {
-              $(&#39;#info&#39;).text(&#39;连接失败！&#39;);
-          }
-      });
-      //系统通知用户加入或离开
-      this.socket.on(&#39;system&#39;, function(usrName, userCount, type) {
-          var msg = usrName + (type == &#39;login&#39; ? &#39;来了&#39; : &#39;滚了&#39;);
-          that._displayNewMsg(&#39;system &#39;, msg, &#39;red&#39;);
-          $(&#39;#onlineCount&#39;).text(userCount + (userCount &gt; 1 ? &#39; users&#39; : &#39; user&#39;) + &#39; online&#39;);
-      });
-      //发送消息
-      this.socket.on(&#39;newMsg&#39;, function(user, msg, color) {
-          that._displayNewMsg(user, msg, color);
-      });
-      //发送图片
-      this.socket.on(&#39;newImg&#39;, function(user, img, color) {
-          that._displayImage(user, img, color);
-      });
-
-      //底层监听事件
-
-      //登陆按钮
-      $(&#39;#loginBtn&#39;).on(&#39;click tap&#39;, function() {
-          var usrName = $(&#39;#usrName&#39;).val();
-          if ($.trim(usrName).length != 0) {
-              that.socket.emit(&#39;login&#39;, usrName);
-              that.socket.emit(&#39;cuList&#39;, users);
-          } else {
-              $(&#39;#usrName&#39;).focus();
-          };
-      });
-      //登陆监听enter
-      $(&#39;#usrName&#39;).on(&#39;keyup&#39;, function(e) {
-          if (e.keyCode == 13) {
-              var usrName = $(&#39;#usrName&#39;).val();
-              if ($.trim(usrName).length != 0) {
-                  that.socket.emit(&#39;login&#39;, usrName);
-                  that.socket.emit(&#39;cuList&#39;, users);
-              };
-          };
-      });
-      //bind发送按钮
-      $(&#39;#sendBtn&#39;).on(&#39;click tap&#39;, function() {
-          var messageInput = $(&#39;#messageInput&#39;),
-              msg = messageInput.val(),
-              color = $(&#39;#colorStyle&#39;).val();
-          messageInput.val(&#39; &#39;);
-          messageInput.focus();
-          if ($.trim(msg).length != 0) {
-              that.socket.emit(&#39;postMsg&#39;, msg, color);
-              that._displayNewMsg(&#39;me&#39;, msg, color);
-              return;
-          };
-      });
-      //bind发送
-      $(&#39;#messageInput&#39;).on(&#39;keyup&#39;, function(e) {
-          var messageInput = $(&#39;#messageInput&#39;),
-              msg = messageInput.val(),
-              color = $(&#39;#colorStyle&#39;).val();
-          if (e.keyCode == 13 &amp;&amp; $.trim(msg).length != 0) {
-              messageInput.val(&#39; &#39;);
-              that.socket.emit(&#39;postMsg&#39;, msg, color);
-              that._displayNewMsg(&#39;me&#39;, msg, color);
-          };
-      });
-      //清空
-      $(&#39;#clearBtn&#39;).on(&#39;click tap&#39;, function() {
-          $(&#39;#winChat&#39;).html(&quot; &quot;);
-      });
-      //发送图片
-      $(&#39;#imgSend&#39;).on(&#39;change&#39;, function() {
-          if (this.files.length != 0) {
-              var file = this.files[0],
-                  reader = new FileReader(),
-                  color = $(&#39;#colorStyle&#39;).val();
-              if (!reader) {
-                  that._displayNewMsg(&#39;system&#39;, &#39;辣鸡浏览器不支持上传文件&#39;, &#39;red&#39;);
-                  this.val(&#39; &#39;);
-                  return;
-              };
-              //接收图片
-              reader.onload = function(e) {
-                  that.socket.emit(&#39;img&#39;, e.target.result, color);
-                  that._displayImage(&#39;me&#39;, e.target.result, color);
-              };
-              reader.readAsDataURL(file);
-          };
-      });
-      //图片包
-      this._initialLxh();
-      //按钮
-      $(&#39;#lxh&#39;).on(&#39;click tap&#39;, function(e) {
-          var lxhwrapper = $(&#39;#lxhWrapper&#39;);
-          lxhwrapper.css(&#39;display&#39;,&#39;block&#39;);
-          e.stopPropagation();
-      });
-      //二级图片栏
-      $(&#39;body&#39;).on(&#39;click&#39;, function(e) {
-          var lxhwrapper = $(&#39;#lxhWrapper&#39;);
-          if (e.target != lxhwrapper) {
-              lxhwrapper.css(&#39;display&#39;,&#39;none&#39;);
-          };
-      });
-      $(&#39;#lxhWrapper&#39;).on(&#39;click tap&#39;, function(e) {
-          var target = e.target;
-          if (target.nodeName.toLowerCase() == &#39;img&#39;) {
-              var messageInput = $(&#39;#messageInput&#39;);
-              messageInput.focus();
-              messageInput.val(messageInput.val() + &#39;[lxh:&#39; + target.title + &#39;]&#39;);
-          };
-      });
-  },
-      //发送图片
-  _initialLxh: function() {
-      var lxhContainer = $(&#39;#lxhWrapper&#39;),
-          docFragment = document.createDocumentFragment();
-      for (var i = 100; i &gt; 0; i--) {
-          var lxhItem = document.createElement(&#39;img&#39;);
-          lxhItem.src = &#39;../content/lxh/&#39; + i + &#39;.gif&#39;;
-          lxhItem.title = i;
-          docFragment.appendChild(lxhItem);
-      };
-      lxhContainer.append(docFragment);
-  },
-  _displayNewMsg: function(user, msg, color) {
-      var container = $(&#39;#winChat&#39;),
-          msgToDisplay = $(&#39;&lt;p&gt;&lt;/p&gt;&#39;),
-          date = new Date().toTimeString().substr(0, 8),
-          msg = this._showLxh(msg);
-      msgToDisplay.css(&#39;color&#39;,color || &#39;#000&#39;);
-      msgToDisplay.html(user + &#39;&lt;span class=&quot;timespan&quot;&gt;(&#39; + date + &#39;): &lt;/span&gt;&#39; + msg);
-      container.append(msgToDisplay);
-      container.scrollTop = container.scrollHeight;
-  },
-  _displayImage: function(user, imgData, color) {
-      var container = $(&#39;#winChat&#39;),
-          msgToDisplay = $(&#39;&lt;p&gt;&lt;/p&gt;&#39;),
-          date = new Date().toTimeString().substr(0, 8);
-      msgToDisplay.css(&#39;color&#39;,color || &#39;#000&#39;);
-      msgToDisplay.html(user + &#39;&lt;span class=&quot;timespan&quot;&gt;(&#39; + date + &#39;): &lt;/span&gt; &lt;br/&gt;&#39; + &#39;&lt;a href=&quot;&#39; + imgData + &#39;&quot; target=&quot;_blank&quot;&gt;&lt;img src=&quot;&#39; + imgData + &#39;&quot;/&gt;&lt;/a&gt;&#39;);
-      container.append(msgToDisplay);
-      container.scrollTop = container.scrollHeight;
-  },
-  _showLxh: function(msg) {
-      var match, 
-          result = msg,
-          reg = /\[lxh:\d+\]/g,
-          lxhIndex,
-          totalLxhNum = $(&#39;#lxhWrapper&#39;).children().length;
-      while (match = reg.exec(msg)) {
-          lxhIndex = match[0].slice(5, -1);
-          console.log(lxhIndex);
-          if (lxhIndex &gt; totalLxhNum) {
-              result = result.replace(match[0], &#39;[X]&#39;);
-          } else {
-              result = result.replace(match[0], &#39;&lt;img class=&quot;lxh&quot; src=&quot;../content/lxh/&#39; + lxhIndex + &#39;.gif&quot; /&gt;&#39;);
-          };
-      };
-      return result;
-  }
-};
-</code></pre><pre><code>&lt;!doctype html&gt;
-&lt;html&gt;
-  &lt;head&gt;
-      &lt;meta charset=&quot;utf-8&quot;&gt;
-      &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge,chrome=1&quot;&gt;
-      &lt;meta name=&quot;description&quot; content=&quot;webchat | a simple chat application built with node.js and websocket&quot;&gt;
-      &lt;meta name=&quot;viewport&quot;content=&quot;width=device-width,initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot;/&gt;    
-     &lt;title&gt;webchat&lt;/title&gt;
-      &lt;link rel=&quot;stylesheet&quot; href=&quot;styles/main.css&quot;&gt;
-      &lt;link rel=&quot;shortcut icon&quot; href=&quot;favicon.ico&quot; type=&quot;image/x-icon&quot;&gt;
-      &lt;link rel=&quot;icon&quot; href=&quot;favicon.ico&quot; type=&quot;image/x-icon&quot;&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-      &lt;div class=&quot;wrapper&quot;&gt;
-          &lt;div class=&quot;banner&quot;&gt;
-              &lt;div&gt;WebChat&lt;/div&gt;
-              &lt;span id=&quot;onlineCount&quot;&gt;&lt;/span&gt;
-          &lt;/div&gt;
-          &lt;div id=&quot;winChat&quot;&gt;
-          &lt;/div&gt;
-          &lt;div class=&quot;controls&quot; &gt;
-              &lt;div class=&quot;items&quot;&gt;
-                  &lt;input id=&quot;colorStyle&quot; type=&quot;color&quot; placeHolder=&#39;#000&#39; title=&quot;font color&quot; /&gt;
-                  &lt;input id=&quot;lxh&quot; type=&quot;button&quot; value=&quot;lxh&quot; title=&quot;lxh&quot; /&gt;
-                  &lt;label for=&quot;imgSend&quot; class=&quot;imgLabel&quot;&gt;
-                      &lt;input type=&quot;button&quot; value=&quot;表情&quot; style=&quot;width: 60px;height: 30px;border: 0;margin: 0;padding: 0;&quot; /&gt;
-                      &lt;input id=&quot;imgSend&quot; type=&quot;file&quot; accept=&quot;image/gif&quot; value=&quot;表情&quot;  /&gt;
-                  &lt;/label&gt;
-                  &lt;input id=&quot;clearBtn&quot; type=&quot;button&quot; value=&quot;清空&quot; title=&quot;clear screen&quot; /&gt;
-              &lt;/div&gt;
-              &lt;input type=&quot;text&quot; id=&quot;messageInput&quot; placeHolder=&quot;enter to send&quot;/&gt;
-              &lt;input id=&quot;sendBtn&quot; type=&quot;button&quot; value=&quot;发送&quot;&gt;
-              &lt;div id=&quot;lxhWrapper&quot;&gt;
-              &lt;/div&gt;
-          &lt;/div&gt;
-      &lt;/div&gt;
-      &lt;div class=&quot;right&quot; id=&quot;right&quot;&gt;&lt;/div&gt;
-      &lt;div id=&quot;loginArea&quot;&gt;
-          &lt;p id=&quot;info&quot;&gt;正在连接服务器...&lt;/p&gt;
-          &lt;div id=&quot;inModal&quot;&gt;
-              &lt;input type=&quot;text&quot; placeHolder=&quot;请输入昵称&quot; id=&quot;usrName&quot; /&gt;
-              &lt;input type=&quot;button&quot; value=&quot;进入&quot; id=&quot;loginBtn&quot; /&gt;
-          &lt;/div&gt;
-      &lt;/div&gt;
-      &lt;script src=&quot;scripts/jquery-2.1.0.js&quot;&gt;&lt;/script&gt;
-      &lt;script src=&quot;/socket.io/socket.io.js&quot;&gt;&lt;/script&gt;
-      &lt;script src=&quot;scripts/webchat.js&quot;&gt;&lt;/script&gt;
-  &lt;/body&gt;
-&lt;/html&gt;
-</code></pre></li>
+<li>socket.IO<br>可以接受所有与服务器相连接的客户端发送的消息，也可向客户端主动发送消息。<br>安装<figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install socket.io</div></pre></td></tr></table></figure>
+</li>
 </ul>
-<pre><code>&lt;!doctype html&gt;
-&lt;html&gt;
-    &lt;head&gt;
-        &lt;meta charset=&quot;utf-8&quot;&gt;
-        &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge,chrome=1&quot;&gt;
-        &lt;meta name=&quot;description&quot; content=&quot;webchat | a simple chat application built with node.js and websocket&quot;&gt;
-        &lt;meta name=&quot;viewport&quot;content=&quot;width=device-width,initial-scale=1.0, maximum-scale=1.0, user-scalable=no&quot;/&gt;    
-       &lt;title&gt;webchat&lt;/title&gt;
-        &lt;link rel=&quot;stylesheet&quot; href=&quot;styles/main.css&quot;&gt;
-        &lt;link rel=&quot;shortcut icon&quot; href=&quot;favicon.ico&quot; type=&quot;image/x-icon&quot;&gt;
-        &lt;link rel=&quot;icon&quot; href=&quot;favicon.ico&quot; type=&quot;image/x-icon&quot;&gt;
-    &lt;/head&gt;
-    &lt;body&gt;
-        &lt;div class=&quot;wrapper&quot;&gt;
-            &lt;div class=&quot;banner&quot;&gt;
-                &lt;div&gt;WebChat&lt;/div&gt;
-                &lt;span id=&quot;onlineCount&quot;&gt;&lt;/span&gt;
-            &lt;/div&gt;
-            &lt;div id=&quot;winChat&quot;&gt;
-            &lt;/div&gt;
-            &lt;div class=&quot;controls&quot; &gt;
-                &lt;div class=&quot;items&quot;&gt;
-                    &lt;input id=&quot;colorStyle&quot; type=&quot;color&quot; placeHolder=&#39;#000&#39; title=&quot;font color&quot; /&gt;
-                    &lt;input id=&quot;lxh&quot; type=&quot;button&quot; value=&quot;lxh&quot; title=&quot;lxh&quot; /&gt;
-                    &lt;label for=&quot;imgSend&quot; class=&quot;imgLabel&quot;&gt;
-                        &lt;input type=&quot;button&quot; value=&quot;表情&quot; style=&quot;width: 60px;height: 30px;border: 0;margin: 0;padding: 0;&quot; /&gt;
-                        &lt;input id=&quot;imgSend&quot; type=&quot;file&quot; accept=&quot;image/gif&quot; value=&quot;表情&quot;  /&gt;
-                    &lt;/label&gt;
-                    &lt;input id=&quot;clearBtn&quot; type=&quot;button&quot; value=&quot;清空&quot; title=&quot;clear screen&quot; /&gt;
-                &lt;/div&gt;
-                &lt;input type=&quot;text&quot; id=&quot;messageInput&quot; placeHolder=&quot;enter to send&quot;/&gt;
-                &lt;input id=&quot;sendBtn&quot; type=&quot;button&quot; value=&quot;发送&quot;&gt;
-                &lt;div id=&quot;lxhWrapper&quot;&gt;
-                &lt;/div&gt;
-            &lt;/div&gt;
-        &lt;/div&gt;
-        &lt;div class=&quot;right&quot; id=&quot;right&quot;&gt;&lt;/div&gt;
-        &lt;div id=&quot;loginArea&quot;&gt;
-            &lt;p id=&quot;info&quot;&gt;正在连接服务器...&lt;/p&gt;
-            &lt;div id=&quot;inModal&quot;&gt;
-                &lt;input type=&quot;text&quot; placeHolder=&quot;请输入昵称&quot; id=&quot;usrName&quot; /&gt;
-                &lt;input type=&quot;button&quot; value=&quot;进入&quot; id=&quot;loginBtn&quot; /&gt;
-            &lt;/div&gt;
-        &lt;/div&gt;
-        &lt;script src=&quot;scripts/jquery-2.1.0.js&quot;&gt;&lt;/script&gt;
-        &lt;script src=&quot;/socket.io/socket.io.js&quot;&gt;&lt;/script&gt;
-        &lt;script src=&quot;scripts/webchat.js&quot;&gt;&lt;/script&gt;
-    &lt;/body&gt;
-&lt;/html&gt;
-</code></pre>
-	</div>
-	<div class="meta split">
-		
-		<time class="post-date" datetime="2016-12-10T13:14:18.000Z" itemprop="datePublished">2016-12-10</time>
-	</div>
-</article>
+<p>引用<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> io = <span class="built_in">require</span>(<span class="string">'socket.io'</span>).listen(server);</div><div class="line">server.listen(process.env.PORT || <span class="number">3000</span>);  <span class="comment">//监听端口</span></div></pre></td></tr></table></figure></p>
+<ul>
+<li><p>connect</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line">io.sockets.on(<span class="string">'connection'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">socket</span>) </span>&#123;   <span class="comment">//建立连接</span></div><div class="line">    <span class="comment">//新用户</span></div><div class="line">    socket.on(<span class="string">'login'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">usrName,user</span>) </span>&#123;</div><div class="line">        <span class="keyword">if</span> (users.indexOf(usrName) &gt; <span class="number">-1</span>) &#123;</div><div class="line">            socket.emit(<span class="string">'usrExisted'</span>);</div><div class="line">        &#125; <span class="keyword">else</span> &#123;</div><div class="line">            socket.userIndex = users.length;</div><div class="line">            socket.usrName = usrName;</div><div class="line">            socket.users = users;</div><div class="line">            users.push(usrName);</div><div class="line">            date = <span class="keyword">new</span> <span class="built_in">Date</span>().toTimeString().substr(<span class="number">0</span>, <span class="number">8</span>);</div><div class="line">            <span class="built_in">console</span>.log(date+<span class="string">"/"</span>+usrName+<span class="string">'加入了聊天'</span>);</div><div class="line">            socket.emit(<span class="string">'loginSuccess'</span>);</div><div class="line">            io.sockets.emit(<span class="string">'system'</span>, usrName, users.length, <span class="string">'login'</span>);</div><div class="line">            io.sockets.emit(<span class="string">'cuList'</span>, users);</div><div class="line">        &#125;;</div><div class="line">    &#125;);</div><div class="line">    <span class="comment">//用户离开</span></div><div class="line">    socket.on(<span class="string">'disconnect'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">user</span>) </span>&#123;</div><div class="line">        <span class="keyword">if</span> (socket.usrName != <span class="literal">null</span>) &#123;</div><div class="line">        	socket.users = users;</div><div class="line">            users.splice(socket.userIndex, <span class="number">1</span>);</div><div class="line">            date = <span class="keyword">new</span> <span class="built_in">Date</span>().toTimeString().substr(<span class="number">0</span>, <span class="number">8</span>);</div><div class="line">            <span class="built_in">console</span>.log(date+<span class="string">"/"</span>+socket.usrName+<span class="string">'滚蛋了'</span>);</div><div class="line">            socket.broadcast.emit(<span class="string">'system'</span>, socket.usrName, users.length, <span class="string">'logout'</span>);</div><div class="line">			io.sockets.emit(<span class="string">'cuList'</span>, users);</div><div class="line">        &#125;</div><div class="line">    &#125;);</div><div class="line">    <span class="comment">//用户列表</span></div><div class="line">	<span class="comment">//新消息</span></div><div class="line">    socket.on(<span class="string">'postMsg'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">msg, color</span>) </span>&#123;</div><div class="line">    	date = <span class="keyword">new</span> <span class="built_in">Date</span>().toTimeString().substr(<span class="number">0</span>, <span class="number">8</span>);</div><div class="line">    	<span class="built_in">console</span>.log(date+<span class="string">"/"</span>+socket.usrName+<span class="string">'：'</span>+msg);</div><div class="line">        socket.broadcast.emit(<span class="string">'newMsg'</span>, socket.usrName, msg, color);</div><div class="line">    &#125;);</div><div class="line">    <span class="comment">//新图片</span></div><div class="line">    socket.on(<span class="string">'img'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">imgData, color</span>) </span>&#123;</div><div class="line">    	date = <span class="keyword">new</span> <span class="built_in">Date</span>().toTimeString().substr(<span class="number">0</span>, <span class="number">8</span>);</div><div class="line">    	<span class="built_in">console</span>.log(date+<span class="string">"/"</span>+socket.usrName+<span class="string">'：'</span>+imgData);</div><div class="line">        socket.broadcast.emit(<span class="string">'newImg'</span>, socket.usrName, imgData, color);</div><div class="line">    &#125;);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+</li>
+<li><p>客户端js,html,css</p>
+</li>
+</ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div><div class="line">133</div><div class="line">134</div><div class="line">135</div><div class="line">136</div><div class="line">137</div><div class="line">138</div><div class="line">139</div><div class="line">140</div><div class="line">141</div><div class="line">142</div><div class="line">143</div><div class="line">144</div><div class="line">145</div><div class="line">146</div><div class="line">147</div><div class="line">148</div><div class="line">149</div><div class="line">150</div><div class="line">151</div><div class="line">152</div><div class="line">153</div><div class="line">154</div><div class="line">155</div><div class="line">156</div><div class="line">157</div><div class="line">158</div><div class="line">159</div><div class="line">160</div><div class="line">161</div><div class="line">162</div><div class="line">163</div><div class="line">164</div><div class="line">165</div><div class="line">166</div><div class="line">167</div><div class="line">168</div><div class="line">169</div><div class="line">170</div><div class="line">171</div><div class="line">172</div><div class="line">173</div><div class="line">174</div><div class="line">175</div><div class="line">176</div><div class="line">177</div><div class="line">178</div><div class="line">179</div><div class="line">180</div><div class="line">181</div><div class="line">182</div><div class="line">183</div><div class="line">184</div><div class="line">185</div><div class="line">186</div><div class="line">187</div><div class="line">188</div><div class="line">189</div><div class="line">190</div><div class="line">191</div><div class="line">192</div><div class="line">193</div><div class="line">194</div><div class="line">195</div><div class="line">196</div><div class="line">197</div><div class="line">198</div><div class="line">199</div><div class="line">200</div><div class="line">201</div><div class="line">202</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">window</span>.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> webchat = <span class="keyword">new</span> WebChat();</div><div class="line">    webchat.init();</div><div class="line">&#125;;</div><div class="line"><span class="keyword">var</span> WebChat = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">this</span>.socket = <span class="literal">null</span>;</div><div class="line">&#125;;</div><div class="line">WebChat.prototype = &#123;</div><div class="line">    init: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">        <span class="keyword">var</span> that = <span class="keyword">this</span>;</div><div class="line">        <span class="keyword">this</span>.socket = io.connect();</div><div class="line">        <span class="comment">//建立连接</span></div><div class="line">        <span class="keyword">this</span>.socket.on(<span class="string">'connect'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">        	$(<span class="string">'#info'</span>).text(<span class="string">'大爷儿，进来玩玩'</span>);</div><div class="line">        	$(<span class="string">'#inModal'</span>).css(<span class="string">'display'</span>,<span class="string">'block'</span>);</div><div class="line">        	$(<span class="string">'#usrName'</span>).focus();</div><div class="line">        &#125;);</div><div class="line">        <span class="comment">//昵称占用</span></div><div class="line">        <span class="keyword">this</span>.socket.on(<span class="string">'usrExisted'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">            $(<span class="string">'#info'</span>).text(<span class="string">'昵称已被使用，请换一个试试！'</span>);</div><div class="line">        &#125;);</div><div class="line">        <span class="comment">//登陆成功</span></div><div class="line">        <span class="keyword">this</span>.socket.on(<span class="string">'loginSuccess'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">        	<span class="built_in">document</span>.title =<span class="string">'webchat | '</span> + $(<span class="string">'#usrName'</span>).val();</div><div class="line">        	$(<span class="string">'#loginArea'</span>).css(<span class="string">'display'</span>,<span class="string">'none'</span>);</div><div class="line">        	$(<span class="string">'#messageInput'</span>).focus();</div><div class="line">        &#125;);</div><div class="line">        <span class="comment">//用户列表</span></div><div class="line">        <span class="keyword">this</span>.socket.on(<span class="string">'cuList'</span>,<span class="function"><span class="keyword">function</span>(<span class="params">users</span>)</span>&#123;</div><div class="line">        	<span class="keyword">var</span> cuList = $(<span class="string">'#right'</span>);</div><div class="line">        	<span class="keyword">var</span> addStr = <span class="string">""</span>;</div><div class="line">        	<span class="built_in">console</span>.log(users);</div><div class="line">        	users.forEach(<span class="function"><span class="keyword">function</span>(<span class="params">user</span>)</span>&#123;</div><div class="line">        		addStr += user + <span class="string">'&lt;br/&gt;'</span>;</div><div class="line">        	&#125;);</div><div class="line">        	cuList.html(<span class="string">'用户列表&lt;br/&gt;'</span>+addStr);</div><div class="line">        &#125;)</div><div class="line">        <span class="comment">//连接失败</span></div><div class="line">        <span class="keyword">this</span>.socket.on(<span class="string">'error'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">err</span>) </span>&#123;</div><div class="line">            <span class="keyword">if</span> ($(<span class="string">'#loginArea'</span>).style.display == <span class="string">'none'</span>) &#123;</div><div class="line">                $(<span class="string">'#onlineCount'</span>).text(<span class="string">'连接失败！'</span>);</div><div class="line">            &#125; <span class="keyword">else</span> &#123;</div><div class="line">                $(<span class="string">'#info'</span>).text(<span class="string">'连接失败！'</span>);</div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line">        <span class="comment">//系统通知用户加入或离开</span></div><div class="line">        <span class="keyword">this</span>.socket.on(<span class="string">'system'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">usrName, userCount, type</span>) </span>&#123;</div><div class="line">            <span class="keyword">var</span> msg = usrName + (type == <span class="string">'login'</span> ? <span class="string">'来了'</span> : <span class="string">'滚了'</span>);</div><div class="line">            that._displayNewMsg(<span class="string">'system '</span>, msg, <span class="string">'red'</span>);</div><div class="line">            $(<span class="string">'#onlineCount'</span>).text(userCount + (userCount &gt; <span class="number">1</span> ? <span class="string">' users'</span> : <span class="string">' user'</span>) + <span class="string">' online'</span>);</div><div class="line">        &#125;);</div><div class="line">        <span class="comment">//发送消息</span></div><div class="line">        <span class="keyword">this</span>.socket.on(<span class="string">'newMsg'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">user, msg, color</span>) </span>&#123;</div><div class="line">            that._displayNewMsg(user, msg, color);</div><div class="line">        &#125;);</div><div class="line">        <span class="comment">//发送图片</span></div><div class="line">        <span class="keyword">this</span>.socket.on(<span class="string">'newImg'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">user, img, color</span>) </span>&#123;</div><div class="line">            that._displayImage(user, img, color);</div><div class="line">        &#125;);</div><div class="line">        </div><div class="line">        <span class="comment">//底层监听事件</span></div><div class="line">        </div><div class="line">        <span class="comment">//登陆按钮</span></div><div class="line">        $(<span class="string">'#loginBtn'</span>).on(<span class="string">'click tap'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">            <span class="keyword">var</span> usrName = $(<span class="string">'#usrName'</span>).val();</div><div class="line">            <span class="keyword">if</span> ($.trim(usrName).length != <span class="number">0</span>) &#123;</div><div class="line">                that.socket.emit(<span class="string">'login'</span>, usrName);</div><div class="line">                that.socket.emit(<span class="string">'cuList'</span>, users);</div><div class="line">            &#125; <span class="keyword">else</span> &#123;</div><div class="line">                $(<span class="string">'#usrName'</span>).focus();</div><div class="line">            &#125;;</div><div class="line">        &#125;);</div><div class="line">        <span class="comment">//登陆监听enter</span></div><div class="line">        $(<span class="string">'#usrName'</span>).on(<span class="string">'keyup'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</div><div class="line">            <span class="keyword">if</span> (e.keyCode == <span class="number">13</span>) &#123;</div><div class="line">                <span class="keyword">var</span> usrName = $(<span class="string">'#usrName'</span>).val();</div><div class="line">                <span class="keyword">if</span> ($.trim(usrName).length != <span class="number">0</span>) &#123;</div><div class="line">                    that.socket.emit(<span class="string">'login'</span>, usrName);</div><div class="line">                    that.socket.emit(<span class="string">'cuList'</span>, users);</div><div class="line">                &#125;;</div><div class="line">            &#125;;</div><div class="line">        &#125;);</div><div class="line">        <span class="comment">//bind发送按钮</span></div><div class="line">        $(<span class="string">'#sendBtn'</span>).on(<span class="string">'click tap'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">            <span class="keyword">var</span> messageInput = $(<span class="string">'#messageInput'</span>),</div><div class="line">                msg = messageInput.val(),</div><div class="line">                color = $(<span class="string">'#colorStyle'</span>).val();</div><div class="line">            messageInput.val(<span class="string">' '</span>);</div><div class="line">            messageInput.focus();</div><div class="line">            <span class="keyword">if</span> ($.trim(msg).length != <span class="number">0</span>) &#123;</div><div class="line">                that.socket.emit(<span class="string">'postMsg'</span>, msg, color);</div><div class="line">                that._displayNewMsg(<span class="string">'me'</span>, msg, color);</div><div class="line">                <span class="keyword">return</span>;</div><div class="line">            &#125;;</div><div class="line">        &#125;);</div><div class="line">        <span class="comment">//bind发送</span></div><div class="line">        $(<span class="string">'#messageInput'</span>).on(<span class="string">'keyup'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</div><div class="line">            <span class="keyword">var</span> messageInput = $(<span class="string">'#messageInput'</span>),</div><div class="line">                msg = messageInput.val(),</div><div class="line">                color = $(<span class="string">'#colorStyle'</span>).val();</div><div class="line">            <span class="keyword">if</span> (e.keyCode == <span class="number">13</span> &amp;&amp; $.trim(msg).length != <span class="number">0</span>) &#123;</div><div class="line">                messageInput.val(<span class="string">' '</span>);</div><div class="line">                that.socket.emit(<span class="string">'postMsg'</span>, msg, color);</div><div class="line">                that._displayNewMsg(<span class="string">'me'</span>, msg, color);</div><div class="line">            &#125;;</div><div class="line">        &#125;);</div><div class="line">        <span class="comment">//清空</span></div><div class="line">        $(<span class="string">'#clearBtn'</span>).on(<span class="string">'click tap'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">            $(<span class="string">'#winChat'</span>).html(<span class="string">" "</span>);</div><div class="line">        &#125;);</div><div class="line">        <span class="comment">//发送图片</span></div><div class="line">        $(<span class="string">'#imgSend'</span>).on(<span class="string">'change'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">            <span class="keyword">if</span> (<span class="keyword">this</span>.files.length != <span class="number">0</span>) &#123;</div><div class="line">                <span class="keyword">var</span> file = <span class="keyword">this</span>.files[<span class="number">0</span>],</div><div class="line">                    reader = <span class="keyword">new</span> FileReader(),</div><div class="line">                    color = $(<span class="string">'#colorStyle'</span>).val();</div><div class="line">                <span class="keyword">if</span> (!reader) &#123;</div><div class="line">                    that._displayNewMsg(<span class="string">'system'</span>, <span class="string">'辣鸡浏览器不支持上传文件'</span>, <span class="string">'red'</span>);</div><div class="line">                    <span class="keyword">this</span>.val(<span class="string">' '</span>);</div><div class="line">                    <span class="keyword">return</span>;</div><div class="line">                &#125;;</div><div class="line">                <span class="comment">//接收图片</span></div><div class="line">                reader.onload = <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</div><div class="line">                    that.socket.emit(<span class="string">'img'</span>, e.target.result, color);</div><div class="line">                    that._displayImage(<span class="string">'me'</span>, e.target.result, color);</div><div class="line">                &#125;;</div><div class="line">                reader.readAsDataURL(file);</div><div class="line">            &#125;;</div><div class="line">        &#125;);</div><div class="line">        <span class="comment">//图片包</span></div><div class="line">        <span class="keyword">this</span>._initialLxh();</div><div class="line">        <span class="comment">//按钮</span></div><div class="line">        $(<span class="string">'#lxh'</span>).on(<span class="string">'click tap'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</div><div class="line">            <span class="keyword">var</span> lxhwrapper = $(<span class="string">'#lxhWrapper'</span>);</div><div class="line">            lxhwrapper.css(<span class="string">'display'</span>,<span class="string">'block'</span>);</div><div class="line">            e.stopPropagation();</div><div class="line">        &#125;);</div><div class="line">        <span class="comment">//二级图片栏</span></div><div class="line">        $(<span class="string">'body'</span>).on(<span class="string">'click'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</div><div class="line">            <span class="keyword">var</span> lxhwrapper = $(<span class="string">'#lxhWrapper'</span>);</div><div class="line">            <span class="keyword">if</span> (e.target != lxhwrapper) &#123;</div><div class="line">                lxhwrapper.css(<span class="string">'display'</span>,<span class="string">'none'</span>);</div><div class="line">            &#125;;</div><div class="line">        &#125;);</div><div class="line">        $(<span class="string">'#lxhWrapper'</span>).on(<span class="string">'click tap'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">e</span>) </span>&#123;</div><div class="line">            <span class="keyword">var</span> target = e.target;</div><div class="line">            <span class="keyword">if</span> (target.nodeName.toLowerCase() == <span class="string">'img'</span>) &#123;</div><div class="line">                <span class="keyword">var</span> messageInput = $(<span class="string">'#messageInput'</span>);</div><div class="line">                messageInput.focus();</div><div class="line">                messageInput.val(messageInput.val() + <span class="string">'[lxh:'</span> + target.title + <span class="string">']'</span>);</div><div class="line">            &#125;;</div><div class="line">        &#125;);</div><div class="line">    &#125;,</div><div class="line">    	<span class="comment">//发送图片</span></div><div class="line">    _initialLxh: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">        <span class="keyword">var</span> lxhContainer = $(<span class="string">'#lxhWrapper'</span>),</div><div class="line">            docFragment = <span class="built_in">document</span>.createDocumentFragment();</div><div class="line">        <span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">100</span>; i &gt; <span class="number">0</span>; i--) &#123;</div><div class="line">            <span class="keyword">var</span> lxhItem = <span class="built_in">document</span>.createElement(<span class="string">'img'</span>);</div><div class="line">            lxhItem.src = <span class="string">'../content/lxh/'</span> + i + <span class="string">'.gif'</span>;</div><div class="line">            lxhItem.title = i;</div><div class="line">            docFragment.appendChild(lxhItem);</div><div class="line">        &#125;;</div><div class="line">        lxhContainer.append(docFragment);</div><div class="line">    &#125;,</div><div class="line">    _displayNewMsg: <span class="function"><span class="keyword">function</span>(<span class="params">user, msg, color</span>) </span>&#123;</div><div class="line">        <span class="keyword">var</span> container = $(<span class="string">'#winChat'</span>),</div><div class="line">            msgToDisplay = $(<span class="string">'&lt;p&gt;&lt;/p&gt;'</span>),</div><div class="line">            date = <span class="keyword">new</span> <span class="built_in">Date</span>().toTimeString().substr(<span class="number">0</span>, <span class="number">8</span>),</div><div class="line">            msg = <span class="keyword">this</span>._showLxh(msg);</div><div class="line">        msgToDisplay.css(<span class="string">'color'</span>,color || <span class="string">'#000'</span>);</div><div class="line">        msgToDisplay.html(user + <span class="string">'&lt;span class="timespan"&gt;('</span> + date + <span class="string">'): &lt;/span&gt;'</span> + msg);</div><div class="line">        container.append(msgToDisplay);</div><div class="line">        container.scrollTop = container.scrollHeight;</div><div class="line">    &#125;,</div><div class="line">    _displayImage: <span class="function"><span class="keyword">function</span>(<span class="params">user, imgData, color</span>) </span>&#123;</div><div class="line">        <span class="keyword">var</span> container = $(<span class="string">'#winChat'</span>),</div><div class="line">            msgToDisplay = $(<span class="string">'&lt;p&gt;&lt;/p&gt;'</span>),</div><div class="line">            date = <span class="keyword">new</span> <span class="built_in">Date</span>().toTimeString().substr(<span class="number">0</span>, <span class="number">8</span>);</div><div class="line">        msgToDisplay.css(<span class="string">'color'</span>,color || <span class="string">'#000'</span>);</div><div class="line">        msgToDisplay.html(user + <span class="string">'&lt;span class="timespan"&gt;('</span> + date + <span class="string">'): &lt;/span&gt; &lt;br/&gt;'</span> + <span class="string">'&lt;a href="'</span> + imgData + <span class="string">'" target="_blank"&gt;&lt;img src="'</span> + imgData + <span class="string">'"/&gt;&lt;/a&gt;'</span>);</div><div class="line">        container.append(msgToDisplay);</div><div class="line">        container.scrollTop = container.scrollHeight;</div><div class="line">    &#125;,</div><div class="line">    _showLxh: <span class="function"><span class="keyword">function</span>(<span class="params">msg</span>) </span>&#123;</div><div class="line">        <span class="keyword">var</span> match, </div><div class="line">        	result = msg,</div><div class="line">            reg = <span class="regexp">/\[lxh:\d+\]/g</span>,</div><div class="line">            lxhIndex,</div><div class="line">            totalLxhNum = $(<span class="string">'#lxhWrapper'</span>).children().length;</div><div class="line">        <span class="keyword">while</span> (match = reg.exec(msg)) &#123;</div><div class="line">            lxhIndex = match[<span class="number">0</span>].slice(<span class="number">5</span>, <span class="number">-1</span>);</div><div class="line">            <span class="built_in">console</span>.log(lxhIndex);</div><div class="line">            <span class="keyword">if</span> (lxhIndex &gt; totalLxhNum) &#123;</div><div class="line">                result = result.replace(match[<span class="number">0</span>], <span class="string">'[X]'</span>);</div><div class="line">            &#125; <span class="keyword">else</span> &#123;</div><div class="line">                result = result.replace(match[<span class="number">0</span>], <span class="string">'&lt;img class="lxh" src="../content/lxh/'</span> + lxhIndex + <span class="string">'.gif" /&gt;'</span>);</div><div class="line">            &#125;;</div><div class="line">        &#125;;</div><div class="line">        <span class="keyword">return</span> result;</div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;!doctype html&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">head</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"utf-8"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"X-UA-Compatible"</span> <span class="attr">content</span>=<span class="string">"IE=edge,chrome=1"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"description"</span> <span class="attr">content</span>=<span class="string">"webchat | a simple chat application built with node.js and websocket"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"viewport"</span><span class="attr">content</span>=<span class="string">"width=device-width,initial-scale=1.0, maximum-scale=1.0, user-scalable=no"</span>/&gt;</span>    </div><div class="line">       <span class="tag">&lt;<span class="name">title</span>&gt;</span>webchat<span class="tag">&lt;/<span class="name">title</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">href</span>=<span class="string">"styles/main.css"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"shortcut icon"</span> <span class="attr">href</span>=<span class="string">"favicon.ico"</span> <span class="attr">type</span>=<span class="string">"image/x-icon"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"icon"</span> <span class="attr">href</span>=<span class="string">"favicon.ico"</span> <span class="attr">type</span>=<span class="string">"image/x-icon"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">head</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">body</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"wrapper"</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"banner"</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">div</span>&gt;</span>WebChat<span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">span</span> <span class="attr">id</span>=<span class="string">"onlineCount"</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span></div><div class="line">            <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"winChat"</span>&gt;</span></div><div class="line">            <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"controls"</span> &gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"items"</span>&gt;</span></div><div class="line">                    <span class="tag">&lt;<span class="name">input</span> <span class="attr">id</span>=<span class="string">"colorStyle"</span> <span class="attr">type</span>=<span class="string">"color"</span> <span class="attr">placeHolder</span>=<span class="string">'#000'</span> <span class="attr">title</span>=<span class="string">"font color"</span> /&gt;</span></div><div class="line">                    <span class="tag">&lt;<span class="name">input</span> <span class="attr">id</span>=<span class="string">"lxh"</span> <span class="attr">type</span>=<span class="string">"button"</span> <span class="attr">value</span>=<span class="string">"lxh"</span> <span class="attr">title</span>=<span class="string">"lxh"</span> /&gt;</span></div><div class="line">                    <span class="tag">&lt;<span class="name">label</span> <span class="attr">for</span>=<span class="string">"imgSend"</span> <span class="attr">class</span>=<span class="string">"imgLabel"</span>&gt;</span></div><div class="line">                        <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"button"</span> <span class="attr">value</span>=<span class="string">"表情"</span> <span class="attr">style</span>=<span class="string">"width: 60px;height: 30px;border: 0;margin: 0;padding: 0;"</span> /&gt;</span></div><div class="line">                        <span class="tag">&lt;<span class="name">input</span> <span class="attr">id</span>=<span class="string">"imgSend"</span> <span class="attr">type</span>=<span class="string">"file"</span> <span class="attr">accept</span>=<span class="string">"image/gif"</span> <span class="attr">value</span>=<span class="string">"表情"</span>  /&gt;</span></div><div class="line">                    <span class="tag">&lt;/<span class="name">label</span>&gt;</span></div><div class="line">                    <span class="tag">&lt;<span class="name">input</span> <span class="attr">id</span>=<span class="string">"clearBtn"</span> <span class="attr">type</span>=<span class="string">"button"</span> <span class="attr">value</span>=<span class="string">"清空"</span> <span class="attr">title</span>=<span class="string">"clear screen"</span> /&gt;</span></div><div class="line">                <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">id</span>=<span class="string">"messageInput"</span> <span class="attr">placeHolder</span>=<span class="string">"enter to send"</span>/&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">input</span> <span class="attr">id</span>=<span class="string">"sendBtn"</span> <span class="attr">type</span>=<span class="string">"button"</span> <span class="attr">value</span>=<span class="string">"发送"</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"lxhWrapper"</span>&gt;</span></div><div class="line">                <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">            <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"right"</span> <span class="attr">id</span>=<span class="string">"right"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"loginArea"</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">p</span> <span class="attr">id</span>=<span class="string">"info"</span>&gt;</span>正在连接服务器...<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"inModal"</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">placeHolder</span>=<span class="string">"请输入昵称"</span> <span class="attr">id</span>=<span class="string">"usrName"</span> /&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"button"</span> <span class="attr">value</span>=<span class="string">"进入"</span> <span class="attr">id</span>=<span class="string">"loginBtn"</span> /&gt;</span></div><div class="line">            <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"scripts/jquery-2.1.0.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"/socket.io/socket.io.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"scripts/webchat.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">body</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></div></pre></td></tr></table></figure>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div></pre></td><td class="code"><pre><div class="line"><span class="meta">&lt;!doctype html&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">head</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">"utf-8"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">meta</span> <span class="attr">http-equiv</span>=<span class="string">"X-UA-Compatible"</span> <span class="attr">content</span>=<span class="string">"IE=edge,chrome=1"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"description"</span> <span class="attr">content</span>=<span class="string">"webchat | a simple chat application built with node.js and websocket"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">"viewport"</span><span class="attr">content</span>=<span class="string">"width=device-width,initial-scale=1.0, maximum-scale=1.0, user-scalable=no"</span>/&gt;</span>    </div><div class="line">       <span class="tag">&lt;<span class="name">title</span>&gt;</span>webchat<span class="tag">&lt;/<span class="name">title</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">href</span>=<span class="string">"styles/main.css"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"shortcut icon"</span> <span class="attr">href</span>=<span class="string">"favicon.ico"</span> <span class="attr">type</span>=<span class="string">"image/x-icon"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"icon"</span> <span class="attr">href</span>=<span class="string">"favicon.ico"</span> <span class="attr">type</span>=<span class="string">"image/x-icon"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">head</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">body</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"wrapper"</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"banner"</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">div</span>&gt;</span>WebChat<span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">span</span> <span class="attr">id</span>=<span class="string">"onlineCount"</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span></div><div class="line">            <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"winChat"</span>&gt;</span></div><div class="line">            <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"controls"</span> &gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"items"</span>&gt;</span></div><div class="line">                    <span class="tag">&lt;<span class="name">input</span> <span class="attr">id</span>=<span class="string">"colorStyle"</span> <span class="attr">type</span>=<span class="string">"color"</span> <span class="attr">placeHolder</span>=<span class="string">'#000'</span> <span class="attr">title</span>=<span class="string">"font color"</span> /&gt;</span></div><div class="line">                    <span class="tag">&lt;<span class="name">input</span> <span class="attr">id</span>=<span class="string">"lxh"</span> <span class="attr">type</span>=<span class="string">"button"</span> <span class="attr">value</span>=<span class="string">"lxh"</span> <span class="attr">title</span>=<span class="string">"lxh"</span> /&gt;</span></div><div class="line">                    <span class="tag">&lt;<span class="name">label</span> <span class="attr">for</span>=<span class="string">"imgSend"</span> <span class="attr">class</span>=<span class="string">"imgLabel"</span>&gt;</span></div><div class="line">                        <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"button"</span> <span class="attr">value</span>=<span class="string">"表情"</span> <span class="attr">style</span>=<span class="string">"width: 60px;height: 30px;border: 0;margin: 0;padding: 0;"</span> /&gt;</span></div><div class="line">                        <span class="tag">&lt;<span class="name">input</span> <span class="attr">id</span>=<span class="string">"imgSend"</span> <span class="attr">type</span>=<span class="string">"file"</span> <span class="attr">accept</span>=<span class="string">"image/gif"</span> <span class="attr">value</span>=<span class="string">"表情"</span>  /&gt;</span></div><div class="line">                    <span class="tag">&lt;/<span class="name">label</span>&gt;</span></div><div class="line">                    <span class="tag">&lt;<span class="name">input</span> <span class="attr">id</span>=<span class="string">"clearBtn"</span> <span class="attr">type</span>=<span class="string">"button"</span> <span class="attr">value</span>=<span class="string">"清空"</span> <span class="attr">title</span>=<span class="string">"clear screen"</span> /&gt;</span></div><div class="line">                <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">id</span>=<span class="string">"messageInput"</span> <span class="attr">placeHolder</span>=<span class="string">"enter to send"</span>/&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">input</span> <span class="attr">id</span>=<span class="string">"sendBtn"</span> <span class="attr">type</span>=<span class="string">"button"</span> <span class="attr">value</span>=<span class="string">"发送"</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"lxhWrapper"</span>&gt;</span></div><div class="line">                <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">            <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"right"</span> <span class="attr">id</span>=<span class="string">"right"</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"loginArea"</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">p</span> <span class="attr">id</span>=<span class="string">"info"</span>&gt;</span>正在连接服务器...<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">"inModal"</span>&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"text"</span> <span class="attr">placeHolder</span>=<span class="string">"请输入昵称"</span> <span class="attr">id</span>=<span class="string">"usrName"</span> /&gt;</span></div><div class="line">                <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">"button"</span> <span class="attr">value</span>=<span class="string">"进入"</span> <span class="attr">id</span>=<span class="string">"loginBtn"</span> /&gt;</span></div><div class="line">            <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"scripts/jquery-2.1.0.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"/socket.io/socket.io.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">"scripts/webchat.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">body</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></div></pre></td></tr></table></figure>
+      
+    </div>
 
-<!--评论-->
+    <div>
+      
+        
 
-	
-<div class="ds-thread" data-thread-key="基于websocket实现服务器浏览器持续通信" data-title="基于websocket实现服务器浏览器持续通信" data-url="http://www.xuncs.cn/2016/12/10/基于websocket实现服务器浏览器持续通信/"></div>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/javascript/" rel="tag"># javascript</a>
+          
+            <a href="/tags/node/" rel="tag"># node</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/12/09/js中的arguments/" rel="next" title="js中的arguments">
+                <i class="fa fa-chevron-left"></i> js中的arguments
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/01/24/mongodb初探/" rel="prev" title="mongodb初探">
+                mongodb初探 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2016/12/10/基于websocket实现服务器浏览器持续通信/"
+           data-title="基于websocket实现服务器浏览器持续通信" data-url="http://test.xuncs.cn/2016/12/10/基于websocket实现服务器浏览器持续通信/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="陈硕" />
+          <p class="site-author-name" itemprop="name">陈硕</p>
+          <p class="site-description motion-element" itemprop="description">单身狗/矮丑穷/前端渣</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">25</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/xunfeng911" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/574377119" target="_blank" title="微博">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  微博
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#http协议"><span class="nav-number">1.</span> <span class="nav-text">http协议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Websocket"><span class="nav-number">2.</span> <span class="nav-text">Websocket</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基于express和socket-io构建聊天室"><span class="nav-number">3.</span> <span class="nav-text">基于express和socket.io构建聊天室</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">陈硕</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
 <script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
 
-var duoshuoQuery = {short_name:"yumemor"};
-	(function() {
-		var ds = document.createElement('script');
-		ds.type = 'text/javascript';ds.async = true;
-		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-		ds.charset = 'UTF-8';
-		(document.getElementsByTagName('head')[0]
-		 || document.getElementsByTagName('body')[0]).appendChild(ds);
-	})();
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"xunfeng911"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("SKbjLtORMQk3L6pssiYvcvGA-gzGzoHsz", "Sagak0APxmm1fQsz8uoanTdz");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
 </script>
 
 
   
-</div>
 
 
-  <svg id="bigTriangleColor" width="100%" height="40" viewBox="0 0 100 102" preserveAspectRatio="none">
-    <path d="M0 0 L50 100 L100 0 Z"></path>
-  </svg>
-
-  
-
-
-  <div class="wrapper"></div>
-
-
-
-
-
-<div class="fat-footer">
-	<div class="wrapper">
-		<div class="layout layout--center">
-			<div class="layout__item palm-mb">
-				<div class="media">
-					<img class="headimg" src='http://xuncs.cn/image.jpg' alt='陈硕'>
-					<div class="media__body">
-						<h4>黑天很黑</h4>
-						<p class='site-description'>单身狗/矮丑穷/前端渣</p>
-					</div>
-				</div>
-				<div class="author-contact">
-					<ul>
-						
-							
-							<li>
-				        		<a href="http://weibo.com/XunFengsama" target="_blank">
-				        			
-				        				<i class="iconfont icon-weibo"></i>
-				        			
-				        		</a>
-				        	</li>
-						
-							
-							<li>
-				        		<a href="https://github.com/xunfeng911" target="_blank">
-				        			
-				        				<i class="iconfont icon-github"></i>
-				        			
-				        		</a>
-				        	</li>
-						
-					</ul>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-
-<footer class="footer" role="contentinfo">
-	<div class="wrapper wrapper--wide split split--responsive">
-		
-		<!--<span>Theme by <a href="http://github.com/yumemor">Yumemor</a>. Powered by <a href="http://hexo.io">Hexo</a></span>-->
-	</div>
-</footer>
-
-	<!-－这里导入了 lib.js 里面涵盖了 jQuery 等框架 所以注释掉-->
-	<!--<script src="http://lib.sinaapp.com/js/jquery/2.0/jquery.min.js"></script>-->
-	<script src="/js/lib.js"></script>
-	<script src="/js/google-code-prettify/prettify.js"></script>
-	<script src="/js/module.js"></script>
-	<script src="/js/script.js"></script>
-	
-	<script type='text/javascript'>
-		//代码高亮
-		$(document).ready(function(){
-	 		$('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto;');
-   			prettyPrint();
-		});
-	</script>
-	</body>
+</body>
 </html>

@@ -1,113 +1,372 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
     
-    <title>ES6的学习（一） | 黑天很黑</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
     
     
-      <link rel="icon" href="/favicon.svg">
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="javascript,ES6,ES5," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="关于ES6的学习">
+<meta name="keywords" content="javascript,ES6,ES5">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ES6的学习（一）">
+<meta property="og:url" content="http://test.xuncs.cn/2017/02/18/ES6与ES5/index.html">
+<meta property="og:site_name" content="黑天很黑">
+<meta property="og:description" content="关于ES6的学习">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-10-15T02:53:45.868Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ES6的学习（一）">
+<meta name="twitter:description" content="关于ES6的学习">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"right","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://test.xuncs.cn/2017/02/18/ES6与ES5/"/>
+
+
+
+
+
+  <title> ES6的学习（一） | 黑天很黑 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?525290a94250faeb92d3e6dea0ccb957";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+  
+  
     
+  
 
-    <link rel="stylesheet" href="/css/style.css">
+  <div class="container one-collumn sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
 
-    <link rel="stylesheet" href="/js/google-code-prettify/tomorrow-night-eighties.min.css">
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
 
-    <script>
-      var _hmt = _hmt || [];
-      (function() {
-        var hm = document.createElement("script");
-        hm.src = "https://hm.baidu.com/hm.js?080c8e3f6dbc0839234f1fd1a7e9c16a";
-        var s = document.getElementsByTagName("script")[0]; 
-        s.parentNode.insertBefore(hm, s);
-      })();
-	  </script>
-  </head>
-
-  <body>
-
-<header>
-	<a id="logo" href="/" title="黑天很黑">
-	<img src="/favicon.svg" alt="黑天很黑"></a>
-	
-	
-		<!--搜索栏-->
-		<i class="js-toggle-search iconfont icon-search"></i>
-
-
-<form class="js-search search-form search-form--modal" method="get" action="http://gushi.li" role="search">
-	<div class="search-form__inner">
-		<div>
-			<i class="iconfont icon-search"></i>
-			<input class="text-input" placeholder="Enter Key..." type="search">
-		</div>
-	</div>
-</form>
-	
-
-	
-		<!--侧边导航栏-->
-		<a id="nav-toggle" href="#"><span></span></a>
-
-<nav>
-	<div class="menu-top-container">
-		<ul id="menu-top" class="menu">
-			
-				
-				<li class="current-menu-item">
-					<a href="http://weibo.com/XunFengsama" target="_blank">Weibo</a>
-				</li>
-			
-				
-				<li class="current-menu-item">
-					<a href="https://github.com/xunfeng911" target="_blank">github</a>
-				</li>
-			
-		</ul>
-	</div>
-</nav>
-	
-
-</header>
-<div class="m-header ">
-	<section id="hero1" class="hero">
-		<div class="inner">
-		</div>
-	</section>
-	
-		<figure class="top-image" data-enable=true></figure>
-	
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">黑天很黑</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
 </div>
 
-<!--文章列表-->
-<div class="wrapper">
-  
-    <!--文章-->
-<article>
-	
-  
-    <h1 class="post-title" itemprop="name">
-      ES6的学习（一）
-    </h1>
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
   
 
-	<div class='post-body mb'>
-		<p>关于ES6的学习<br><a id="more"></a></p>
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/about.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://test.xuncs.cn/2017/02/18/ES6与ES5/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="陈硕">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/avatar.jpg">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="黑天很黑">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="黑天很黑" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                ES6的学习（一）
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-02-18T22:03:07+08:00">
+                2017-02-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <a href="/2017/02/18/ES6与ES5/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2017/02/18/ES6与ES5/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+             <span id="/2017/02/18/ES6与ES5/" class="leancloud_visitors" data-flag-title="ES6的学习（一）">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               <span class="post-meta-item-text">阅读次数 </span>
+               <span class="leancloud-visitors-count"></span>
+              </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>关于ES6的学习<br><a id="more"></a></p>
 <h3 id="ES5-gt-ES6"><a href="#ES5-gt-ES6" class="headerlink" title="ES5 =&gt; ES6"></a>ES5 =&gt; ES6</h3><hr>
 <h5 id="箭头函数"><a href="#箭头函数" class="headerlink" title="箭头函数"></a>箭头函数</h5><ul>
 <li>与函数表达式相比，箭头函数有更短的语法。</li>
 </ul>
-<pre><code>    function (i) { return i * 2} //ES5
-    (i) =&gt; i * 2    //ES6
-</code></pre><p>复杂时需要<code>{}</code>包裹</p>
-<pre><code>    function (i, j) {
-        i++
-        j++
-        return i + j
-    }  // ES5
-    (i, j) =&gt; {i++, j++, return i + j} // ES6
-</code></pre><ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> (<span class="params">i</span>) </span>&#123; <span class="keyword">return</span> i * <span class="number">2</span>&#125; <span class="comment">//ES5</span></div><div class="line">(i) =&gt; i * <span class="number">2</span>	<span class="comment">//ES6</span></div></pre></td></tr></table></figure>
+<p>复杂时需要<code>{}</code>包裹<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> (<span class="params">i, j</span>) </span>&#123;</div><div class="line">	i++</div><div class="line">	j++</div><div class="line">	<span class="keyword">return</span> i + j</div><div class="line">&#125;  <span class="comment">// ES5</span></div><div class="line">(i, j) =&gt; &#123;i++, j++, <span class="keyword">return</span> i + j&#125; <span class="comment">// ES6</span></div></pre></td></tr></table></figure></p>
+<ul>
 <li>箭头函数没有自身的this，从外层继承this。</li>
 <li>箭头函数通常是匿名的。</li>
 </ul>
@@ -116,396 +375,559 @@
 <li>let 提供块级作用域,let命名的变量只在当前块内起作用</li>
 <li>const 声明的是常量，不可更改</li>
 </ul>
-<pre><code>  var a = 1
-  var b = 2
-  var c = 3
-  if (true) {
-    var a = 10  // 函数作用域
-    let b = 20  // if块内的作用域
-        c = 30  // es5解决方法
-    console.log(&#39;a:&#39; + a)
-    console.log(&#39;b:&#39; + b)
-    console.log(&#39;c:&#39; + c)
-  }
-  console.log(&#39;a:&#39; + a)
-  console.log(&#39;b:&#39; + b)
-  console.log(&#39;c:&#39; + c)
-</code></pre><p>var声明的变量在循环时新值会覆盖旧值，导致输出的变量都为最终值</p>
-<pre><code>var a = []
-for (var i = 0; i &lt; 9; i++) {
-  a[i] = function () {
-        console.log(i)
-    }
-}
-a[2](); // 9
-</code></pre><p>ES5中利用闭包解决这一问题</p>
-<pre><code>function test (index) {
-        var testback = function () {
-            console.log(index)
-        }
-        return testback
-}
-var a = []
-for (var i = 0; i &lt; 9; i++) {
-  a[i] = test(i)
-}
-a[2]()
-</code></pre><p>ES6中仅仅使用let即可解决</p>
-<pre><code>var a = []
-for (let i = 0; i &lt; 9; i++) {
-  a[i] = function () {
-        console.log(i)
-    }
-}
-a[2](); // 2
-</code></pre><p>const声明常量</p>
-<pre><code>const a = 1
-a = 10
-console.log(a)
-</code></pre><h5 id="模版字符串"><a href="#模版字符串" class="headerlink" title="模版字符串"></a>模版字符串</h5><ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> a = <span class="number">1</span></div><div class="line"><span class="keyword">var</span> b = <span class="number">2</span></div><div class="line"><span class="keyword">var</span> c = <span class="number">3</span></div><div class="line"><span class="keyword">if</span> (<span class="literal">true</span>) &#123;</div><div class="line">  <span class="keyword">var</span> a = <span class="number">10</span>  <span class="comment">// 函数作用域</span></div><div class="line">  <span class="keyword">let</span> b = <span class="number">20</span>  <span class="comment">// if块内的作用域</span></div><div class="line">      c = <span class="number">30</span>  <span class="comment">// es5解决方法</span></div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'a:'</span> + a)</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'b:'</span> + b)</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'c:'</span> + c)</div><div class="line">&#125;</div><div class="line"><span class="built_in">console</span>.log(<span class="string">'a:'</span> + a)</div><div class="line"><span class="built_in">console</span>.log(<span class="string">'b:'</span> + b)</div><div class="line"><span class="built_in">console</span>.log(<span class="string">'c:'</span> + c)</div></pre></td></tr></table></figure>
+<p>var声明的变量在循环时新值会覆盖旧值，导致输出的变量都为最终值<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> a = []</div><div class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">9</span>; i++) &#123;</div><div class="line">  a[i] = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">		<span class="built_in">console</span>.log(i)</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">a[<span class="number">2</span>](); <span class="comment">// 9</span></div></pre></td></tr></table></figure></p>
+<p>ES5中利用闭包解决这一问题<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">test</span> (<span class="params">index</span>) </span>&#123;</div><div class="line">		<span class="keyword">var</span> testback = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">			<span class="built_in">console</span>.log(index)</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">return</span> testback</div><div class="line">&#125;</div><div class="line"><span class="keyword">var</span> a = []</div><div class="line"><span class="keyword">for</span> (<span class="keyword">var</span> i = <span class="number">0</span>; i &lt; <span class="number">9</span>; i++) &#123;</div><div class="line">  a[i] = test(i)</div><div class="line">&#125;</div><div class="line">a[<span class="number">2</span>]()</div></pre></td></tr></table></figure></p>
+<p>ES6中仅仅使用let即可解决<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> a = []</div><div class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; <span class="number">9</span>; i++) &#123;</div><div class="line">  a[i] = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">		<span class="built_in">console</span>.log(i)</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">a[<span class="number">2</span>](); <span class="comment">// 2</span></div></pre></td></tr></table></figure></p>
+<p>const声明常量<br><figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> a = <span class="number">1</span></div><div class="line">a = <span class="number">10</span></div><div class="line"><span class="built_in">console</span>.log(a)</div></pre></td></tr></table></figure></p>
+<h5 id="模版字符串"><a href="#模版字符串" class="headerlink" title="模版字符串"></a>模版字符串</h5><ul>
 <li>ES5中，当需要插入大量html文档时需要引用template插件或是用大量‘+’连接</li>
 <li>模版字符串可直接用’``’标识起始</li>
 <li>模板字符串可以包含嵌入式表达式,对象字面量,甚至是函数</li>
 </ul>
-<pre><code>var myName = &#39;xunfeng&#39;
-console.log(`your name is ${myName}`) // your name is xunfeng
-
-var people = {
-  name: &#39;xunfeng&#39;,
-  age: 20
-}
-console.log(`your name is ${people.name}, your age is ${people.age}`)
-// your name is xunfeng, your age is 20
-
-function fn () {
-  return &#39;function&#39;
-}
-console.log(`可以嵌套函数：${fn()}`)
-</code></pre><ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> myName = <span class="string">'xunfeng'</span></div><div class="line"><span class="built_in">console</span>.log(<span class="string">`your name is <span class="subst">$&#123;myName&#125;</span>`</span>) <span class="comment">// your name is xunfeng</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> people = &#123;</div><div class="line">  name: <span class="string">'xunfeng'</span>,</div><div class="line">  age: <span class="number">20</span></div><div class="line">&#125;</div><div class="line"><span class="built_in">console</span>.log(<span class="string">`your name is <span class="subst">$&#123;people.name&#125;</span>, your age is <span class="subst">$&#123;people.age&#125;</span>`</span>)</div><div class="line"><span class="comment">// your name is xunfeng, your age is 20</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">fn</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="string">'function'</span></div><div class="line">&#125;</div><div class="line"><span class="built_in">console</span>.log(<span class="string">`可以嵌套函数：<span class="subst">$&#123;fn()&#125;</span>`</span>)</div></pre></td></tr></table></figure>
+<ul>
 <li>模板字符串可以在表达式内进行数学运算</li>
 </ul>
-<pre><code>var a = 10
-var b = 20
-console.log(`a+b=${a+b}`) //a+b=30
-</code></pre><ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> a = <span class="number">10</span></div><div class="line"><span class="keyword">var</span> b = <span class="number">20</span></div><div class="line"><span class="built_in">console</span>.log(<span class="string">`a+b=<span class="subst">$&#123;a+b&#125;</span>`</span>) <span class="comment">//a+b=30</span></div></pre></td></tr></table></figure>
+<ul>
 <li>模板字符串内保留空格，不需要换行符即可换行</li>
 </ul>
-<pre><code>console.log(`第一行
-第二行`)
-// 第一行
-// 第二行
-</code></pre><h5 id="数值扩展-Numeric-Literals"><a href="#数值扩展-Numeric-Literals" class="headerlink" title="数值扩展 Numeric Literals"></a>数值扩展 Numeric Literals</h5><ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">console</span>.log(<span class="string">`第一行</span></div><div class="line"><span class="string">第二行`</span>)</div><div class="line"><span class="comment">// 第一行</span></div><div class="line"><span class="comment">// 第二行</span></div></pre></td></tr></table></figure>
+<h5 id="数值扩展-Numeric-Literals"><a href="#数值扩展-Numeric-Literals" class="headerlink" title="数值扩展 Numeric Literals"></a>数值扩展 Numeric Literals</h5><ul>
 <li>支持二进制(0b)和八进制(0o)新写法</li>
 </ul>
-<pre><code>0b111110111 === 503 // true
-0o767 === 503 // true
-
-将二进制或八进制转换成十进制
-Number(&#39;0b111&#39;)  // 7
-Number(&#39;0o10&#39;)  // 8
-</code></pre><ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="number">0b111110111</span> === <span class="number">503</span> <span class="comment">// true</span></div><div class="line"><span class="number">0o767</span> === <span class="number">503</span> <span class="comment">// true</span></div><div class="line"></div><div class="line">将二进制或八进制转换成十进制</div><div class="line"><span class="built_in">Number</span>(<span class="string">'0b111'</span>)  <span class="comment">// 7</span></div><div class="line"><span class="built_in">Number</span>(<span class="string">'0o10'</span>)  <span class="comment">// 8</span></div></pre></td></tr></table></figure>
+<ul>
 <li>新的方法</li>
 </ul>
-<pre><code>Number.isFinite() // 检查一个数值是否为有限
-Number.isNaN()  // 检查一个数值是否为NaN
-Number.isInteger()  // 检查一个数值是否为整数
-Number.EPSILON  // 极小的常量，设定的误差范围
-</code></pre><ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">Number</span>.isFinite() <span class="comment">// 检查一个数值是否为有限</span></div><div class="line"><span class="built_in">Number</span>.isNaN()  <span class="comment">// 检查一个数值是否为NaN</span></div><div class="line"><span class="built_in">Number</span>.isInteger()  <span class="comment">// 检查一个数值是否为整数</span></div><div class="line"><span class="built_in">Number</span>.EPSILON  <span class="comment">// 极小的常量，设定的误差范围</span></div></pre></td></tr></table></figure>
+<ul>
 <li>Math对象的扩展</li>
 </ul>
-<pre><code>Math.trunc()  // 去除一个数的小数部分，返回整数部分
-Math.sign() // 判断一个数到底是正数、负数、还是零
-Math.cbrt() // 用于计算一个数的立方根
-Math.hypot() // 返回所有参数的平方和的平方根
-Math.expm1() // Math.expm1(x)返回ex - 1，即Math.exp(x) - 1
-Math.log1p() // Math.log1p(x)方法返回1 + x的自然对数
-Math.log10() // Math.log10(x)返回以10为底的x的对数
-Math.log2() // Math.log2(x)返回以2为底的x的对数
-Math.sinh(x) // 返回x的双曲正弦（hyperbolic sine）
-Math.cosh(x) // 返回x的双曲余弦（hyperbolic cosine）
-Math.tanh(x) // 返回x的双曲正切（hyperbolic tangent）
-Math.asinh(x) // 返回x的反双曲正弦（inverse hyperbolic sine）
-Math.acosh(x) // 返回x的反双曲余弦（inverse hyperbolic cosine）
-Math.atanh(x) // 返回x的反双曲正切（inverse hyperbolic tangent）
-</code></pre><ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">Math</span>.trunc()  <span class="comment">// 去除一个数的小数部分，返回整数部分</span></div><div class="line"><span class="built_in">Math</span>.sign() <span class="comment">// 判断一个数到底是正数、负数、还是零</span></div><div class="line"><span class="built_in">Math</span>.cbrt() <span class="comment">// 用于计算一个数的立方根</span></div><div class="line"><span class="built_in">Math</span>.hypot() <span class="comment">// 返回所有参数的平方和的平方根</span></div><div class="line"><span class="built_in">Math</span>.expm1() <span class="comment">// Math.expm1(x)返回ex - 1，即Math.exp(x) - 1</span></div><div class="line"><span class="built_in">Math</span>.log1p() <span class="comment">// Math.log1p(x)方法返回1 + x的自然对数</span></div><div class="line"><span class="built_in">Math</span>.log10() <span class="comment">// Math.log10(x)返回以10为底的x的对数</span></div><div class="line"><span class="built_in">Math</span>.log2() <span class="comment">// Math.log2(x)返回以2为底的x的对数</span></div><div class="line"><span class="built_in">Math</span>.sinh(x) <span class="comment">// 返回x的双曲正弦（hyperbolic sine）</span></div><div class="line"><span class="built_in">Math</span>.cosh(x) <span class="comment">// 返回x的双曲余弦（hyperbolic cosine）</span></div><div class="line"><span class="built_in">Math</span>.tanh(x) <span class="comment">// 返回x的双曲正切（hyperbolic tangent）</span></div><div class="line"><span class="built_in">Math</span>.asinh(x) <span class="comment">// 返回x的反双曲正弦（inverse hyperbolic sine）</span></div><div class="line"><span class="built_in">Math</span>.acosh(x) <span class="comment">// 返回x的反双曲余弦（inverse hyperbolic cosine）</span></div><div class="line"><span class="built_in">Math</span>.atanh(x) <span class="comment">// 返回x的反双曲正切（inverse hyperbolic tangent）</span></div></pre></td></tr></table></figure>
+<ul>
 <li>指数运算符 **</li>
 </ul>
-<pre><code>console.log(2 ** 3) // 8
-</code></pre><h5 id="对象部分扩展"><a href="#对象部分扩展" class="headerlink" title="对象部分扩展"></a>对象部分扩展</h5><ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">console</span>.log(<span class="number">2</span> ** <span class="number">3</span>) <span class="comment">// 8</span></div></pre></td></tr></table></figure>
+<h5 id="对象部分扩展"><a href="#对象部分扩展" class="headerlink" title="对象部分扩展"></a>对象部分扩展</h5><ul>
 <li>变量和函数可直接作为对象的属性和方法</li>
 </ul>
-<pre><code>&lt;!-- ES6 --&gt;
-var object = {
-  value: 42,
-  toString() {
-    return this.value
-  }
-}
-console.log(object.toString() === 42) // true
-
-&lt;!-- ES5 --&gt;
-var object = {
-  value: 42,
-  toString: function toString() {
-    return this.value
-  }
-}
-
-console.log(object.toString() === 42) // true
-</code></pre><ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">&lt;!-- ES6 --&gt;</div><div class="line"><span class="keyword">var</span> object = &#123;</div><div class="line">  value: <span class="number">42</span>,</div><div class="line">  toString() &#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.value</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"><span class="built_in">console</span>.log(object.toString() === <span class="number">42</span>) <span class="comment">// true</span></div><div class="line"></div><div class="line">&lt;!-- ES5 --&gt;</div><div class="line"><span class="keyword">var</span> object = &#123;</div><div class="line">  value: <span class="number">42</span>,</div><div class="line">  toString: <span class="function"><span class="keyword">function</span> <span class="title">toString</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.value</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(object.toString() === <span class="number">42</span>) <span class="comment">// true</span></div></pre></td></tr></table></figure>
+<ul>
 <li>计算属性名可以用变量当做对象的属性名</li>
 </ul>
-<pre><code>var computed = &#39;calc&#39;
-var comFn = {
-  [computed + &#39;xun&#39;]: &#39;hi&#39;,
-  [computed + &#39;feng&#39;]: &#39;hello&#39;
-}
-console.log(comFn[&#39;calcxun&#39;]) // hi
-console.log(comFn[&#39;calcfeng&#39;]) // hello
-</code></pre><h5 id="解构"><a href="#解构" class="headerlink" title="解构"></a>解构</h5><ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> computed = <span class="string">'calc'</span></div><div class="line"><span class="keyword">var</span> comFn = &#123;</div><div class="line">  [computed + <span class="string">'xun'</span>]: <span class="string">'hi'</span>,</div><div class="line">  [computed + <span class="string">'feng'</span>]: <span class="string">'hello'</span></div><div class="line">&#125;</div><div class="line"><span class="built_in">console</span>.log(comFn[<span class="string">'calcxun'</span>]) <span class="comment">// hi</span></div><div class="line"><span class="built_in">console</span>.log(comFn[<span class="string">'calcfeng'</span>]) <span class="comment">// hello</span></div></pre></td></tr></table></figure>
+<h5 id="解构"><a href="#解构" class="headerlink" title="解构"></a>解构</h5><ul>
 <li>允许从数组或对象中提取数据并对变量赋值</li>
 </ul>
-<pre><code>var a = 1
-var b = 2
-var c = {a, b}
-console.log(c) // {a: 1, b: 2}
-
-var c = {a: 1, b: 2}
-var {a, b} = c
-console.log(a, b) // 1 2
-</code></pre><h5 id="默认参数-default"><a href="#默认参数-default" class="headerlink" title="默认参数 default"></a>默认参数 default</h5><ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> a = <span class="number">1</span></div><div class="line"><span class="keyword">var</span> b = <span class="number">2</span></div><div class="line"><span class="keyword">var</span> c = &#123;a, b&#125;</div><div class="line"><span class="built_in">console</span>.log(c) <span class="comment">// &#123;a: 1, b: 2&#125;</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> c = &#123;<span class="attr">a</span>: <span class="number">1</span>, <span class="attr">b</span>: <span class="number">2</span>&#125;</div><div class="line"><span class="keyword">var</span> &#123;a, b&#125; = c</div><div class="line"><span class="built_in">console</span>.log(a, b) <span class="comment">// 1 2</span></div></pre></td></tr></table></figure>
+<h5 id="默认参数-default"><a href="#默认参数-default" class="headerlink" title="默认参数 default"></a>默认参数 default</h5><ul>
 <li>ES6可以指定默认参数在arguments中</li>
 </ul>
-<pre><code>function myFn(mes = &#39;hello&#39;) {
-  console.log(mes)
-}
-myFn(); // hello
-myFn(&#39;hi&#39;); // hi
-</code></pre><h5 id="其他参数-rest"><a href="#其他参数-rest" class="headerlink" title="其他参数 rest"></a>其他参数 rest</h5><ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">myFn</span>(<span class="params">mes = <span class="string">'hello'</span></span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(mes)</div><div class="line">&#125;</div><div class="line">myFn(); <span class="comment">// hello</span></div><div class="line">myFn(<span class="string">'hi'</span>); <span class="comment">// hi</span></div></pre></td></tr></table></figure>
+<h5 id="其他参数-rest"><a href="#其他参数-rest" class="headerlink" title="其他参数 rest"></a>其他参数 rest</h5><ul>
 <li>允许将部分参数作为一个单独的数组</li>
 </ul>
-<pre><code>function myFn(a, ...b) {
-  var result = a
-   for(let i = 0; i&lt;b.length; i++) {
-     result += b[i]
-   }
-   return result
-}
-console.log(myFn(1,2,3,4)) // 10
-</code></pre><h5 id="迭代器-iterators-amp-amp-for-of"><a href="#迭代器-iterators-amp-amp-for-of" class="headerlink" title="迭代器 iterators &amp;&amp; for of"></a>迭代器 iterators &amp;&amp; for of</h5><ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">myFn</span>(<span class="params">a, ...b</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> result = a</div><div class="line">   <span class="keyword">for</span>(<span class="keyword">let</span> i = <span class="number">0</span>; i&lt;b.length; i++) &#123;</div><div class="line">     result += b[i]</div><div class="line">   &#125;</div><div class="line">   <span class="keyword">return</span> result</div><div class="line">&#125;</div><div class="line"><span class="built_in">console</span>.log(myFn(<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>)) <span class="comment">// 10</span></div></pre></td></tr></table></figure>
+<h5 id="迭代器-iterators-amp-amp-for-of"><a href="#迭代器-iterators-amp-amp-for-of" class="headerlink" title="迭代器 iterators &amp;&amp; for of"></a>迭代器 iterators &amp;&amp; for of</h5><ul>
 <li>可以直接遍历容器的内容</li>
 </ul>
-<pre><code>var a=[&#39;x&#39;, &#39;y&#39;, &#39;z&#39;]
-for (let i of a){
-  console.log(i)  // x y z
-}
-</code></pre><h5 id="类-classes"><a href="#类-classes" class="headerlink" title="类 classes"></a>类 classes</h5><ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> a=[<span class="string">'x'</span>, <span class="string">'y'</span>, <span class="string">'z'</span>]</div><div class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i <span class="keyword">of</span> a)&#123;</div><div class="line">  <span class="built_in">console</span>.log(i)  <span class="comment">// x y z</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h5 id="类-classes"><a href="#类-classes" class="headerlink" title="类 classes"></a>类 classes</h5><ul>
 <li>constructor(构造方法)<br>创建实例对象时设定的属性</li>
 <li>extends(继承)<br>class之间可以通过extends相互继承，相比于原形链更简洁易懂</li>
 <li>super<br>在子类constructor中调用父类的constructor</li>
 <li>getter &amp;&amp; setter<br>在Class内部可以使用get和set关键字，对某个属性设置存值函数和取值函数，拦截该属性的存取行为。</li>
 <li>static 静态方法<br>不会被实例对象继承，只能通过类或类继承来调用</li>
 </ul>
-<pre><code>class student {
-  constructor(name, age) {
-    this.name = name
-    this.age = age
-  }
-  getName () {
-    console.log(this.name)
-  }
-  get myAge() {
-    return this.age
-  }
-  set myAge(value) {
-    this._age = value
-  }
-  static bar() {
-    console.log(&#39;static&#39;)
-  }
-}
-// 创建实例对象
-var xun = new student(&#39;xun&#39;, 20)
-xun.getName() // xun
-xun.bar() // TypeError: xun.bar is not a function. (In &#39;xun.bar()&#39;, &#39;xun.bar&#39; is undefined)
-student.bar() // static
-// 继承
-class Tom extends student {
-  constructor(name, age, sex) {
-    super(name, age)
-    this.sex = sex
-  }
-}
-var tom = new Tom(&#39;tom&#39;, 20, &#39;man&#39;)
-console.log(tom)  // 实例对象属性
-tom.myAge = 22
-console.log(tom._age) // 22
-console.log(tom.myAge) // 20
-</code></pre><h5 id="模块-modules"><a href="#模块-modules" class="headerlink" title="模块 modules"></a>模块 modules</h5><ul>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">student</span> </span>&#123;</div><div class="line">  <span class="keyword">constructor</span>(name, age) &#123;</div><div class="line">    <span class="keyword">this</span>.name = name</div><div class="line">    <span class="keyword">this</span>.age = age</div><div class="line">  &#125;</div><div class="line">  getName () &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="keyword">this</span>.name)</div><div class="line">  &#125;</div><div class="line">  get myAge() &#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.age</div><div class="line">  &#125;</div><div class="line">  set myAge(value) &#123;</div><div class="line">    <span class="keyword">this</span>._age = value</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">static</span> bar() &#123;</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'static'</span>)</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"><span class="comment">// 创建实例对象</span></div><div class="line"><span class="keyword">var</span> xun = <span class="keyword">new</span> student(<span class="string">'xun'</span>, <span class="number">20</span>)</div><div class="line">xun.getName() <span class="comment">// xun</span></div><div class="line">xun.bar() <span class="comment">// TypeError: xun.bar is not a function. (In 'xun.bar()', 'xun.bar' is undefined)</span></div><div class="line">student.bar() <span class="comment">// static</span></div><div class="line"><span class="comment">// 继承</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Tom</span> <span class="keyword">extends</span> <span class="title">student</span> </span>&#123;</div><div class="line">  <span class="keyword">constructor</span>(name, age, sex) &#123;</div><div class="line">    <span class="keyword">super</span>(name, age)</div><div class="line">    <span class="keyword">this</span>.sex = sex</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"><span class="keyword">var</span> tom = <span class="keyword">new</span> Tom(<span class="string">'tom'</span>, <span class="number">20</span>, <span class="string">'man'</span>)</div><div class="line"><span class="built_in">console</span>.log(tom)  <span class="comment">// 实例对象属性</span></div><div class="line">tom.myAge = <span class="number">22</span></div><div class="line"><span class="built_in">console</span>.log(tom._age) <span class="comment">// 22</span></div><div class="line"><span class="built_in">console</span>.log(tom.myAge) <span class="comment">// 20</span></div></pre></td></tr></table></figure>
+<h5 id="模块-modules"><a href="#模块-modules" class="headerlink" title="模块 modules"></a>模块 modules</h5><ul>
 <li>export 暴露对外接口</li>
 <li>import 导入其他模块接口</li>
 </ul>
-<pre><code>&lt;!-- export.js --&gt;
-//命名导出
-export var foo = ...
-export let bar = ...
-export const MY_CONST = ...
+<figure class="highlight js"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div></pre></td><td class="code"><pre><div class="line">&lt;!-- <span class="keyword">export</span>.js --&gt;</div><div class="line"><span class="comment">//命名导出</span></div><div class="line"><span class="keyword">export</span> <span class="keyword">var</span> foo = ...</div><div class="line"><span class="keyword">export</span> <span class="keyword">let</span> bar = ...</div><div class="line"><span class="keyword">export</span> <span class="keyword">const</span> MY_CONST = ...</div><div class="line"></div><div class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">myFunc</span>(<span class="params"></span>) </span>&#123;</div><div class="line">   ...</div><div class="line">&#125;</div><div class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span>* <span class="title">myGeneratorFunc</span>(<span class="params"></span>) </span>&#123;</div><div class="line">   ...</div><div class="line">&#125;</div><div class="line"><span class="keyword">export</span> <span class="class"><span class="keyword">class</span> <span class="title">MyClass</span> </span>&#123;</div><div class="line">   ...</div><div class="line">&#125;</div><div class="line"><span class="comment">// default 导出</span></div><div class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="number">123</span></div><div class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="function"><span class="keyword">function</span> (<span class="params">x</span>) </span>&#123;</div><div class="line">   <span class="keyword">return</span> x</div><div class="line">&#125;</div><div class="line"><span class="keyword">export</span> <span class="keyword">default</span> x =&gt; x;</div><div class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="class"><span class="keyword">class</span> </span>&#123;</div><div class="line">   <span class="keyword">constructor</span>(x, y) &#123;</div><div class="line">       <span class="keyword">this</span>.x = x</div><div class="line">       <span class="keyword">this</span>.y = y</div><div class="line">   &#125;</div><div class="line">&#125;;</div><div class="line"><span class="comment">//也可以自己列出所有导出内容</span></div><div class="line"><span class="keyword">const</span> MY_CONST = ...</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">myFunc</span>(<span class="params"></span>) </span>&#123;</div><div class="line">   ...</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">export</span> &#123; MY_CONST, myFunc &#125;</div><div class="line"><span class="comment">//或者在导出的时候给他们改个名字</span></div><div class="line"><span class="keyword">export</span> &#123; MY_CONST <span class="keyword">as</span> THE_CONST, myFunc <span class="keyword">as</span> theFunc &#125;</div><div class="line"></div><div class="line"><span class="comment">//还可以导出从其他地方导入的模块</span></div><div class="line"><span class="keyword">export</span> * <span class="keyword">from</span> <span class="string">'src/other_module'</span></div><div class="line"><span class="keyword">export</span> &#123; foo, bar &#125; <span class="keyword">from</span> <span class="string">'src/other_module'</span></div><div class="line"><span class="keyword">export</span> &#123; foo <span class="keyword">as</span> myFoo, bar &#125; <span class="keyword">from</span> <span class="string">'src/other_module'</span></div><div class="line"></div><div class="line">&lt;!-- <span class="keyword">import</span>.js --&gt;</div><div class="line"></div><div class="line"><span class="comment">// Default exports and named exports</span></div><div class="line"><span class="keyword">import</span> theDefault, &#123; named1, named2 &#125; <span class="keyword">from</span> <span class="string">'src/mylib'</span></div><div class="line"><span class="keyword">import</span> theDefault <span class="keyword">from</span> <span class="string">'src/mylib'</span></div><div class="line"><span class="keyword">import</span> &#123; named1, named2 &#125; <span class="keyword">from</span> <span class="string">'src/mylib'</span></div><div class="line"></div><div class="line"><span class="comment">// Renaming: import named1 as myNamed1</span></div><div class="line"><span class="keyword">import</span> &#123; named1 <span class="keyword">as</span> myNamed1, named2 &#125; <span class="keyword">from</span> <span class="string">'src/mylib'</span></div><div class="line"></div><div class="line"><span class="comment">// Importing the module as an object</span></div><div class="line"><span class="comment">// (with one property per named export)</span></div><div class="line"><span class="keyword">import</span> * <span class="keyword">as</span> mylib <span class="keyword">from</span> <span class="string">'src/mylib'</span></div><div class="line"></div><div class="line"><span class="comment">// Only load the module, don’t import anything</span></div><div class="line"><span class="keyword">import</span> <span class="string">'src/mylib'</span></div></pre></td></tr></table></figure>
+<h5 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h5><p><a href="http://www.jianshu.com/p/ebfeb687eb70" target="_blank" rel="external">30分钟掌握ES6/ES2015核心内容</a><br><a href="http://es6.ruanyifeng.com/?search=Spread&amp;x=0&amp;y=0" target="_blank" rel="external">ECMAScript 6 入门</a><br><a href="https://github.com/addyosmani/es6-equivalents-in-es5/blob/master/README.md#classes" target="_blank" rel="external"> ECMAScript 6 equivalents in ES5</a></p>
 
-export function myFunc() {
-   ...
-}
-export function* myGeneratorFunc() {
-   ...
-}
-export class MyClass {
-   ...
-}
-// default 导出
-export default 123
-export default function (x) {
-   return x
-}
-export default x =&gt; x;
-export default class {
-   constructor(x, y) {
-       this.x = x
-       this.y = y
-   }
-};
-//也可以自己列出所有导出内容
-const MY_CONST = ...
-function myFunc() {
-   ...
-}
+      
+    </div>
 
-export { MY_CONST, myFunc }
-//或者在导出的时候给他们改个名字
-export { MY_CONST as THE_CONST, myFunc as theFunc }
+    <div>
+      
+        
 
-//还可以导出从其他地方导入的模块
-export * from &#39;src/other_module&#39;
-export { foo, bar } from &#39;src/other_module&#39;
-export { foo as myFoo, bar } from &#39;src/other_module&#39;
+      
+    </div>
 
-&lt;!-- import.js --&gt;
+    <div>
+      
+        
 
-// Default exports and named exports
-import theDefault, { named1, named2 } from &#39;src/mylib&#39;
-import theDefault from &#39;src/mylib&#39;
-import { named1, named2 } from &#39;src/mylib&#39;
+      
+    </div>
 
-// Renaming: import named1 as myNamed1
-import { named1 as myNamed1, named2 } from &#39;src/mylib&#39;
 
-// Importing the module as an object
-// (with one property per named export)
-import * as mylib from &#39;src/mylib&#39;
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/javascript/" rel="tag"># javascript</a>
+          
+            <a href="/tags/ES6/" rel="tag"># ES6</a>
+          
+            <a href="/tags/ES5/" rel="tag"># ES5</a>
+          
+        </div>
+      
 
-// Only load the module, don’t import anything
-import &#39;src/mylib&#39;
-</code></pre><h5 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h5><p><a href="http://www.jianshu.com/p/ebfeb687eb70" target="_blank" rel="external">30分钟掌握ES6/ES2015核心内容</a><br><a href="http://es6.ruanyifeng.com/?search=Spread&amp;x=0&amp;y=0" target="_blank" rel="external">ECMAScript 6 入门</a><br><a href="https://github.com/addyosmani/es6-equivalents-in-es5/blob/master/README.md#classes" target="_blank" rel="external"> ECMAScript 6 equivalents in ES5</a></p>
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/01/25/css布局/" rel="next" title="css布局">
+                <i class="fa fa-chevron-left"></i> css布局
+              </a>
+            
+          </div>
 
-	</div>
-	<div class="meta split">
-		
-		<time class="post-date" datetime="2017-02-18T14:03:07.000Z" itemprop="datePublished">2017-02-18</time>
-	</div>
-</article>
+          <span class="post-nav-divider"></span>
 
-<!--评论-->
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/03/06/three-js入门/" rel="prev" title="three.js入门">
+                three.js入门 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
 
-	
-<div class="ds-thread" data-thread-key="ES6与ES5" data-title="ES6的学习（一）" data-url="http://www.xuncs.cn/2017/02/18/ES6与ES5/"></div>
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2017/02/18/ES6与ES5/"
+           data-title="ES6的学习（一）" data-url="http://test.xuncs.cn/2017/02/18/ES6与ES5/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.jpg"
+               alt="陈硕" />
+          <p class="site-author-name" itemprop="name">陈硕</p>
+          <p class="site-description motion-element" itemprop="description">单身狗/矮丑穷/前端渣</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">25</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">19</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/xunfeng911" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/574377119" target="_blank" title="微博">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  微博
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#ES5-gt-ES6"><span class="nav-number">1.</span> <span class="nav-text">ES5 => ES6</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#箭头函数"><span class="nav-number">1.0.1.</span> <span class="nav-text">箭头函数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#块级作用域"><span class="nav-number">1.0.2.</span> <span class="nav-text">块级作用域</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#模版字符串"><span class="nav-number">1.0.3.</span> <span class="nav-text">模版字符串</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#数值扩展-Numeric-Literals"><span class="nav-number">1.0.4.</span> <span class="nav-text">数值扩展 Numeric Literals</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#对象部分扩展"><span class="nav-number">1.0.5.</span> <span class="nav-text">对象部分扩展</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#解构"><span class="nav-number">1.0.6.</span> <span class="nav-text">解构</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#默认参数-default"><span class="nav-number">1.0.7.</span> <span class="nav-text">默认参数 default</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#其他参数-rest"><span class="nav-number">1.0.8.</span> <span class="nav-text">其他参数 rest</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#迭代器-iterators-amp-amp-for-of"><span class="nav-number">1.0.9.</span> <span class="nav-text">迭代器 iterators && for of</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#类-classes"><span class="nav-number">1.0.10.</span> <span class="nav-text">类 classes</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#模块-modules"><span class="nav-number">1.0.11.</span> <span class="nav-text">模块 modules</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#参考链接"><span class="nav-number">1.0.12.</span> <span class="nav-text">参考链接</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">陈硕</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
 <script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
 
-var duoshuoQuery = {short_name:"yumemor"};
-	(function() {
-		var ds = document.createElement('script');
-		ds.type = 'text/javascript';ds.async = true;
-		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-		ds.charset = 'UTF-8';
-		(document.getElementsByTagName('head')[0]
-		 || document.getElementsByTagName('body')[0]).appendChild(ds);
-	})();
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"xunfeng911"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    
+    <script src="/lib/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("SKbjLtORMQk3L6pssiYvcvGA-gzGzoHsz", "Sagak0APxmm1fQsz8uoanTdz");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
 </script>
 
 
   
-</div>
 
 
-  <svg id="bigTriangleColor" width="100%" height="40" viewBox="0 0 100 102" preserveAspectRatio="none">
-    <path d="M0 0 L50 100 L100 0 Z"></path>
-  </svg>
-
-  
-
-
-  <div class="wrapper"></div>
-
-
-
-
-
-<div class="fat-footer">
-	<div class="wrapper">
-		<div class="layout layout--center">
-			<div class="layout__item palm-mb">
-				<div class="media">
-					<img class="headimg" src='http://xuncs.cn/image.jpg' alt='陈硕'>
-					<div class="media__body">
-						<h4>黑天很黑</h4>
-						<p class='site-description'>单身狗/矮丑穷/前端渣</p>
-					</div>
-				</div>
-				<div class="author-contact">
-					<ul>
-						
-							
-							<li>
-				        		<a href="http://weibo.com/XunFengsama" target="_blank">
-				        			
-				        				<i class="iconfont icon-weibo"></i>
-				        			
-				        		</a>
-				        	</li>
-						
-							
-							<li>
-				        		<a href="https://github.com/xunfeng911" target="_blank">
-				        			
-				        				<i class="iconfont icon-github"></i>
-				        			
-				        		</a>
-				        	</li>
-						
-					</ul>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-
-<footer class="footer" role="contentinfo">
-	<div class="wrapper wrapper--wide split split--responsive">
-		
-		<!--<span>Theme by <a href="http://github.com/yumemor">Yumemor</a>. Powered by <a href="http://hexo.io">Hexo</a></span>-->
-	</div>
-</footer>
-
-	<!-－这里导入了 lib.js 里面涵盖了 jQuery 等框架 所以注释掉-->
-	<!--<script src="http://lib.sinaapp.com/js/jquery/2.0/jquery.min.js"></script>-->
-	<script src="/js/lib.js"></script>
-	<script src="/js/google-code-prettify/prettify.js"></script>
-	<script src="/js/module.js"></script>
-	<script src="/js/script.js"></script>
-	
-	<script type='text/javascript'>
-		//代码高亮
-		$(document).ready(function(){
-	 		$('pre').addClass('prettyprint linenums').attr('style', 'overflow:auto;');
-   			prettyPrint();
-		});
-	</script>
-	</body>
+</body>
 </html>

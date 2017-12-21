@@ -5,20 +5,17 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Program",
+      "program": "${workspaceFolder}/events.js"
+    },
+    {
       "type": "chrome",
       "request": "launch",
       "name": "Launch Chrome",
       "url": "http://localhost:8080",
       "webRoot": "${workspaceRoot}"
     },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "启动程序",
-      "program": "${file}",
-      "outFiles": [
-        "${workspaceRoot}/out/**/*.js"
-      ]
-    }
   ]
 }

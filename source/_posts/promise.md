@@ -101,7 +101,9 @@ function xPromise(fn) {
   if (typeof fn !== 'function') {
     throw new TypeError('Promise constructor\'s argument is not a function');
   }
-  let _status = 'pending'; // 初始状态
-  let callbacks = []; // 回调
+  this._status = 'pending'; // 初始状态
+  this._value = null;   // promise执行结果
+  this._deferreds = []; // then中的回调函数
 
+  try
 }
