@@ -13,7 +13,7 @@ tags:
 - 无需明确参数即可重写函数
 - 可检测调用参数的个数
 - arguments对象的长度是由实参个数而不是形参个数决定的，没有调用的参数不能被获取
-```
+```js
 		var arr= function(a,b,c){
 			 a+=5;
 			 b+=1;
@@ -28,7 +28,7 @@ tags:
 js的函数声明没有返回值类型
 JavaScript中形参的个数严格意义上来讲只是为了方便在函数中的变量操作，实际上实参已经存储在arguments对象中了
 用 arguments 对象判断传递给函数的参数个数，即可模拟函数重载
-```
+```js
 		var arr= function(a,b,c){
 			if(arguments.length==1){
 				console.log(arguments[0]+1);
@@ -44,7 +44,7 @@ JavaScript中形参的个数严格意义上来讲只是为了方便在函数中�
 ```
 - arguments.callee
 返回此arguments对象所在的当前函数引用,递归中代替函数本身
-```
+```js
 		var arr= function(a){
 			if(a==1){
 				return 1;

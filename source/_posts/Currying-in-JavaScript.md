@@ -57,4 +57,30 @@ function curry (fn) {
     return fn.apply(null, args);
   }
 }
+
+function curry(fn) {
+  var  _argLen = fn.length
+
+  function wrap() {
+    var _args = [].slice.call(arguments)
+    function act() {
+      _args = _args.concat([].slice.call(arguments))
+      if(_args.length === _argLen) {
+        return fn.apply(null, _args)
+      }
+      return arguments.callee
+      }
+    if(_args.length === _argLen) {
+      return fn.apply(null, _args)
+    }
+
+    act.toString = function() {
+      return fn.toString()
+    }
+    return act
+  }
+
+  return wrap
+}
+
 ```
