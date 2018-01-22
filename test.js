@@ -1,21 +1,20 @@
-var spawn = require('child_process').spawn;
+// process.nextTick(function A() {
+//     console.log(1);
+//     process.nextTick(function B() { console.log(2); });
+//     setTimeout(() => {
+//         console.log(4);
+//     }, 0);
+// });
 
-free = spawn('hexo', ['server', '-p 5000']);/* 其实就是等于执行hexo server -p 4000*/
+// console.log(3)
 
-free.stdout.on('data', function (data) {
-
-    console.log('standard output:\n' + data);
-
+setImmediate(function() {
+    console.log(6);
+    setImmediate(function(){console.log(7);});
 });
+  
+setTimeout(function() {
+    console.log(5)
+}, 0);
 
-free.stderr.on('data', function (data) {
 
-    console.log('standard error output:\n' + data);
-
-});
-
-free.on('exit', function (code, signal) {
-
-    console.log('child process eixt ,exit:' + code);
-
-});
