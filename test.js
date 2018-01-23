@@ -23,7 +23,6 @@ var findMedianSortedArrays = function(nums1= [], nums2 = []) {
     let b = nums1.concat(nums2).sort(sortNum), res = 0;
     console.log(b)
     let is = b.length % 2;
-    let len = b.length / 2;
     if (is === 0) {
         res = (b[len - 1] + b[len]) / 2;
     } else {

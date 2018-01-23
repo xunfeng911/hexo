@@ -1,0 +1,18 @@
+div {
+  .m(@x) when (default()), not(default())    {always: @x}
+  .m(@x) when (default()) and not(default()) {never:  @x}
+
+  .m(1); // OK
+}
+div {
+  foo: default();
+  bar: default(42);
+}
+
+body {
+  font-size: unit(5em, px);
+}
+div {
+  @list: red, green 30%, blue;
+  background-image: svg-gradient(to right, @list);
+}
