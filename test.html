@@ -6,39 +6,35 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    .reset {
-      counter-reset: feng;
-    }
-    .counter::before {
-      content: counters(feng, '-');
-      counter-increment: feng;
-    }
-
+    .wrapper { 
+      display: grid; 
+      grid-template-columns: repeat(3, 1fr); 
+      grid-auto-rows: 100px; 
+  } 
+  .box1 { 
+      grid-column-start: 1; 
+      grid-column-end: 4; 
+      grid-row-start: 1; 
+      grid-row-end: 3; 
+  } 
+  .box2 { 
+      grid-column-start: 1; 
+      grid-row-start: 3; 
+      grid-row-end: 5; 
+  }
   </style>
 </head>
 
 <body>
-  <div class="reset">
-      <div class="counter">我是王小二
-          <div class="reset">
-              <div class="counter">我是王小二的大儿子</div>
-              <div class="counter">我是王小二的二儿子
-                  <div class="reset">
-                      <div class="counter">我是王小二的二儿子的大孙子</div>
-                      <div class="counter">我是王小二的二儿子的二孙子</div>
-                      <div class="counter">我是王小二的二儿子的小孙子</div>
-                  </div>
-              </div>
-              <div class="counter">我是王小二的三儿子</div>
-          </div>
-      </div>
-      <div class="counter">我是王小三</div>
-      <div class="counter">我是王小四
-          <div class="reset">
-              <div class="counter">我是王小四的大儿子</div>
-          </div>
-      </div>
-  </div>
+  <input type="text" id="a" />
+  <span id="b"></span> 
+  <div class="wrapper">
+      <div class="box1">One</div>
+      <div class="box2">Two</div>
+      <div class="box3">Three</div>
+      <div class="box4">Four</div>
+      <div class="box5">Five</div>
+   </div>
   <script src="test.js"></script>
 </body>
 
