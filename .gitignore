@@ -9,4 +9,4 @@ selenium-debug.log
 .idea
 js.sh
 public
-db.json
+./db.json

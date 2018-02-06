@@ -18,7 +18,7 @@ Padding(内边距) - 清除内容周围的区域，内边距是透明的。
 Content(内容) - 盒子的内容，显示文本和图像。
 
  w3c标准：总宽度 = margin-left + border-left + padding-left + width + padding-right + border-right + margin-right
-
+  ？
  IE标准：总宽度 = margin-left + width + margin-right
 
 #### css定位机制
