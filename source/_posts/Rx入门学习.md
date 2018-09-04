@@ -12,6 +12,8 @@ tags:
 
 
 ### 建立Observable
+- Observable产生事件
+- subscribe响应事件
 统一订阅
 ```js
 observable.subscribe({

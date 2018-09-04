@@ -2,8 +2,9 @@
 title: Angular4入门
 date: 2017-08-02 10:49:44
 tags:
-	Angular
+    - Angular
 ---
+<!--more-->
 ## Angular4入门
 
 ### Angular-cli

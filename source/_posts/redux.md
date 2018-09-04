@@ -7,27 +7,12 @@ tags:
 ---
 愿这次笔记能记好。
 
-<!--more-->
+<!-- more-->
 
-<!--# <strong class="title">React</strong>
-
-## <strong class="title">创建项目</strong>
-
-``` shell
-$ git clone -o react-starter-kit -b master --single-branch       https://github.com/kriasoft/react-starter-kit.git myapp
-$ cd myapp
-$ yarn install
-$ yarn start
-```-->
-
-<!--## jsx-->
-
-
-
-### <strong class="title">redux(一种架构模式)</strong>
+#### <strong class="title">redux(一种架构模式)</strong>
 不同的组件之间需要共享读写一些数据。
 
-### <strong class="title">dispatch</strong>
+#### <strong class="title">dispatch</strong>
 定义 dispatch 专门负责数据的修改:
 ``` js
 function dispatch (action) {
@@ -57,7 +42,7 @@ dispacth(params);
 因此，无需再担心共享数据状态修改的问题。
 
 
-### <strong class="title">store 构建state/dispatch 的集合</strong>
+#### <strong class="title">store 构建state/dispatch 的集合</strong>
 
 `createStore`
 ``` js
@@ -115,7 +100,7 @@ rednerApp(store.getState()); // 渲染新数据
 通过`store.dispatch`修改数据
 通过`store.getState`获取数据
 
-### <strong class="title">监控数据变化</strong>
+#### <strong class="title">监控数据变化</strong>
 上面的代码如果不手动renderApp的话，页面数据不会更新，因此需要自动渲染数据。
 修改`createStore`
 ``` js
@@ -143,11 +128,11 @@ store.dispatch(params);
 // 自动更新数据...
 ```
 
-### <strong class="title">纯函数</strong>
+#### <strong class="title">纯函数</strong>
 - 函数的返回结果只依赖于它的参数
 - 执行过程中不产生任何副作用
 
-### <strong class="title">共享结构的对象,优化性能</strong>
+#### <strong class="title">共享结构的对象,优化性能</strong>
 更新时，部分属性无改变，但仍旧重新渲染，耗费性能。
 `解决方案`:在渲染函数执行之前判断传入的新数据和已有的数据是否相同。
 ``` js
@@ -228,7 +213,7 @@ store.dispatch(params);
 
 rednerApp(store.getState()); // 渲染新数据
 ```
-### <strong class="title">reducer</strong>
+#### <strong class="title">reducer</strong>
 让`createStore`接受一个纯函数`reducer`为参数
 `reducer`接受`action`&`state`两个参数
 如果没有传入state，返回初始化的数据，否则根据action复制/覆盖产生新state
@@ -264,7 +249,7 @@ const themeReducer (state, action) => {
 const store = createStore(themeReducer)
 ```
 
-### <strong class="title">REDUX的套路</strong>
+#### <strong class="title">REDUX的套路</strong>
 ``` js
 / 定一个 reducer
 function reducer (state, action) {
@@ -285,13 +270,20 @@ store.dispatch(...)
 ```
 
 
-### redux-saga
+#### redux-saga
 - 集中处理 redux 副作用问题 (异步流)
 - 被实现为 generator 
 - watch/worker（监听->执行）的工作形式
 
-<style>
-.title {
-  color: RGBA(92, 201, 245, 1.00);
-}
-</style>
+
+### NgRx
+通过 Action 触发 reducer去更改状态 更改 store
+状态：一个包含action和reducer的函数的映射。
+  - `Action`: 状态改变的动作。描述事件的发生
+  - `ActionReducer`: 创建Reducer
+  - `ActionReducerMap`: 注册一系列的Reducer
+  - `MetaReducer`: 
+  - `StoreModule`: 用来配置Reducer的模块
+  - `createFeatureSelector`:
+  - `createSelector`
+  - `Store`
